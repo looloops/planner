@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Widget;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class WidgetSeeder extends Seeder
 {
@@ -12,6 +13,22 @@ class WidgetSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Widget::factory()->create([
+            'name' => "agenda",
+            'description' => "your appointments",
+            //serializzazione: tecnica per dare una struttura di stringa. 
+            'field_list' => json_encode([
+                "posizione-x",
+                "posizione-y",
+                "title",
+                "description",
+                "start",
+                "finish",
+                "deadline",
+                "priority"
+            ])
+        ]);
     }
 }
+
+

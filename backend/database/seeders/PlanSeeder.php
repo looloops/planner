@@ -2,8 +2,9 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Plan;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PlanSeeder extends Seeder
 {
@@ -12,6 +13,17 @@ class PlanSeeder extends Seeder
      */
     public function run(): void
     {
-        //
+        Plan::factory()->create([
+            'name' => 'free trial',
+            'description' => 'free trial',
+        ]);
+        Plan::factory()->create([
+            'name' => 'basic',
+            'description' => 'basic plan',
+        ]);
+        Plan::factory()->create([
+            'name' => 'full',
+            'description' => 'full plan',
+        ]);
     }
 }

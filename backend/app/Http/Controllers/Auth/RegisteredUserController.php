@@ -22,7 +22,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:' . User::class],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
@@ -37,5 +37,9 @@ class RegisteredUserController extends Controller
         Auth::login($user);
 
         return response()->noContent();
+
+        // ESEMPIO QUERY PER L'UPDATE DELLA TABELLA PONTE JSON
+        // Auth::user()->widgets()->updateExistingPivot($widget_id, ["settings" => $request->setting])
+
     }
 }

@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class WidgetDetail extends Model
 {
     use HasFactory;
+
+    public function user(): BelongsToMany
+    {
+        return $this->belongsToMany(User::class);
+    }
 }
