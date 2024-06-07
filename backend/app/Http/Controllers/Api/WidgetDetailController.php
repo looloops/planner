@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use App\Models\WidgetDetail;
+use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreWidgetDetailRequest;
 use App\Http\Requests\UpdateWidgetDetailRequest;
 
@@ -13,7 +14,9 @@ class WidgetDetailController extends Controller
      */
     public function index()
     {
-        //
+        $widgetDetails = WidgetDetail::with('widget')->get();
+        dump($widgetDetails);
+        // return $widgetDetails;
     }
 
     /**
