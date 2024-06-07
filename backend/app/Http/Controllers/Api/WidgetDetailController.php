@@ -15,8 +15,11 @@ class WidgetDetailController extends Controller
     public function index()
     {
         $widgetDetails = WidgetDetail::with('widget')->get();
-        dump($widgetDetails);
-        // return $widgetDetails;
+       
+        return [
+            'success' => true,
+            'data' =>  $widgetDetails,
+        ];
     }
 
     /**
