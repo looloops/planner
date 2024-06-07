@@ -15,7 +15,7 @@ return new class extends Migration {
             $table->timestamps();
             $table->string('name');
             $table->string('description');
-            $table->json('field_list');
+            $table->json('field_list'); //passiamo come json la lista dei campi 
         });
     }
 

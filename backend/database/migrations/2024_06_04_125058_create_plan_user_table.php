@@ -14,6 +14,11 @@ return new class extends Migration
         Schema::create('plan_user', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
+            $table->foreignId('user_id')->constrained()->onDelete('cascade');//onupdate????
+            $table->foreignId('plan_id')->constrained()->onDelete('cascade');
+            $table->dateTime('start_plan');
+            $table->dateTime('end_plan');
+
         });
     }
 

@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -46,13 +47,15 @@ class User extends Authenticatable
         ];
     }
 
-    public function plan(): BelongsToMany
+    public function plans(): BelongsToMany
     {
-        return $this->belongsToMany(Plan::class);
+        return $this->belongsToMany(Plan::class)->withPivot('start_plan', 'end_plan');
     }
 
-    public function widget(): BelongsToMany
+    public function widgets(): HasMany
     {
-        return $this->belongsToMany(Widget::class);
+        
+        return $this->hasMany(WidgetDetail::class);
+        // return $this->belongsToMany(Widget::class)->withPivot('status', 'settings');
     }
 }

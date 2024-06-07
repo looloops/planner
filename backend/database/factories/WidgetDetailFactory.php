@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
+use App\Models\Widget;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -16,8 +18,31 @@ class WidgetDetailFactory extends Factory
      */
     public function definition(): array
     {
+        $users = User::all()->all();
+        $user_ids = User::all()->pluck('id')->all();
+$widget_ids = Widget::all()->pluck('id')->all();
         return [
-            //
+          
+            'user_id' =>fake()->randomElement($user_ids),
+            'widget_id' => fake()->randomElement($widget_ids),
+            'settings' => json_encode([
+                'position_x' => fake()->randomNumber(),
+                'position_y' => fake()->randomNumber(),
+                'title' => fake()->sentence,
+                'description' => fake()->sentence,
+                'start' => fake()->date(),
+                'finish' => fake()->date(),
+                'deadline' => fake()->date(),
+                'priority' => fake()->word,
+            ]),
+            'status' => fake()->boolean,
+             
+             
         ];
     }
 }
+
+
+
+
+
