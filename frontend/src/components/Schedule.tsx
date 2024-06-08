@@ -1,56 +1,74 @@
-import React from "react";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
-// Definizione dei tipi per gli esami
+// Widget schedule type definition
 interface WidgetDetails {
-  id: number;
   status: boolean;
-  settings: any; //JSON
+  settings: Settings;
   user_id: number;
   widget_id: number;
-  // Aggiungi altri campi necessari
+}
+// Settings types after parsing
+interface Settings {
+  position_x: number;
+  position_y: number;
+  title: string;
+  description: string;
+  start: Date;
+  finish: Date;
+  deadline: Date;
+  priority: string;
 }
 
-// Definizione del tipo della risposta dell'API
-interface TranscriptResponse {
-  data: {
-    details: WidgetDetails[];
-  };
+// Defines type of API response
+interface ApiResponse {
+  success: boolean;
+  data: WidgetDetailsRaw[];
+}
+//res.data.data raw type definition
+interface WidgetDetailsRaw {
+  status: boolean;
+  settings: string; // JSON string that needs parsing
+  user_id: number;
+  widget_id: number;
 }
 
 const Schedule = () => {
   const [details, setDetails] = useState<WidgetDetails[]>([]);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   axios
-  //     .get<TranscriptResponse>("/api/widgets")
-  //     .then((res) => setDetails(res.data.data.details);
-  //     console.log(details)
-  //   )
-  //     .catch((_err) => navigate("/"));
-  // }, []);
-
   useEffect(() => {
     axios
-      .get<TranscriptResponse>("/api/widgets")
+      .get<ApiResponse>("/api/widgets")
       .then((res) => {
-        setDetails(res.data.data.details);
-        console.log(res.data.data.details); // Sposta il console.log qui se vuoi vedere i dettagli subito
+        const parsedDetails = res.data.data.map((detailRaw) => ({
+          ...detailRaw,
+          settings: JSON.parse(detailRaw.settings), // Parse the JSON string to an object
+        }));
+        setDetails(parsedDetails);
+        console.log(parsedDetails);
       })
-      .catch((_err) => {
+      .catch((err) => {
         navigate("/");
+        console.error("Error fetching data:", err);
       });
   }, [navigate]);
+
   return (
     <div>
-      {/* Rendering degli esami */}
+      {/* Widget fields rendering */}
       {details.map((detail) => (
-        <div key={detail.id}>
-          <h3>{detail.status}</h3>
-          <p>Score: {detail.settings}</p>
+        <div key={detail.widget_id}>
+          <h3>{detail.status ? "Active" : "Inactive"}</h3>
+          <p>Position X: {detail.settings.position_x}</p>
+          <p>Position Y: {detail.settings.position_y}</p>
+          <p>Title: {detail.settings.title}</p>
+          <p>Description: {detail.settings.description}</p>
+          <p>Start: {new Date(detail.settings.start).toLocaleString()}</p>
+          <p>Finish: {new Date(detail.settings.finish).toLocaleString()}</p>
+          <p>Deadline: {new Date(detail.settings.deadline).toLocaleString()}</p>
+          <p>Priority: {detail.settings.priority}</p>
         </div>
       ))}
     </div>
