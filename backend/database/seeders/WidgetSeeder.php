@@ -16,10 +16,10 @@ class WidgetSeeder extends Seeder
         Widget::factory()->create([
             'name' => "agenda",
             'description' => "your appointments",
-            //serializzazione: tecnica per dare una struttura di stringa. 
+            //serializzazione: tecnica per dare una struttura di stringa JSON  e viceversa. 
             'field_list' => json_encode([
-                "posizione-x",
-                "posizione-y",
+                "positionX",
+                "positionY",
                 "title",
                 "description",
                 "start",
