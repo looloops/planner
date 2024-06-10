@@ -11,6 +11,7 @@ return new class extends Migration {
     public function up(): void
     {
         Schema::create('widget_details', function (Blueprint $table) {
+            $table->id();
             $table->timestamps();//non necessario
             $table->boolean('status');
             $table->json('settings'); //oggetto convertito in json 

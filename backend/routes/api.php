@@ -11,4 +11,5 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('/widgets', [WidgetDetailController::class, 'index'])->name('api.widgets.index');
+Route::post('/widgets/{id}', [WidgetDetailController::class, 'update'])->name('api.widgets.update');
 Route::get('/users/{id}', [RegisteredUserController::class, 'show'])->name('users.show')->middleware(['auth:sanctum']);
