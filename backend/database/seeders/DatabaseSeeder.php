@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             'name' => 'admin',
             'email' => 'a@a.a',
             'role' => 'admin',
-            'profile_img' => '/storage/profiles/Missing_photo.svg',
+            'profile_img' => '/storage/profiles/default-profile.jpg',
         ]);
 
         // User::factory()->create([

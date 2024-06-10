@@ -27,7 +27,7 @@ class RegisteredUserController extends Controller
             'profile_img' => ['nullable', 'image', 'max:1024'], // size in kilobytes
 
         ]);
-        $file_path = $request['profile_img'] ? $request->file('profile_img')->store('profiles', 'public') : 'profiles/Missing_photo.svg';
+        $file_path = $request['profile_img'] ? $request->file('profile_img')->store('profiles', 'public') : 'profiles/default-profile.jpg';
 
 
         $data = $request->all();
@@ -36,7 +36,7 @@ class RegisteredUserController extends Controller
         $user->email = $data['email'];
         $user->password = $data['password'];
         $user->role = 'guest';
-        // $user->profile_img = asset('storage/' . $file_path);
+        $user->profile_img = asset('storage/' . $file_path);
         $user->save();
 
         // $user = User::create([
