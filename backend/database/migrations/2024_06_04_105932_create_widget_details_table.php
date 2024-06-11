@@ -15,6 +15,8 @@ return new class extends Migration {
             $table->timestamps();//non necessario
             $table->boolean('status');
             $table->json('settings'); //oggetto convertito in json 
+            $table->string('positionX');
+            $table->string('positionY');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');//onupdate????
             $table->foreignId('widget_id')->constrained()->onDelete('cascade');
         });

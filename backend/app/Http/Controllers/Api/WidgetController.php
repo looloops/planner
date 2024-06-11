@@ -36,9 +36,12 @@ class WidgetController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Widget $widget)
+    public function show(Widget $widget, $id)
     {
-        //
+        $singleWidget = Widget::with('widgetDetails')->find($id);
+        return [
+            'data' =>  $singleWidget 
+        ];
     }
 
     /**

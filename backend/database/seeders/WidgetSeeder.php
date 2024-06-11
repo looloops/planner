@@ -28,6 +28,22 @@ class WidgetSeeder extends Seeder
                 "priority"
             ])
         ]);
+
+        Widget::factory()->create([
+            'name' => "media",
+            'description' => "your favourite media",
+            //serializzazione: tecnica per dare una struttura di stringa JSON  e viceversa. 
+            'field_list' => json_encode([
+                "positionX",
+                "positionY",
+                "title",
+                "description",
+                "start",
+                "finish",
+                "deadline",
+                "priority"
+            ])
+        ]);
     }
 }
 

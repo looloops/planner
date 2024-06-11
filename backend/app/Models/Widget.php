@@ -12,7 +12,7 @@ class Widget extends Model
 {
     use HasFactory;
 
-    public function users(): HasMany
+    public function widgetDetails(): HasMany
     {
         return $this->hasMany(WidgetDetail::class);
     }
