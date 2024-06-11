@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Models\Plan;
+use App\Models\User;
 use App\Models\Widget;
+use App\Models\WidgetDetail;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreWidgetRequest;
 use App\Http\Requests\UpdateWidgetRequest;
 
@@ -40,6 +44,7 @@ class WidgetController extends Controller
     {
         $singleWidget = Widget::with('widgetDetails')->find($id);
         return [
+            'success' => true,
             'data' =>  $singleWidget 
         ];
     }
@@ -57,8 +62,13 @@ class WidgetController extends Controller
      */
     public function update(UpdateWidgetRequest $request, Widget $widget)
     {
-        //
+
+        /* $data = $request->all();
+        dump($widget); */
     }
+
+
+
 
     /**
      * Remove the specified resource from storage.

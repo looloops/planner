@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Models\User;
 use App\Models\WidgetDetail;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreWidgetDetailRequest;
@@ -59,37 +60,34 @@ class WidgetDetailController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateWidgetDetailRequest $request, WidgetDetail $widgetDetail, $id)
-    {
-        // if (!Auth::user()) abort(401);
 
-        $user_id = Auth::user()->id;
-        $widget_id = $widgetDetail->find($id);
-        $data = $request->find($user_id)->find($widget_id);
+    
+
+    public function update (UpdateWidgetDetailRequest $request, $widget_id)
+{
+    $data = $request->all();
+
+    // Trova il WidgetDetail utilizzando il widget_id
+    $user_id = Auth::user()->id;
+    //$widgetDetail = WidgetDetail::where('widget_id', $widget_id && 'user_id', $user_id)->firstOrFail();
+    $widgetDetail = WidgetDetail::where('widget_id', $widget_id)->where('user_id', $user_id)->firstOrFail();
+   
+
+    // Aggiorna i campi con i dati della richiesta
+    $widgetDetail->status = $data['status'];
+    $widgetDetail->settings = $data['settings'];
+    $widgetDetail->user_id = $data['user_id'];
+    // Non serve aggiornare widget_id se è usato come identificatore per trovare il record
+
+    // Salva le modifiche
+    $widgetDetail->save();
+
+    // Reindirizza alla route desiderata
+    return redirect()->route('/');
+}
 
 
-        $selected_widget = User::with('widget_details', 'widget_details.widgets')->find($user_id);
-        dump($selected_widget);
-       
-
-
-        // dd($data);
-
-        // validare i dati
-        // TODO: risolvere errore del campo duplicato con le validazioni
-
-        // aggiornare i dati nel database
-        // $widgetDetail = WidgetDetail::findOrFail($id);
-        $widgetDetail->status = $data['status'];
-        $widgetDetail->settings = $data['settings'];
-        $widgetDetail->user_id = $data['user_id'];
-        $widgetDetail->widget_id = $data['widget_id'];
-        $widgetDetail->update();
-
-        // ridirezionare
-        // return redirect()->route('books.show', ['id' => $id]);
-    }
-
+   
     /**
      * Remove the specified resource from storage.
      */

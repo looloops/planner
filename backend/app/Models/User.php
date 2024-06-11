@@ -52,7 +52,7 @@ class User extends Authenticatable
         return $this->belongsToMany(Plan::class)->withPivot('start_plan', 'end_plan');
     }
 
-    public function widgets(): HasMany
+    public function widgetDetail(): HasMany
     {
         
         return $this->hasMany(WidgetDetail::class);

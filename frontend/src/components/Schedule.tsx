@@ -80,22 +80,24 @@ const Schedule: React.FC = () => {
     if (details.length === 0) return;
 
     const updatedSettings = {
-      ...details[0].settings,
+      ...details[2].settings,
       ...formData,
-      start: formData.start ? new Date(formData.start).toISOString() : details[0].settings.start.toISOString(),
-      finish: formData.finish ? new Date(formData.finish).toISOString() : details[0].settings.finish.toISOString(),
+      start: formData.start ? new Date(formData.start).toISOString() : details[2].settings.start.toISOString(),
+      finish: formData.finish ? new Date(formData.finish).toISOString() : details[2].settings.finish.toISOString(),
       deadline: formData.deadline
         ? new Date(formData.deadline).toISOString()
-        : details[0].settings.deadline.toISOString(),
+        : details[2].settings.deadline.toISOString(),
     };
 
     const body = {
-      ...details[0],
+      ...details[2],
       settings: JSON.stringify(updatedSettings),
     };
 
+    console.log("PRIMA", details);
+
     axios
-      .post(`http://localhost:8000/api/widgets/${details[0].widget_id}`, body, {
+      .put(`http://localhost:8000/api/user/widgets/edit/${details[2].widget_id}`, body, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -107,6 +109,8 @@ const Schedule: React.FC = () => {
         console.error("Error updating data:", error);
       });
   };
+
+  console.log("DOPO", details);
 
   useEffect(() => {
     axios
@@ -123,7 +127,7 @@ const Schedule: React.FC = () => {
         }));
         setDetails(parsedDetails);
         if (parsedDetails.length > 0) {
-          setFormData(parsedDetails[0].settings); // Initialize formData with the first widget's settings
+          setFormData(parsedDetails[2].settings); // Initialize formData with the first widget's settings
         }
         console.log("parsedDetails", parsedDetails);
       })
@@ -161,7 +165,7 @@ const Schedule: React.FC = () => {
             id="position_x"
             name="position_x"
             onChange={updateInputValue}
-            value={formData.position_x ?? details[0].settings.position_x}
+            value={formData.position_x ?? details[2].settings.position_x}
           />
 
           <label htmlFor="position_y" className="form-label">
@@ -173,7 +177,7 @@ const Schedule: React.FC = () => {
             id="position_y"
             name="position_y"
             onChange={updateInputValue}
-            value={formData.position_y ?? details[0].settings.position_y}
+            value={formData.position_y ?? details[2].settings.position_y}
           />
 
           <label htmlFor="title" className="form-label">
@@ -185,7 +189,7 @@ const Schedule: React.FC = () => {
             id="title"
             name="title"
             onChange={updateInputValue}
-            value={formData.title ?? details[0].settings.title}
+            value={formData.title ?? details[2].settings.title}
           />
 
           <label htmlFor="description" className="form-label">
@@ -197,7 +201,7 @@ const Schedule: React.FC = () => {
             id="description"
             name="description"
             onChange={updateInputValue}
-            value={formData.description ?? details[0].settings.description}
+            value={formData.description ?? details[2].settings.description}
           />
 
           <label htmlFor="start" className="form-label">
@@ -212,7 +216,7 @@ const Schedule: React.FC = () => {
             value={
               formData.start
                 ? new Date(formData.start).toISOString().substring(0, 10)
-                : new Date(details[0].settings.start).toISOString().substring(0, 10)
+                : new Date(details[2].settings.start).toISOString().substring(0, 10)
             }
           />
 
@@ -228,7 +232,7 @@ const Schedule: React.FC = () => {
             value={
               formData.finish
                 ? new Date(formData.finish).toISOString().substring(0, 10)
-                : new Date(details[0].settings.finish).toISOString().substring(0, 10)
+                : new Date(details[2].settings.finish).toISOString().substring(0, 10)
             }
           />
 
@@ -244,7 +248,7 @@ const Schedule: React.FC = () => {
             value={
               formData.deadline
                 ? new Date(formData.deadline).toISOString().substring(0, 10)
-                : new Date(details[0].settings.deadline).toISOString().substring(0, 10)
+                : new Date(details[2].settings.deadline).toISOString().substring(0, 10)
             }
           />
 
@@ -257,7 +261,7 @@ const Schedule: React.FC = () => {
             id="priority"
             name="priority"
             onChange={updateInputValue}
-            value={formData.priority ?? details[0].settings.priority}
+            value={formData.priority ?? details[2].settings.priority}
           />
 
           <button type="submit" className="btn btn-primary">

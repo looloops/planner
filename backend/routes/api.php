@@ -12,6 +12,6 @@ Route::middleware(['auth:sanctum'])->get('/user', function (Request $request) {
 });
 
 Route::get('user/widgets/{id}', [WidgetController::class, 'show'])->name('api.widget.show');
+Route::put('user/widgets/edit/{id}', [WidgetDetailController::class, 'update'])->name('api.widget.update');
 Route::get('/widgets', [WidgetDetailController::class, 'index'])->name('api.widgets.index');
-// Route::post('/widgets/{id}', [WidgetDetailController::class, 'update'])->name('api.widgets.update');
 Route::get('/users/{id}', [RegisteredUserController::class, 'show'])->name('users.show')->middleware(['auth:sanctum']);

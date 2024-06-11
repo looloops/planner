@@ -17,7 +17,7 @@ class WidgetDetailSeeder extends Seeder
     {
 
 
-        // WidgetDetail::factory(2)->create();
+        WidgetDetail::factory(3)->create();
 
     }
 
