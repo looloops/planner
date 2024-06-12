@@ -1,80 +1,20 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { ApiResponse } from "../typescript/interfaces";
+import { WidgetDetailsRaw } from "../typescript/interfaces";
+import { ObjectWidgetTableDataRaw } from "../typescript/interfaces";
+import { WidgetDetails } from "../typescript/interfaces";
+import { SettingsSchedule } from "../typescript/interfaces";
+import { ObjectWidgetTableData } from "../typescript/interfaces";
 
-// The following interfaces and types define the API response
-interface ApiResponse {
-  success: boolean;
-  data: WidgetDetailsRaw[];
-}
 
-// Raw type definition for API response data
-interface WidgetDetailsRaw {
-  id: number;
-  status: boolean;
-  settings: string; // JSON string that needs parsing
-  user_id: number;
-  widget_id: number;
-  widget: ObjectWidgetTableDataRaw;
-}
-
-type ObjectWidgetTableDataRaw = {
-  description: string;
-  name: string;
-  field_list: string; // JSON string that needs parsing
-};
-
-// Structure of the parsed data from WidgetDetails
-interface WidgetDetails {
-  id: number;
-  status: boolean;
-  settings: SettingsAgenda | SettingsGoals;
-  user_id: number;
-  widget_id: number;
-  widget: ObjectWidgetTableData;
-}
-
-// Structure of the property Settings of WidgetDetails
-interface SettingsAgenda {
-  title: string;
-  description: string;
-  start: Date;
-  finish: Date;
-  deadline: Date;
-  priority: string;
-}
-
-interface SettingsGoals {
-  title: string;
-  description: string;
-  start: Date;
-  finish: Date;
-  deadline: Date;
-  priority: string;
-}
-
-type ObjectWidgetTableData = {
-  description: string;
-  name: string;
-  field_list: Array<FieldListParsed>;
-};
-
-type FieldListParsed = [
-  positionX: string,
-  positionY: string,
-  title: string,
-  description: string,
-  start: string,
-  finish: string,
-  deadline: string,
-  priority: string
-];
 
 const Schedule: React.FC = () => {
   const [details, setDetails] = useState<WidgetDetails[]>([]);
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<Partial<SettingsAgenda>>({});
+  const [formData, setFormData] = useState<Partial<SettingsSchedule>>({});
 
   const updateInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.target;
@@ -151,7 +91,7 @@ const Schedule: React.FC = () => {
       {details.map((detail) => (
         <div key={detail.id}>
           <h3>{detail.status ? "Active" : "Inactive"}</h3>
-          {settings.forEach((setting: SettingsAgenda[]) => {
+          {settings.forEach((setting: SettingsSchedule[]) => {
             <>
               <p>Title: {setting.title}</p>
               <p>Description: {setting.description}</p>

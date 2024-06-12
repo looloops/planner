@@ -156,7 +156,7 @@ export interface SettingsWishlist {
 // 3l) STRUCTURE FOR "settings" CONCERNING THE "Mood" WIDGET
 export interface SettingsMood {
   id: number;
-  date: Date; // OR NUMBER ??? DA DECIDERE
+  date: Date;
   feeling: string;
 }
 
@@ -174,7 +174,7 @@ export interface SettingsFinances {
   date: Date;
   name: string;
   type: string; //as in income or outcome
-  amount: number | string; // DA DECIDERE
+  amount: number;
 }
 
 // 3o) STRUCTURE FOR "settings" CONCERNING THE "theme" - DA DECIDERE
