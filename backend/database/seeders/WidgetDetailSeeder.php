@@ -20,7 +20,7 @@ class WidgetDetailSeeder extends Seeder
         // WidgetDetail::factory(3)->create();
 
         //WIDGETS USER 2
-        //Agenda User 2
+        //Schedule User 2
         WidgetDetail::factory()->create([
             'user_id' => 2,
             'widget_id' => 1,
@@ -190,7 +190,7 @@ class WidgetDetailSeeder extends Seeder
 
 
         //USER 1
-        //Agenda User 1
+        //Schedule User 1
         WidgetDetail::factory()->create([
             'user_id' => 1,
             'widget_id' => 1,
