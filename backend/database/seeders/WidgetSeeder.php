@@ -16,10 +16,7 @@ class WidgetSeeder extends Seeder
         Widget::factory()->create([
             'name' => "agenda",
             'description' => "your appointments",
-            //serializzazione: tecnica per dare una struttura di stringa JSON  e viceversa. 
             'field_list' => json_encode([
-                "positionX",
-                "positionY",
                 "title",
                 "description",
                 "start",
@@ -30,12 +27,19 @@ class WidgetSeeder extends Seeder
         ]);
 
         Widget::factory()->create([
+            'name' => "goals",
+            'description' => "the goals you aim towards",
+            'field_list' => json_encode([
+                "title",
+                "description",
+                "priority"
+            ])
+        ]);
+
+        Widget::factory()->create([
             'name' => "media",
             'description' => "your favourite media",
-            //serializzazione: tecnica per dare una struttura di stringa JSON  e viceversa. 
             'field_list' => json_encode([
-                "positionX",
-                "positionY",
                 "title",
                 "description",
                 "start",
@@ -44,6 +48,30 @@ class WidgetSeeder extends Seeder
                 "priority"
             ])
         ]);
+
+
+        Widget::factory()->create([
+            'name' => "recipes",
+            'description' => "your favourite recipes",
+            'field_list' => json_encode([
+                "img",
+                "type",
+                "title",
+                "description",
+            ])
+        ]);
+
+
+        Widget::factory()->create([
+            'name' => "journal",
+            'description' => "your favourite memories",
+            'field_list' => json_encode([
+                "date",
+                "title",
+                "content",
+            ])
+        ]);
+
     }
 }
 

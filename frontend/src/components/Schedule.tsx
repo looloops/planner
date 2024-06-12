@@ -10,6 +10,7 @@ interface ApiResponse {
 
 // Raw type definition for API response data
 interface WidgetDetailsRaw {
+  id: number;
   status: boolean;
   settings: string; // JSON string that needs parsing
   user_id: number;
@@ -25,17 +26,25 @@ type ObjectWidgetTableDataRaw = {
 
 // Structure of the parsed data from WidgetDetails
 interface WidgetDetails {
+  id: number;
   status: boolean;
-  settings: Settings;
+  settings: SettingsAgenda | SettingsGoals;
   user_id: number;
   widget_id: number;
   widget: ObjectWidgetTableData;
 }
 
 // Structure of the property Settings of WidgetDetails
-interface Settings {
-  position_x: number;
-  position_y: number;
+interface SettingsAgenda {
+  title: string;
+  description: string;
+  start: Date;
+  finish: Date;
+  deadline: Date;
+  priority: string;
+}
+
+interface SettingsGoals {
   title: string;
   description: string;
   start: Date;
@@ -65,7 +74,7 @@ const Schedule: React.FC = () => {
   const [details, setDetails] = useState<WidgetDetails[]>([]);
   const navigate = useNavigate();
 
-  const [formData, setFormData] = useState<Partial<Settings>>({});
+  const [formData, setFormData] = useState<Partial<SettingsAgenda>>({});
 
   const updateInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.target;
@@ -82,11 +91,9 @@ const Schedule: React.FC = () => {
     const updatedSettings = {
       ...details[2].settings,
       ...formData,
-      start: formData.start ? new Date(formData.start).toISOString() : details[2].settings.start.toISOString(),
-      finish: formData.finish ? new Date(formData.finish).toISOString() : details[2].settings.finish.toISOString(),
-      deadline: formData.deadline
-        ? new Date(formData.deadline).toISOString()
-        : details[2].settings.deadline.toISOString(),
+      start: formData.start ? new Date(formData.start).toString() : details[2].settings.start.toString(),
+      finish: formData.finish ? new Date(formData.finish).toString() : details[2].settings.finish.toString(),
+      deadline: formData.deadline ? new Date(formData.deadline).toString() : details[2].settings.deadline.toString(),
     };
 
     const body = {
@@ -137,19 +144,23 @@ const Schedule: React.FC = () => {
       });
   }, [navigate]);
 
+  const settings = details.settings;
+
   return (
     <div>
       {details.map((detail) => (
-        <div key={detail.widget_id}>
+        <div key={detail.id}>
           <h3>{detail.status ? "Active" : "Inactive"}</h3>
-          <p>Position X: {detail.settings.position_x}</p>
-          <p>Position Y: {detail.settings.position_y}</p>
-          <p>Title: {detail.settings.title}</p>
-          <p>Description: {detail.settings.description}</p>
-          <p>Start: {new Date(detail.settings.start).toLocaleString()}</p>
-          <p>Finish: {new Date(detail.settings.finish).toLocaleString()}</p>
-          <p>Deadline: {new Date(detail.settings.deadline).toLocaleString()}</p>
-          <p>Priority: {detail.settings.priority}</p>
+          {settings.forEach((setting: SettingsAgenda[]) => {
+            <>
+              <p>Title: {setting.title}</p>
+              <p>Description: {setting.description}</p>
+              <p>Start: {new Date(setting.start).toLocaleString()}</p>
+              <p>Finish: {new Date(setting.finish).toLocaleString()}</p>
+              <p>Deadline: {new Date(setting.deadline).toLocaleString()}</p>
+              <p>Priority: {setting.priority}</p>
+            </>;
+          })}
           <p>Widget Details Desc: {detail.widget.description}</p>
         </div>
       ))}
@@ -215,8 +226,8 @@ const Schedule: React.FC = () => {
             onChange={updateInputValue}
             value={
               formData.start
-                ? new Date(formData.start).toISOString().substring(0, 10)
-                : new Date(details[2].settings.start).toISOString().substring(0, 10)
+                ? new Date(formData.start).toString().substring(0, 10)
+                : new Date(details[2].settings.start).toString().substring(0, 10)
             }
           />
 
@@ -231,8 +242,8 @@ const Schedule: React.FC = () => {
             onChange={updateInputValue}
             value={
               formData.finish
-                ? new Date(formData.finish).toISOString().substring(0, 10)
-                : new Date(details[2].settings.finish).toISOString().substring(0, 10)
+                ? new Date(formData.finish).toString().substring(0, 10)
+                : new Date(details[2].settings.finish).toString().substring(0, 10)
             }
           />
 
@@ -247,8 +258,8 @@ const Schedule: React.FC = () => {
             onChange={updateInputValue}
             value={
               formData.deadline
-                ? new Date(formData.deadline).toISOString().substring(0, 10)
-                : new Date(details[2].settings.deadline).toISOString().substring(0, 10)
+                ? new Date(formData.deadline).toString().substring(0, 10)
+                : new Date(details[2].settings.deadline).toString().substring(0, 10)
             }
           />
 
