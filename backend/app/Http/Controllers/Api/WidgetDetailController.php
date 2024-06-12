@@ -20,7 +20,7 @@ class WidgetDetailController extends Controller
 
         return [
             'success' => true,
-            'data' =>  $widgetDetails,
+            'data' => $widgetDetails,
         ];
     }
 
@@ -57,7 +57,7 @@ class WidgetDetailController extends Controller
 
 
     // DISPLAY DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id' e 'user_id'
-    public function singleSettings(WidgetDetail $widgetDetail, $widget_id)
+    public function singleWidgetSettings(WidgetDetail $widgetDetail, $widget_id)
     {
 
         $user_id = Auth::user()->id;
@@ -69,6 +69,33 @@ class WidgetDetailController extends Controller
             'data' => $singleWidgetSettings,
         ];
     }
+
+    // DISPLAY single widget DATA FROM 'widgets' TABLE AND 'widget_details' TABLE EXTENDED FOR A SPECIFIC WIDGET AND A SPECIFIC $user_id
+    public function singleWidgetUser(WidgetDetail $widgetDetail, $widget_id)
+    {
+        $user_id = Auth::user()->id;
+        //$user_id = 1;
+        $singleWidgetUser = WidgetDetail::with('widget')->where('widget_id', $widget_id)->where('user_id', $user_id)->get();
+        return [
+            'success' => true,
+            'data' => $singleWidgetUser
+        ];
+    }
+
+    // DISPLAY WIDGET POSITIONS FROM ALL WIDGETS IN 'widget_details' TABLE OF SPECIFIC USER
+    //TODO 
+    // public function user(WidgetDetail $widgetDetail)
+    // {
+
+    //     $user_id = Auth::user()->id;
+    //     $userSettings = WidgetDetail::all()->where('user_id', $user_id);
+
+
+    //     return [
+    //         'success' => true,
+    //         'data' => $userSettings,
+    //     ];
+    // }
 
     /**
      * Show the form for creating a new resource.

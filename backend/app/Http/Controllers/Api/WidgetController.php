@@ -42,13 +42,15 @@ class WidgetController extends Controller
      */
 
 
-    // DISPLAY ALL DATA FROM 'widgets' TABLE AND 'widget_details' TABLE EXTENDED FOR A WIDGET WITH A SPECIFIC $id
+    // DISPLAY single widget DATA FROM 'widgets' TABLE AND 'widget_details' TABLE EXTENDED FOR A SPECIFIC WIDGET AND A SPECIFIC $user_id
     public function show(Widget $widget, $id)
     {
-        $singleWidget = Widget::with('widgetDetails')->find($id);
+        $user_id = Auth::user()->id;
+        //  $singleWidget = Widget::with('widgetDetails')->where('widget_id', $id)->where('user_id', $user_id);
+        $singleWidget = Widget::where('id', $id)->where('user_id', $user_id)->with('widgetDetails');
         return [
             'success' => true,
-            'data' =>  $singleWidget 
+            'data' => $singleWidget
         ];
     }
 

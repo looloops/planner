@@ -1,14 +1,12 @@
 import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ApiResponse } from "../typescript/interfaces";
-import { WidgetDetailsRaw } from "../typescript/interfaces";
-import { ObjectWidgetTableDataRaw } from "../typescript/interfaces";
-import { WidgetDetails } from "../typescript/interfaces";
-import { SettingsSchedule } from "../typescript/interfaces";
-import { ObjectWidgetTableData } from "../typescript/interfaces";
-
-
+import { ApiResponse } from "../../typescript/interfaces";
+import { WidgetDetailsRaw } from "../../typescript/interfaces";
+import { ObjectWidgetTableDataRaw } from "../../typescript/interfaces";
+import { WidgetDetails } from "../../typescript/interfaces";
+import { SettingsSchedule } from "../../typescript/interfaces";
+import { ObjectWidgetTableData } from "../../typescript/interfaces";
 
 const Schedule: React.FC = () => {
   const [details, setDetails] = useState<WidgetDetails[]>([]);
@@ -41,8 +39,6 @@ const Schedule: React.FC = () => {
       settings: JSON.stringify(updatedSettings),
     };
 
-    console.log("PRIMA", details);
-
     axios
       .put(`http://localhost:8000/api/user/widgets/edit/${details[2].widget_id}`, body, {
         headers: {
@@ -57,11 +53,9 @@ const Schedule: React.FC = () => {
       });
   };
 
-  console.log("DOPO", details);
-
   useEffect(() => {
     axios
-      .get<ApiResponse>("/api/widgets")
+      .get<ApiResponse>("/api/user/widgets/1")
       .then((res) => {
         console.log("res", res);
         const parsedDetails = res.data.data.map((detailRaw) => ({
@@ -77,12 +71,13 @@ const Schedule: React.FC = () => {
           setFormData(parsedDetails[2].settings); // Initialize formData with the first widget's settings
         }
         console.log("parsedDetails", parsedDetails);
+        console.log("Details", details);
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
         navigate("/");
       });
-  }, [navigate]);
+  }, []);
 
   const settings = details.settings;
 

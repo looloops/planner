@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Schedule from "./components/Schedule";
+import Schedule from "./components/widgets/Schedule";
 import "./App.css";
 import Login from "./components/Login";
 import axios from "axios";
