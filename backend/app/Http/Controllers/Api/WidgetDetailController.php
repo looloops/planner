@@ -9,19 +9,64 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreWidgetDetailRequest;
 use App\Http\Requests\UpdateWidgetDetailRequest;
+use Illuminate\Support\Facades\DB;
 
 class WidgetDetailController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
+    // DISPLAY ALL DATA FROM 'widget_details' TABLE AND 'widgets' TABLE EXTENDED
     public function index()
     {
         $widgetDetails = WidgetDetail::with('widget')->get();
-       
+
         return [
             'success' => true,
             'data' =>  $widgetDetails,
+        ];
+    }
+
+
+    // DISPLAY DATA FROM ALL 'settings' FIELDS IN 'widget_details' TABLE WITH A SPECIFIC 'user_id'
+    public function settings()
+    {
+
+        // QUERY USING DB:RAW
+
+        /*  $widgetSettings = DB::table('widget_details')
+            ->select('settings')
+            ->get();
+       
+        return [
+            'success' => true,
+            'data' =>  $widgetSettings,
+        ]; */
+
+
+        // QUERY USING ELOQUENT LANGUAGE
+
+        $user_id = Auth::user()->id;
+
+        // if (!Auth::user()) abort(401);
+        $widgetSettings = WidgetDetail::select('settings')->where('user_id', $user_id)->get();
+
+        return [
+            'success' => true,
+            'data' => $widgetSettings,
+        ];
+    }
+
+
+
+    // DISPLAY DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id' e 'user_id'
+    public function singleSettings(WidgetDetail $widgetDetail, $widget_id)
+    {
+
+        $user_id = Auth::user()->id;
+        $singleWidgetSettings = WidgetDetail::select('settings')->where('widget_id', $widget_id)->where('user_id', $user_id)->firstOrFail();
+
+
+        return [
+            'success' => true,
+            'data' => $singleWidgetSettings,
         ];
     }
 
@@ -57,37 +102,33 @@ class WidgetDetailController extends Controller
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-
-    
-
-    public function update (UpdateWidgetDetailRequest $request, $widget_id)
-{
-    $data = $request->all();
-
-    // Trova il WidgetDetail utilizzando il widget_id
-    $user_id = Auth::user()->id;
-    //$widgetDetail = WidgetDetail::where('widget_id', $widget_id && 'user_id', $user_id)->firstOrFail();
-    $widgetDetail = WidgetDetail::where('widget_id', $widget_id)->where('user_id', $user_id)->firstOrFail();
-   
-
-    // Aggiorna i campi con i dati della richiesta
-    $widgetDetail->status = $data['status'];
-    $widgetDetail->settings = $data['settings'];
-    $widgetDetail->user_id = $data['user_id'];
-    // Non serve aggiornare widget_id se è usato come identificatore per trovare il record
-
-    // Salva le modifiche
-    $widgetDetail->save();
-
-    // Reindirizza alla route desiderata
-    return redirect()->route('/');
-}
 
 
-   
+    // UPDATE DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id'
+    public function update(UpdateWidgetDetailRequest $request, $widget_id)
+    {
+        $data = $request->all();
+
+        $user_id = Auth::user()->id;
+        //$widgetDetail = WidgetDetail::where('widget_id', $widget_id && 'user_id', $user_id)->firstOrFail();
+        $widgetDetail = WidgetDetail::where('widget_id', $widget_id)->where('user_id', $user_id)->firstOrFail();
+
+
+        // Aggiorna i campi con i dati della richiesta
+        $widgetDetail->status = $data['status'];
+        $widgetDetail->settings = $data['settings'];
+        $widgetDetail->user_id = $data['user_id'];
+        // Non serve aggiornare widget_id se è usato come identificatore per trovare il record
+
+        // Salva le modifiche
+        $widgetDetail->save();
+
+        // Reindirizza alla route desiderata
+        return redirect()->route('/');
+    }
+
+
+
     /**
      * Remove the specified resource from storage.
      */

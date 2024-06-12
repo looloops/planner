@@ -40,6 +40,9 @@ class WidgetController extends Controller
     /**
      * Display the specified resource.
      */
+
+
+    // DISPLAY ALL DATA FROM 'widgets' TABLE AND 'widget_details' TABLE EXTENDED FOR A WIDGET WITH A SPECIFIC $id
     public function show(Widget $widget, $id)
     {
         $singleWidget = Widget::with('widgetDetails')->find($id);
