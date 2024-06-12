@@ -14,33 +14,34 @@ const Schedule: React.FC = () => {
 
   const [formData, setFormData] = useState<Partial<SettingsSchedule>>({});
 
-  const updateInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = ev.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
-      [name]: value,
-    }));
-  };
+  // const updateInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = ev.target;
+  //   setFormData((prevFormData) => ({
+  //     ...prevFormData,
+  //     [name]: value,
+  //   }));
+  // };
 
-  const submitUpdatedData = (ev: FormEvent<HTMLFormElement>) => {
+  //TODO UPDATE
+  /*   const submitUpdatedData = (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (details.length === 0) return;
 
     const updatedSettings = {
-      ...details[2].settings,
+      ...details[0].settings,
       ...formData,
-      start: formData.start ? new Date(formData.start).toString() : details[2].settings.start.toString(),
-      finish: formData.finish ? new Date(formData.finish).toString() : details[2].settings.finish.toString(),
-      deadline: formData.deadline ? new Date(formData.deadline).toString() : details[2].settings.deadline.toString(),
+      start: formData.start ? new Date(formData.start).toString() : details[0].settings.start.toString(),
+      finish: formData.finish ? new Date(formData.finish).toString() : details[0].settings.finish.toString(),
+      deadline: formData.deadline ? new Date(formData.deadline).toString() : details[0].settings.deadline.toString(),
     };
 
     const body = {
-      ...details[2],
+      ...details[0],
       settings: JSON.stringify(updatedSettings),
     };
 
     axios
-      .put(`http://localhost:8000/api/user/widgets/edit/${details[2].widget_id}`, body, {
+      .put(`http://localhost:8000/api/user/widgets/edit/${details[0].widget_id}`, body, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -51,7 +52,7 @@ const Schedule: React.FC = () => {
       .catch((error) => {
         console.error("Error updating data:", error);
       });
-  };
+  }; */
 
   useEffect(() => {
     axios
@@ -68,7 +69,7 @@ const Schedule: React.FC = () => {
         }));
         setDetails(parsedDetails);
         if (parsedDetails.length > 0) {
-          setFormData(parsedDetails[2].settings); // Initialize formData with the first widget's settings
+          setFormData(parsedDetails[0].settings); // Initialize formData with the first widget's settings
         }
         console.log("parsedDetails", parsedDetails);
         console.log("Details", details);
@@ -86,7 +87,7 @@ const Schedule: React.FC = () => {
       {details.map((detail) => (
         <div key={detail.id}>
           <h3>{detail.status ? "Active" : "Inactive"}</h3>
-          {settings.forEach((setting: SettingsSchedule[]) => {
+          {settings.forEach((setting: SettingsSchedule) => {
             <>
               <p>Title: {setting.title}</p>
               <p>Description: {setting.description}</p>
@@ -100,7 +101,7 @@ const Schedule: React.FC = () => {
         </div>
       ))}
 
-      {details.length > 0 && (
+      {/* {details.length > 0 && (
         <form onSubmit={submitUpdatedData} noValidate>
           <label htmlFor="position_x" className="form-label">
             Position X
@@ -111,7 +112,7 @@ const Schedule: React.FC = () => {
             id="position_x"
             name="position_x"
             onChange={updateInputValue}
-            value={formData.position_x ?? details[2].settings.position_x}
+            value={formData.position_x ?? details[0].settings.position_x}
           />
 
           <label htmlFor="position_y" className="form-label">
@@ -123,7 +124,7 @@ const Schedule: React.FC = () => {
             id="position_y"
             name="position_y"
             onChange={updateInputValue}
-            value={formData.position_y ?? details[2].settings.position_y}
+            value={formData.position_y ?? details[0].settings.position_y}
           />
 
           <label htmlFor="title" className="form-label">
@@ -135,7 +136,7 @@ const Schedule: React.FC = () => {
             id="title"
             name="title"
             onChange={updateInputValue}
-            value={formData.title ?? details[2].settings.title}
+            value={formData.title ?? details[0].settings.title}
           />
 
           <label htmlFor="description" className="form-label">
@@ -147,7 +148,7 @@ const Schedule: React.FC = () => {
             id="description"
             name="description"
             onChange={updateInputValue}
-            value={formData.description ?? details[2].settings.description}
+            value={formData.description ?? details[0].settings[0].description}
           />
 
           <label htmlFor="start" className="form-label">
@@ -162,7 +163,7 @@ const Schedule: React.FC = () => {
             value={
               formData.start
                 ? new Date(formData.start).toString().substring(0, 10)
-                : new Date(details[2].settings.start).toString().substring(0, 10)
+                : new Date(details[0].settings.start).toString().substring(0, 10)
             }
           />
 
@@ -178,7 +179,7 @@ const Schedule: React.FC = () => {
             value={
               formData.finish
                 ? new Date(formData.finish).toString().substring(0, 10)
-                : new Date(details[2].settings.finish).toString().substring(0, 10)
+                : new Date(details[0].settings.finish).toString().substring(0, 10)
             }
           />
 
@@ -194,7 +195,7 @@ const Schedule: React.FC = () => {
             value={
               formData.deadline
                 ? new Date(formData.deadline).toString().substring(0, 10)
-                : new Date(details[2].settings.deadline).toString().substring(0, 10)
+                : new Date(details[0].settings.deadline).toString().substring(0, 10)
             }
           />
 
@@ -207,14 +208,14 @@ const Schedule: React.FC = () => {
             id="priority"
             name="priority"
             onChange={updateInputValue}
-            value={formData.priority ?? details[2].settings.priority}
+            value={formData.priority ?? details[0].settings.priority}
           />
 
           <button type="submit" className="btn btn-primary">
             Save changes
           </button>
         </form>
-      )}
+      )} */}
     </div>
   );
 };
