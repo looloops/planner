@@ -31,7 +31,7 @@ class WidgetDetailSeeder extends Seeder
                     'description' => 'Remember to buy a cake!',
                     'start' => '19:30 2024-12-01',
                     'finish' => '22:00 2024-12-01',
-                    'deadline' => 'No deadline!',
+                    'deadline' => '19:30 2024-12-01',
                     'priority' => 'Not urgent',
                 ],
                 [
@@ -201,7 +201,7 @@ class WidgetDetailSeeder extends Seeder
                     'description' => 'Remember to buy a cake!',
                     'start' => '19:30 2024-12-01',
                     'finish' => '22:00 2024-12-01',
-                    'deadline' => 'No deadline!',
+                    'deadline' => '19:30 2024-12-01',
                     'priority' => 'Not urgent',
                 ],
                 [
@@ -371,7 +371,7 @@ class WidgetDetailSeeder extends Seeder
                     'description' => 'Remember to buy a cake!',
                     'start' => '19:30 2024-12-01',
                     'finish' => '22:00 2024-12-01',
-                    'deadline' => 'No deadline!',
+                    'deadline' => '19:30 2024-12-01',
                     'priority' => 'Not urgent',
                 ],
                 [
@@ -527,17 +527,5 @@ class WidgetDetailSeeder extends Seeder
             'positionX' => 150,
             'positionY' => 150,
         ]);
-
     }
 }
-
-
-
-
-
-
-
-
-
-
-

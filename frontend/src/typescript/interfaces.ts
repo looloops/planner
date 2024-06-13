@@ -28,22 +28,35 @@ export interface ObjectWidgetTableDataRaw {
 // INTERFACES FOR PARSED DATA
 
 // 1 - STRUCTURE OF PARSED DATA FROM "widget_details" TABLE
+
+export interface GeneralSettings {
+  id: number;
+  title: string;
+  description: string;
+  start: Date;
+  finish: Date;
+  deadline: Date;
+  priority: string;
+  type: string;
+  img: string;
+  status: string;
+  content: string;
+  genre: string;
+  day: string; // as in day of the week
+  breakfast: string;
+  lunch: string;
+  dinner: string;
+  snacks: string;
+  category: string;
+  price: string | null;
+  feeling: string;
+  amount: number;
+}
+
 export interface WidgetDetails {
   id: number;
   status: boolean;
-  settings:
-    | SettingsSchedule
-    | SettingsGoals
-    | SettingsMedia
-    | SettingsRecipes
-    | SettingsJournal
-    | SettingsToDo
-    | SettingsBooks
-    | SettingsMenu
-    | SettingsWishlist
-    | SettingsMood
-    | SettingsHabits
-    | SettingsTheme;
+  settings: Partial<GeneralSettings>[];
   positionX: number;
   positionY: number;
   user_id: number;

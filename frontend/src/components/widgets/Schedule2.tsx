@@ -2,11 +2,10 @@ import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ApiResponse } from "../../typescript/interfaces";
-import { WidgetDetailsRaw } from "../../typescript/interfaces";
-import { ObjectWidgetTableDataRaw } from "../../typescript/interfaces";
+
 import { WidgetDetails } from "../../typescript/interfaces";
-import { SettingsSchedule } from "../../typescript/interfaces";
-import { ObjectWidgetTableData } from "../../typescript/interfaces";
+
+import { GeneralSettings } from "../../typescript/interfaces";
 
 const Schedule2: React.FC = () => {
   const [details, setDetails] = useState<WidgetDetails[]>([]);
@@ -61,7 +60,7 @@ const Schedule2: React.FC = () => {
         console.log("res", res);
         const parsedDetails = res.data.data.map((detailRaw) => ({
           ...detailRaw,
-          settings: JSON.parse(detailRaw.settings), // Parse the JSON string to an object
+          settings: JSON.parse(detailRaw.settings) as Partial<GeneralSettings>[], // Parse the JSON string to an object
           widget: {
             ...detailRaw.widget,
             field_list: JSON.parse(detailRaw.widget.field_list), // Parse the JSON string to an object
@@ -85,7 +84,7 @@ const Schedule2: React.FC = () => {
 
   return (
     <div>
-      {console.log("PROVA", details)}
+      {/* {console.log("PROVA", details)} */}
 
       <div>
         {details.map((detail) => (
@@ -94,43 +93,47 @@ const Schedule2: React.FC = () => {
             <p>Position X: {detail.positionX}</p>
             <p>Position Y: {detail.positionY}</p>
             <p>Status: {detail.status}</p>
-            <p>Settings: {JSON.stringify(detail.settings)}</p>
             <p>Widget Field List: {JSON.stringify(detail.widget.field_list)}</p>
 
-            {detail.settings.forEach((setting) => {
-              <p>Title: {setting.title}</p>;
-            })}
+            {detail.settings.map((setting, index) => (
+              <div key={index}>
+                <p>Title: {setting.title}</p>
+                <p>{setting.description}</p>
+                <p>Start: {setting.start ? new Date(setting.start).toLocaleString() : "N/A"}</p>
+                <p>Finish: {setting.finish ? new Date(setting.finish).toLocaleString() : "N/A"}</p>
+                <p>Deadline: {setting.deadline ? new Date(setting.deadline).toLocaleString() : ""}</p>
+                <p>Priority: {setting.priority}</p>
+              </div>
+            ))}
           </div>
         ))}
       </div>
 
-      <div>
-      {details.map((detail) => (
-        <div key={detail.id}>
-          <p>ID: {detail.id}</p>
-          <div>
-            <p>Settings:</p>
-            <ul>
-              {Object.entries(detail.settings).map(([key, value]) => (
-                <li key={key}>
-                  {key}: {JSON.stringify(value)}
-                </li>
-              ))}
-            </ul>
+      {/*  <div>
+        {details.map((detail) => (
+          <div key={detail.id}>
+            <p>ID: {detail.id}</p>
+            <div>
+              <p>Settings:</p>
+              <ul>
+                {Object.entries(detail.settings).map(([key, value]) => (
+                  <li key={key}>
+                    {key}: {JSON.stringify(value)}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div>
+              <p>Widget Field List:</p>
+              <ul>
+                {detail.widget.field_list.map((field, index) => (
+                  <li key={index}>{JSON.stringify(field)}</li>
+                ))}
+              </ul>
+            </div>
           </div>
-          <div>
-            <p>Widget Field List:</p>
-            <ul>
-              {detail.widget.field_list.map((field, index) => (
-                <li key={index}>
-                  {JSON.stringify(field)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-      ))}
-    </div>
+        ))}
+      </div> */}
 
       {/* {console.log("PROVA", details)}
       {details.map((detail) => (
