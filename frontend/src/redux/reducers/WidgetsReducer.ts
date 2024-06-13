@@ -1,6 +1,3 @@
-// import Schedule from "../../components/widgets/Schedule";
-import { GeneralSettings } from "../../typescript/interfaces";
-
 import {
   BOOKS_DETAILS,
   GOALS_DETAILS,
@@ -15,61 +12,68 @@ import {
   TODOS_DETAILS,
   WISHLIST_DETAILS,
 } from "../actions";
+import { WidgetDetails } from "../../typescript/interfaces";
 
 interface BooksAction {
   type: typeof BOOKS_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
 
 interface GoalsAction {
   type: typeof GOALS_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
 
 interface HabitsAction {
   type: typeof HABITS_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
 
 interface JournalAction {
   type: typeof JOURNAL_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
 
 interface MediaAction {
   type: typeof MEDIA_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
 
 interface MenuAction {
   type: typeof MENU_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
+
 interface MoodsAction {
   type: typeof MOODS_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
+
 interface RecipesAction {
   type: typeof RECIPES_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
+
 interface ScheduleAction {
   type: typeof SCHEDULE_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
 
 interface ThemeAction {
   type: typeof THEME_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
+
 interface ToDosAction {
   type: typeof TODOS_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
+
 interface WishlistAction {
   type: typeof WISHLIST_DETAILS;
-  payload: GeneralSettings;
+  payload: Partial<WidgetDetails>[];
 }
+
 type ActionTypes =
   | BooksAction
   | GoalsAction
@@ -84,24 +88,22 @@ type ActionTypes =
   | ToDosAction
   | WishlistAction;
 
-// Stato iniziale
-
-export interface WidgetState {
-  schedule: Partial<GeneralSettings>[];
-  goals: Partial<GeneralSettings>[];
-  media: Partial<GeneralSettings>[];
-  recipes: Partial<GeneralSettings>[];
-  todos: Partial<GeneralSettings>[];
-  books: Partial<GeneralSettings>[];
-  menu: Partial<GeneralSettings>[];
-  wishlist: Partial<GeneralSettings>[];
-  moods: Partial<GeneralSettings>[];
-  habits: Partial<GeneralSettings>[];
-  theme: Partial<GeneralSettings>[];
-  journal: Partial<GeneralSettings>[];
+export interface WidgetsState {
+  schedule: Partial<WidgetDetails>[];
+  goals: Partial<WidgetDetails>[];
+  media: Partial<WidgetDetails>[];
+  recipes: Partial<WidgetDetails>[];
+  todos: Partial<WidgetDetails>[];
+  books: Partial<WidgetDetails>[];
+  menu: Partial<WidgetDetails>[];
+  wishlist: Partial<WidgetDetails>[];
+  moods: Partial<WidgetDetails>[];
+  habits: Partial<WidgetDetails>[];
+  theme: Partial<WidgetDetails>[];
+  journal: Partial<WidgetDetails>[];
 }
 
-const initialState: WidgetState = {
+const initialState: WidgetsState = {
   schedule: [],
   goals: [],
   media: [],
@@ -116,78 +118,78 @@ const initialState: WidgetState = {
   journal: [],
 };
 
-const widgetsReducer = (state = initialState, action: ActionTypes): WidgetState => {
+const widgetsReducer = (state = initialState, action: ActionTypes): WidgetsState => {
   switch (action.type) {
     case SCHEDULE_DETAILS:
       return {
         ...state,
-        schedule: state.schedule.concat(action.payload as Partial<GeneralSettings>),
+        schedule: state.schedule.concat(action.payload),
       };
 
     case GOALS_DETAILS:
       return {
         ...state,
-        goals: state.goals.concat(action.payload as Partial<GeneralSettings>),
+        goals: state.goals.concat(action.payload),
       };
 
     case MEDIA_DETAILS:
       return {
         ...state,
-        media: state.media.concat(action.payload as Partial<GeneralSettings>),
+        media: state.media.concat(action.payload),
       };
 
     case RECIPES_DETAILS:
       return {
         ...state,
-        recipes: state.recipes.concat(action.payload as Partial<GeneralSettings>),
+        recipes: state.recipes.concat(action.payload),
       };
 
     case TODOS_DETAILS:
       return {
         ...state,
-        todos: state.todos.concat(action.payload as Partial<GeneralSettings>),
+        todos: state.todos.concat(action.payload),
       };
 
     case BOOKS_DETAILS:
       return {
         ...state,
-        books: state.books.concat(action.payload as Partial<GeneralSettings>),
+        books: state.books.concat(action.payload),
       };
 
     case MENU_DETAILS:
       return {
         ...state,
-        menu: state.menu.concat(action.payload as Partial<GeneralSettings>),
+        menu: state.menu.concat(action.payload),
       };
 
     case WISHLIST_DETAILS:
       return {
         ...state,
-        wishlist: state.wishlist.concat(action.payload as Partial<GeneralSettings>),
+        wishlist: state.wishlist.concat(action.payload),
       };
 
     case MOODS_DETAILS:
       return {
         ...state,
-        moods: state.moods.concat(action.payload as Partial<GeneralSettings>),
+        moods: state.moods.concat(action.payload),
       };
 
     case HABITS_DETAILS:
       return {
         ...state,
-        habits: state.habits.concat(action.payload as Partial<GeneralSettings>),
+        habits: state.habits.concat(action.payload),
       };
 
     case THEME_DETAILS:
       return {
         ...state,
-        theme: state.theme.concat(action.payload as Partial<GeneralSettings>),
+        theme: state.theme.concat(action.payload),
       };
 
     case JOURNAL_DETAILS:
       return {
         ...state,
-        journal: state.journal.concat(action.payload as Partial<GeneralSettings>),
+        journal: state.journal.concat(action.payload),
       };
 
     default:

@@ -31,7 +31,7 @@ export interface ObjectWidgetTableDataRaw {
 export interface WidgetDetails {
   id: number;
   status: boolean;
-  settings: GeneralSettings;
+  settings: GeneralSettings[];
   // | SettingsSchedule
   // | SettingsGoals
   // | SettingsMedia
@@ -93,6 +93,7 @@ export interface GeneralSettings {
   feeling: string;
   amount: number;
 }
+
 export interface SettingsSchedule {
   id: number;
   // 3a) STRUCTURE FOR "settings" CONCERNING THE "Schedule" WIDGET

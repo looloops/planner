@@ -7,17 +7,18 @@ import { WidgetDetails } from "../../typescript/interfaces";
 
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { State, User } from "../../redux/reducers/userReducer";
+import { User } from "../../redux/reducers/userReducer";
 import { SCHEDULE_DETAILS } from "../../redux/actions/index";
-import { WidgetState } from "../../redux/reducers/WidgetsReducer";
+import { State } from "../../redux/reducers/userReducer";
 
 const Schedule2: React.FC = () => {
   // const [details, setDetails] = useState<WidgetDetails[]>([]);
 
   const user = useSelector((state: State) => state.user);
-  const details = useSelector((state: WidgetState) => state.schedule);
+  const details = useSelector((state: State) => state.widgets);
+  const schedule = details.schedule;
   console.log("USER FROM REDUX", user);
-  console.log("DETAILS FROM REDUX", details);
+  console.log("SCHEDULE FROM REDUX", schedule);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -97,6 +98,10 @@ const Schedule2: React.FC = () => {
 
   return (
     <div>
+      {schedule[0]?.settings?.map((setting: Partial<GeneralSettings>, index) => {
+        return <p key={index}>{setting.title}</p>;
+      })}
+
       {/* {console.log("PROVA", details)} */}
 
       {/*  <div>

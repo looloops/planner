@@ -1,8 +1,9 @@
 import { LOGIN, LOGOUT } from "../actions";
+import { WidgetsState } from "./WidgetsReducer";
 
-// Define the shape of the state
 export interface State {
-  user: User | null;
+  user: UserState;
+  widgets: WidgetsState;
 }
 
 // Define the shape of the user object
@@ -15,8 +16,13 @@ export interface User {
   // Add other user properties if needed
 }
 
+// Define the shape of the state
+export interface UserState {
+  user: User | null;
+}
+
 // Define the initial state
-const initialState: State = {
+const initialState: UserState = {
   user: null,
 };
 
@@ -33,7 +39,7 @@ interface LogoutAction {
 type ActionTypes = LoginAction | LogoutAction;
 
 // Main reducer function
-const userReducer = (state = initialState, action: ActionTypes): State => {
+const userReducer = (state = initialState, action: ActionTypes): UserState => {
   switch (action.type) {
     case LOGIN:
       return {
