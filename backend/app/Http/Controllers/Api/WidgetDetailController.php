@@ -26,7 +26,7 @@ class WidgetDetailController extends Controller
 
 
     // DISPLAY DATA FROM ALL 'settings' FIELDS IN 'widget_details' TABLE WITH A SPECIFIC 'user_id'
-    public function settings()
+    public function allUserSettings()
     {
 
         // QUERY USING DB:RAW
@@ -70,7 +70,7 @@ class WidgetDetailController extends Controller
         ];
     }
 
-    // DISPLAY single widget DATA FROM 'widgets' TABLE AND 'widget_details' TABLE EXTENDED FOR A SPECIFIC WIDGET AND A SPECIFIC $user_id
+// DISPLAY ALL DATA FROM 'widget_details' TABLE AND 'widgets' TABLE EXTENDED SPECIFIC TO A SINGLE WIDGET & SINGLE USER ($widget_id AND $user_id)
     public function singleWidgetUser(WidgetDetail $widgetDetail, $widget_id)
     {
         $user_id = Auth::user()->id;
