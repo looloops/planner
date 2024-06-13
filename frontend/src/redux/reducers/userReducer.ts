@@ -33,7 +33,7 @@ interface LogoutAction {
 type ActionTypes = LoginAction | LogoutAction;
 
 // Main reducer function
-const mainReducer = (state = initialState, action: ActionTypes): State => {
+const userReducer = (state = initialState, action: ActionTypes): State => {
   switch (action.type) {
     case LOGIN:
       return {
@@ -52,4 +52,4 @@ const mainReducer = (state = initialState, action: ActionTypes): State => {
   }
 };
 
-export default mainReducer;
+export default userReducer;

@@ -1,13 +1,13 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
-import mainReducer from "../reducers";
+import userReducer from "../reducers/userReducer";
 import widgetState from "../reducers/WidgetsReducer";
 
 // Definisci il tipo RootState
 export type RootState = ReturnType<typeof store.getState>;
 
 const rootReducer = combineReducers({
-  mainReducer: mainReducer,
-  widgetReducer: widgetState,
+  user: userReducer,
+  widgets: widgetState,
 });
 
 // Crea il negozio

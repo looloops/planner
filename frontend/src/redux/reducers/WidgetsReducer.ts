@@ -1,3 +1,6 @@
+// import Schedule from "../../components/widgets/Schedule";
+import { GeneralSettings } from "../../typescript/interfaces";
+
 import {
   BOOKS_DETAILS,
   GOALS_DETAILS,
@@ -13,111 +16,183 @@ import {
   WISHLIST_DETAILS,
 } from "../actions";
 
-import { GeneralSettings } from "../../typescript/interfaces";
-
-// Definisci il tipo per lo stato
-export interface WidgetState {
-  schedule?: Partial<GeneralSettings>;
-  goals?: Partial<GeneralSettings>;
-  media?: Partial<GeneralSettings>;
-  recipes?: Partial<GeneralSettings>;
-  todos?: Partial<GeneralSettings>;
-  books?: Partial<GeneralSettings>;
-  menu?: Partial<GeneralSettings>;
-  wishlist?: Partial<GeneralSettings>;
-  moods?: Partial<GeneralSettings>;
-  habits?: Partial<GeneralSettings>;
-  theme?: Partial<GeneralSettings>;
-  journal?: Partial<GeneralSettings>;
-}
-
-// Definisci il tipo per le azioni
-interface Action {
-  type: string;
+interface BooksAction {
+  type: typeof BOOKS_DETAILS;
   payload: GeneralSettings;
 }
 
-// Stato iniziale
-const initialState: WidgetState = {};
+interface GoalsAction {
+  type: typeof GOALS_DETAILS;
+  payload: GeneralSettings;
+}
 
-// Definisci il reducer con i tipi
-const widgetState = (state: WidgetState = initialState, action: Action): WidgetState => {
+interface HabitsAction {
+  type: typeof HABITS_DETAILS;
+  payload: GeneralSettings;
+}
+
+interface JournalAction {
+  type: typeof JOURNAL_DETAILS;
+  payload: GeneralSettings;
+}
+
+interface MediaAction {
+  type: typeof MEDIA_DETAILS;
+  payload: GeneralSettings;
+}
+
+interface MenuAction {
+  type: typeof MENU_DETAILS;
+  payload: GeneralSettings;
+}
+interface MoodsAction {
+  type: typeof MOODS_DETAILS;
+  payload: GeneralSettings;
+}
+interface RecipesAction {
+  type: typeof RECIPES_DETAILS;
+  payload: GeneralSettings;
+}
+interface ScheduleAction {
+  type: typeof SCHEDULE_DETAILS;
+  payload: GeneralSettings;
+}
+
+interface ThemeAction {
+  type: typeof THEME_DETAILS;
+  payload: GeneralSettings;
+}
+interface ToDosAction {
+  type: typeof TODOS_DETAILS;
+  payload: GeneralSettings;
+}
+interface WishlistAction {
+  type: typeof WISHLIST_DETAILS;
+  payload: GeneralSettings;
+}
+type ActionTypes =
+  | BooksAction
+  | GoalsAction
+  | HabitsAction
+  | JournalAction
+  | MediaAction
+  | MenuAction
+  | MoodsAction
+  | RecipesAction
+  | ScheduleAction
+  | ThemeAction
+  | ToDosAction
+  | WishlistAction;
+
+// Stato iniziale
+
+export interface WidgetState {
+  schedule: Partial<GeneralSettings>[];
+  goals: Partial<GeneralSettings>[];
+  media: Partial<GeneralSettings>[];
+  recipes: Partial<GeneralSettings>[];
+  todos: Partial<GeneralSettings>[];
+  books: Partial<GeneralSettings>[];
+  menu: Partial<GeneralSettings>[];
+  wishlist: Partial<GeneralSettings>[];
+  moods: Partial<GeneralSettings>[];
+  habits: Partial<GeneralSettings>[];
+  theme: Partial<GeneralSettings>[];
+  journal: Partial<GeneralSettings>[];
+}
+
+const initialState: WidgetState = {
+  schedule: [],
+  goals: [],
+  media: [],
+  recipes: [],
+  todos: [],
+  books: [],
+  menu: [],
+  wishlist: [],
+  moods: [],
+  habits: [],
+  theme: [],
+  journal: [],
+};
+
+const widgetsReducer = (state = initialState, action: ActionTypes): WidgetState => {
   switch (action.type) {
-    case SCHEDULE_DETAILS: {
+    case SCHEDULE_DETAILS:
       return {
         ...state,
-        schedule: action.payload,
+        schedule: state.schedule.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case GOALS_DETAILS: {
+
+    case GOALS_DETAILS:
       return {
         ...state,
-        goals: action.payload,
+        goals: state.goals.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case MEDIA_DETAILS: {
+
+    case MEDIA_DETAILS:
       return {
         ...state,
-        media: action.payload,
+        media: state.media.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case RECIPES_DETAILS: {
+
+    case RECIPES_DETAILS:
       return {
         ...state,
-        recipes: action.payload,
+        recipes: state.recipes.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case TODOS_DETAILS: {
+
+    case TODOS_DETAILS:
       return {
         ...state,
-        todos: action.payload,
+        todos: state.todos.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case BOOKS_DETAILS: {
+
+    case BOOKS_DETAILS:
       return {
         ...state,
-        books: action.payload,
+        books: state.books.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case MENU_DETAILS: {
+
+    case MENU_DETAILS:
       return {
         ...state,
-        menu: action.payload,
+        menu: state.menu.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case WISHLIST_DETAILS: {
+
+    case WISHLIST_DETAILS:
       return {
         ...state,
-        wishlist: action.payload,
+        wishlist: state.wishlist.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case MOODS_DETAILS: {
+
+    case MOODS_DETAILS:
       return {
         ...state,
-        moods: action.payload,
+        moods: state.moods.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case HABITS_DETAILS: {
+
+    case HABITS_DETAILS:
       return {
         ...state,
-        habits: action.payload,
+        habits: state.habits.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case THEME_DETAILS: {
+
+    case THEME_DETAILS:
       return {
         ...state,
-        theme: action.payload,
+        theme: state.theme.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
-    case JOURNAL_DETAILS: {
+
+    case JOURNAL_DETAILS:
       return {
         ...state,
-        journal: action.payload,
+        journal: state.journal.concat(action.payload as Partial<GeneralSettings>),
       };
-    }
+
     default:
       return state;
   }
 };
 
-export default widgetState;
+export default widgetsReducer;

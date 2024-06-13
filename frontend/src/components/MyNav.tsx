@@ -4,7 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { LOGOUT } from "../redux/actions";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { RootState } from "../redux/store"; // Assuming you have a RootState type defined in your Redux store
+import { State } from "../redux/store"; // Assuming you have a RootState type defined in your Redux store
 
 interface User {
   role: string;
@@ -16,7 +16,7 @@ const MyNav: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useSelector((state: RootState) => state.user) as User | null;
+  const user = useSelector((state: State) => state.user) as User | null;
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {

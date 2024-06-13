@@ -7,15 +7,18 @@ import { WidgetDetails } from "../../typescript/interfaces";
 
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { State, User } from "../../redux/reducers";
-import { SCHEDULE_DETAILS } from "../../actions";
-
+import { State, User } from "../../redux/reducers/userReducer";
+import { SCHEDULE_DETAILS } from "../../redux/actions/index";
+import { WidgetState } from "../../redux/reducers/WidgetsReducer";
 
 const Schedule2: React.FC = () => {
   // const [details, setDetails] = useState<WidgetDetails[]>([]);
 
- const user =  useSelector((state: State)=> state.user)
- const dispatch = useDispatch()
+  const user = useSelector((state: State) => state.user);
+  const details = useSelector((state: WidgetState) => state.schedule);
+  console.log("USER FROM REDUX", user);
+  console.log("DETAILS FROM REDUX", details);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   // const [formData, setFormData] = useState<Partial<SettingsSchedule>>({});
@@ -72,17 +75,17 @@ const Schedule2: React.FC = () => {
             ...detailRaw.widget,
             field_list: JSON.parse(detailRaw.widget.field_list), // Parse the JSON string to an object
           },
-          dispatch({
-            type: SCHEDULE_DETAILS,
-            payload: parsedDetails,
-          })
         }));
+
         // setDetails(parsedDetails);
         if (parsedDetails.length > 0) {
           // setFormData(parsedDetails[0].settings); // Initialize formData with the first widget's settings
+          dispatch({
+            type: SCHEDULE_DETAILS,
+            payload: parsedDetails,
+          });
         }
         console.log("parsedDetails", parsedDetails);
-        console.log("Details", details);
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
@@ -96,7 +99,7 @@ const Schedule2: React.FC = () => {
     <div>
       {/* {console.log("PROVA", details)} */}
 
-      <div>
+      {/*  <div>
         {details.map((detail) => (
           <div key={detail.id}>
             <p>Widget ID: {detail.widget_id}</p>
@@ -117,7 +120,7 @@ const Schedule2: React.FC = () => {
             ))}
           </div>
         ))}
-      </div>
+      </div> */}
 
       {/*  <div>
         {details.map((detail) => (
