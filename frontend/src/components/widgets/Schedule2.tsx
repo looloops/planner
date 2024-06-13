@@ -6,9 +6,16 @@ import { ApiResponse } from "../../typescript/interfaces";
 import { WidgetDetails } from "../../typescript/interfaces";
 
 import { GeneralSettings } from "../../typescript/interfaces";
+import { useDispatch, useSelector } from "react-redux";
+import { State, User } from "../../redux/reducers";
+import { SCHEDULE_DETAILS } from "../../actions";
+
 
 const Schedule2: React.FC = () => {
-  const [details, setDetails] = useState<WidgetDetails[]>([]);
+  // const [details, setDetails] = useState<WidgetDetails[]>([]);
+
+ const user =  useSelector((state: State)=> state.user)
+ const dispatch = useDispatch()
   const navigate = useNavigate();
 
   // const [formData, setFormData] = useState<Partial<SettingsSchedule>>({});
@@ -65,9 +72,12 @@ const Schedule2: React.FC = () => {
             ...detailRaw.widget,
             field_list: JSON.parse(detailRaw.widget.field_list), // Parse the JSON string to an object
           },
+          dispatch({
+            type: SCHEDULE_DETAILS,
+            payload: parsedDetails,
+          })
         }));
-
-        setDetails(parsedDetails);
+        // setDetails(parsedDetails);
         if (parsedDetails.length > 0) {
           // setFormData(parsedDetails[0].settings); // Initialize formData with the first widget's settings
         }

@@ -1,12 +1,12 @@
 import { LOGIN, LOGOUT } from "../actions";
 
 // Define the shape of the state
-interface State {
+export interface State {
   user: User | null;
 }
 
 // Define the shape of the user object
-interface User {
+export interface User {
   id: number;
   name: string;
   email: string;
