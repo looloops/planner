@@ -78,7 +78,7 @@ const ScheduleEdit: () => JSX.Element = () => {
   return (
     <div>
       <h1>Edit Schedule</h1>
-      {schedule?.settings?.length > 0 && (
+      {schedule && schedule.settings && schedule.settings.length > 0 && (
         <form onSubmit={(ev) => submitUpdatedData(ev, 0)} noValidate>
           <label htmlFor="title" className="form-label">
             Title
