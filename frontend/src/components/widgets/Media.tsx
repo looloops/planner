@@ -5,23 +5,21 @@ import { ApiResponse } from "../../typescript/interfaces";
 import { Link } from "react-router-dom";
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { SCHEDULE_DETAILS } from "../../redux/actions/index";
+import { MEDIA_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/userReducer";
 
-const Schedule: React.FC = () => {
-  // const [details, setDetails] = useState<WidgetDetails[]>([]);
-
+const Media: React.FC = () => {
   const user = useSelector((state: State) => state.user);
-  const schedule = useSelector((state: State) => state.widgets.schedule);
+  const media = useSelector((state: State) => state.widgets.media);
 
   console.log("USER FROM REDUX", user);
-  console.log("SCHEDULE FROM REDUX", schedule);
+  console.log("MEDIA FROM REDUX", media);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
   useEffect(() => {
     axios
-      .get<ApiResponse>("/api/user/widgets/1")
+      .get<ApiResponse>("/api/user/widgets/3")
       .then((res) => {
         console.log("res", res);
         const parsedDetails = {
@@ -37,7 +35,7 @@ const Schedule: React.FC = () => {
 
         // Dispatch the parsed details
         dispatch({
-          type: SCHEDULE_DETAILS,
+          type: MEDIA_DETAILS,
           payload: parsedDetails,
         });
 
@@ -51,26 +49,16 @@ const Schedule: React.FC = () => {
   }, []);
 
   return (
-    /* VIEWING DATA IN DATA IN PAGE
-    
-      {schedule?.settings?.map((setting: Partial<GeneralSettings>, index) => {
-        return <p key={index}>{setting.title}</p>;
-      })}
-
-         */
     <>
       <div>
-        {schedule?.settings?.map((setting, index) => (
+        {media?.settings?.map((setting, index) => (
           <div key={index}>
+            <img src={setting.img} style={{ width: "300px" }}></img>
             <p>Title: {setting.title}</p>
-            <p>{setting.description}</p>
-            <p>Start: {setting.start ? new Date(setting.start).toLocaleString() : "N/A"}</p>
-            <p>Finish: {setting.finish ? new Date(setting.finish).toLocaleString() : "N/A"}</p>
-            <p>Deadline: {setting.deadline ? new Date(setting.deadline).toLocaleString() : ""}</p>
-            <p>Priority: {setting.priority}</p>
-            <Link to={`/schedule/edit/${index}`}>Edit</Link>
-            <br />
-            <Link to={`/schedule/add`}>Add</Link>
+            <p>Description: {setting.description}</p>
+            <p>Type: {setting.type}</p>
+            <p>Status: {setting.status}</p>
+            <Link to={`/media/edit/${index}`}>Edit</Link>
           </div>
         ))}
       </div>
@@ -78,4 +66,4 @@ const Schedule: React.FC = () => {
   );
 };
 
-export default Schedule;
+export default Media;

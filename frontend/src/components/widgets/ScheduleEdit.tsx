@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom";
-import { State } from "../redux/reducers/userReducer";
+import { State } from "../../redux/reducers/userReducer";
 import { useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
-import { GeneralSettings } from "../typescript/interfaces";
+import { GeneralSettings } from "../../typescript/interfaces";
 import { useSelector } from "react-redux";
 
 type Params = {
