@@ -10,7 +10,7 @@ import { RootState } from "./redux/store"; // Import the RootState type
 import MyNav from "./components/MyNav";
 import Dashboard from "./components/Dashboard";
 import Register from "./components/Register";
-import Schedule2 from "./components/widgets/Schedule2";
+import ScheduleEdit from "./components/ScheduleEdit";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -42,10 +42,11 @@ const App: React.FC = () => {
       <Router>
         <MyNav />
         <Routes>
-          <Route path="/" element={<Schedule2 />} />
+          <Route path="/" element={<Schedule />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/schedule/edit/:settingIndex" element={<ScheduleEdit />} />
         </Routes>
       </Router>
     )
