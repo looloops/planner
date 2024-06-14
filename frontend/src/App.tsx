@@ -42,7 +42,7 @@ const App: React.FC = () => {
       <Router>
         <MyNav />
         <Routes>
-          <Route path="/" element={<Schedule />} />
+          <Route path="/schedule" element={<Schedule />} />
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />

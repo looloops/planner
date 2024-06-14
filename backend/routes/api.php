@@ -31,5 +31,5 @@ Route::get('/user/settings', [WidgetDetailController::class, 'allUserSettings'])
 // DISPLAY DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id' AND 'user_id'
 Route::get('/widgets/settings/{widget_id}', [WidgetDetailController::class, 'singleWidgetSettings'])->name('api.widgets.single.settings');
 
-// UPDATE DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id' AND 'user_id'
+// UPDATE OR DELETE DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id' AND 'user_id'
 Route::put('user/widgets/edit/{id}', [WidgetDetailController::class, 'update'])->name('api.widget.update');

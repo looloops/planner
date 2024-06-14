@@ -2,6 +2,7 @@ import React, { useEffect, useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ApiResponse } from "../../typescript/interfaces";
+import { Link } from "react-router-dom";
 
 import { WidgetDetails } from "../../typescript/interfaces";
 
@@ -51,7 +52,7 @@ const Schedule: React.FC = () => {
         console.error("Error fetching data:", err);
         navigate("/");
       });
-  }, [dispatch, navigate]);
+  }, []);
 
   return (
     /* VIEWING DATA IN DATA IN PAGE
@@ -71,7 +72,7 @@ const Schedule: React.FC = () => {
             <p>Finish: {setting.finish ? new Date(setting.finish).toLocaleString() : "N/A"}</p>
             <p>Deadline: {setting.deadline ? new Date(setting.deadline).toLocaleString() : ""}</p>
             <p>Priority: {setting.priority}</p>
-            <a href="/schedule/edit/${index}">Edit</a>
+            <Link to={`/schedule/edit/${index}`}>Edit</Link>
           </div>
         ))}
       </div>

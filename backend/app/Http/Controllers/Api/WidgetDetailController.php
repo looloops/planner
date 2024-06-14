@@ -153,9 +153,6 @@ class WidgetDetailController extends Controller
         // Reindirizza alla route desiderata
         return redirect()->route('/');
     }
-
-
-
     /**
      * Remove the specified resource from storage.
      */
