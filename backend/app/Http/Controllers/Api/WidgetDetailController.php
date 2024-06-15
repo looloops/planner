@@ -11,6 +11,7 @@ use App\Http\Requests\StoreWidgetDetailRequest;
 use App\Http\Requests\UpdateWidgetDetailRequest;
 use Illuminate\Support\Facades\DB;
 
+
 class WidgetDetailController extends Controller
 {
     // DISPLAY ALL DATA FROM 'widget_details' TABLE AND 'widgets' TABLE EXTENDED
@@ -108,20 +109,12 @@ class WidgetDetailController extends Controller
     /**
      * Store a newly created resource in storage.
      */
+
+
     public function store(StoreWidgetDetailRequest $request)
     {
-        //TODO FINIRE QUESTO
-        $data = $request->all();
-        $user_id = Auth::user()->id;
-
-
-        // salvare i dati nel database
-        $widgetDetail = new WidgetDetail();
-        $widgetDetail->status = $data['status'];
-        $widgetDetail->settings = $data['settings'];
-        $widgetDetail->user_id = $data['user_id'];
-        $widgetDetail->save();
     }
+
 
     /**
      * Display the specified resource.
@@ -141,7 +134,7 @@ class WidgetDetailController extends Controller
 
 
 
-    // UPDATE DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id'
+    // CREATE, UPDATE AND DELETE DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id'
     public function update(UpdateWidgetDetailRequest $request, $widget_id)
     {
         $data = $request->all();

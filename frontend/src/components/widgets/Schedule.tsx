@@ -60,6 +60,9 @@ const Schedule: React.FC = () => {
          */
     <>
       <div>
+        <Link to={`/schedule/add`}>
+          <h3 className="my-5">ADD A NEW APPOINTMENT</h3>
+        </Link>
         {schedule?.settings?.map((setting, index) => (
           <div key={index}>
             <p>Title: {setting.title}</p>
@@ -69,8 +72,6 @@ const Schedule: React.FC = () => {
             <p>Deadline: {setting.deadline ? new Date(setting.deadline).toLocaleString() : ""}</p>
             <p>Priority: {setting.priority}</p>
             <Link to={`/schedule/edit/${index}`}>Edit</Link>
-            <br />
-            <Link to={`/schedule/add`}>Add</Link>
           </div>
         ))}
       </div>

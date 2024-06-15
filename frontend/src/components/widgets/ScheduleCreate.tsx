@@ -8,10 +8,11 @@ const ScheduleCreate: () => JSX.Element = () => {
   // GETTING SCHEDULE DATA FROM REDUX
   const schedule = useSelector((state: State) => state.widgets.schedule);
 
-  // CREATING AND MANAGING A LOCAL STATE FOR FUTURE UPDATED DATA
+  // CREATING A LOCAL STATE FOR DATA COMING FROM THE FORM
   const [formData, setFormData] = useState<Partial<GeneralSettings>>({});
 
-  const updateInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
+  // UPDATING THE LOCAL STATE
+  const createInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -19,11 +20,12 @@ const ScheduleCreate: () => JSX.Element = () => {
     }));
   };
 
-  const submitUpdatedData = (ev: FormEvent<HTMLFormElement>) => {
+  // SUBMITTING THE NEW DATA INTO THE DATABASE
+  const submitNewData = (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-
     if (!schedule || !schedule.settings) return;
 
+    // Taking the new settings from the local state and converting date values
     const newSetting = {
       ...formData,
       start: formData.start ? new Date(formData.start) : undefined,
@@ -31,21 +33,26 @@ const ScheduleCreate: () => JSX.Element = () => {
       deadline: formData.deadline ? new Date(formData.deadline) : undefined,
     };
 
+    // Adding the new settings into the array
     const updatedSettingsArray = [...schedule.settings, newSetting];
 
+    // Defining the body of the request
     const body = {
       ...schedule,
       settings: updatedSettingsArray,
     };
 
+    // Sending the axios request
     axios
-      .post(`http://localhost:8000/api/user/widgets/add/${schedule.widget_id}`, body, {
+      .put(`http://localhost:8000/api/user/widgets/edit/${schedule.widget_id}`, body, {
         headers: {
           "Content-Type": "application/json",
         },
       })
       .then((response) => {
         console.log("Data added successfully:", response.data);
+        // Reset form after successful submission
+        setFormData({});
       })
       .catch((error) => {
         console.error("Error adding data:", error);
@@ -55,9 +62,9 @@ const ScheduleCreate: () => JSX.Element = () => {
   return (
     <>
       <div>
-        <h1>Create Schedule</h1>
+        <h1>Add New Schedule</h1>
         {schedule && (
-          <form onSubmit={submitUpdatedData} noValidate>
+          <form onSubmit={submitNewData} noValidate>
             <label htmlFor="title" className="form-label">
               Title
             </label>
@@ -66,7 +73,7 @@ const ScheduleCreate: () => JSX.Element = () => {
               className="form-control"
               id="title"
               name="title"
-              onChange={updateInputValue}
+              onChange={createInputValue}
               value={formData.title ?? ""}
             />
 
@@ -78,7 +85,7 @@ const ScheduleCreate: () => JSX.Element = () => {
               className="form-control"
               id="description"
               name="description"
-              onChange={updateInputValue}
+              onChange={createInputValue}
               value={formData.description ?? ""}
             />
 
@@ -90,7 +97,7 @@ const ScheduleCreate: () => JSX.Element = () => {
               type="date"
               id="start"
               name="start"
-              onChange={updateInputValue}
+              onChange={createInputValue}
               value={formData.start ? new Date(formData.start).toISOString().substring(0, 10) : ""}
             />
 
@@ -102,7 +109,7 @@ const ScheduleCreate: () => JSX.Element = () => {
               className="form-control"
               id="finish"
               name="finish"
-              onChange={updateInputValue}
+              onChange={createInputValue}
               value={formData.finish ? new Date(formData.finish).toISOString().substring(0, 10) : ""}
             />
 
@@ -114,7 +121,7 @@ const ScheduleCreate: () => JSX.Element = () => {
               className="form-control"
               id="deadline"
               name="deadline"
-              onChange={updateInputValue}
+              onChange={createInputValue}
               value={formData.deadline ? new Date(formData.deadline).toISOString().substring(0, 10) : ""}
             />
 
@@ -126,12 +133,12 @@ const ScheduleCreate: () => JSX.Element = () => {
               className="form-control"
               id="priority"
               name="priority"
-              onChange={updateInputValue}
+              onChange={createInputValue}
               value={formData.priority ?? ""}
             />
 
             <button type="submit" className="btn btn-primary">
-              Create
+              Add Schedule
             </button>
           </form>
         )}
