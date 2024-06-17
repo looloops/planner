@@ -11,9 +11,9 @@ import { State } from "../../redux/reducers/userReducer";
 const Media: React.FC = () => {
   const user = useSelector((state: State) => state.user);
   const media = useSelector((state: State) => state.widgets.media);
-
+  /* 
   console.log("USER FROM REDUX", user);
-  console.log("MEDIA FROM REDUX", media);
+  console.log("MEDIA FROM REDUX", media); */
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -21,7 +21,6 @@ const Media: React.FC = () => {
     axios
       .get<ApiResponse>("/api/user/widgets/3")
       .then((res) => {
-        console.log("res", res);
         const parsedDetails = {
           ...res.data.data[0],
           settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[], // Parse the JSON string to an object
@@ -30,8 +29,6 @@ const Media: React.FC = () => {
             field_list: JSON.parse(res.data.data[0].widget.field_list), // Parse the JSON string to an object
           },
         };
-
-        console.log("parsedDetails", parsedDetails);
 
         // Dispatch the parsed details
         dispatch({
@@ -55,7 +52,7 @@ const Media: React.FC = () => {
           <div key={index}>
             <div className="media-img-div">
               {" "}
-              <img src={setting.img} style={{ objectFit: "fill" }}></img>
+             {/*  <img src={setting.img} style={{ objectFit: "fill" }}></img> */}
             </div>
             <p>Title: {setting.title}</p>
             <p>Description: {setting.description}</p>
