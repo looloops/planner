@@ -4,19 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { LOGOUT } from "../redux/actions";
 import axios from "axios";
 import { useLocation } from "react-router-dom";
-import { State } from "../redux/store"; // Assuming you have a RootState type defined in your Redux store
-
-interface User {
-  role: string;
-  name: string;
-  profile_img: string;
-}
+import { State } from "../redux/reducers/userReducer"; // Assuming you have a RootState type defined in your Redux store
 
 const MyNav: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useSelector((state: State) => state.user) as User | null;
+  const user = useSelector((state: State) => state.user);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
 
   useEffect(() => {
@@ -74,12 +68,16 @@ const MyNav: React.FC = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <a className="nav-link text-secondary d-flex align-items-center gap-1" href="#footer">
-                  {/* <MdOutlineContactSupport /> */}
-                  Contact
-                </a>
+                <Link
+                  to="/login"
+                  className={`nav-link d-flex align-items-center gap-1 text-secondary ${
+                    location.pathname === "/" ? "bord-p" : ""
+                  }`}
+                >
+                  Login
+                </Link>
               </li>
-              {user?.role === "guest" && (
+              {user?.user?.role === "guest" && (
                 <li className="nav-item">
                   <Link to="/corsiutente/1" className="nav-link text-secondary d-flex align-items-center gap-1">
                     {/* <IoIosFitness /> */}
@@ -99,8 +97,17 @@ const MyNav: React.FC = () => {
                     data-bs-toggle="dropdown"
                     aria-expanded="false"
                   >
-                    <img src={user.profile_img} alt="profile_img" className="img_profile" />
-                    {user.name}
+                    <img
+                      src={
+                        user.user?.profile_img
+                          ? user.user?.profile_img
+                          : "https://preview.redd.it/nhim8ly085251.jpg?auto=webp&s=fc1e542dd41306ba139ffd590cf2aafabed73d6a"
+                      }
+                      alt="profile_img"
+                      className="rounded-circle mx-3"
+                      style={{ width: "40px" }}
+                    />
+                    {user?.user?.name}
                   </a>
                   <ul className="dropdown-menu">
                     <div className="d-flex px-2 align-items-center">
@@ -123,7 +130,7 @@ const MyNav: React.FC = () => {
                       <hr className="dropdown-divider" />
                     </li>
                     <div className="d-flex px-2 align-items-center">
-                      {user.role === "admin" && (
+                      {user?.user?.role === "admin" && (
                         <>
                           {/* <RiAdminFill /> */}
                           <li>
