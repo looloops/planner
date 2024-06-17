@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
-import { LOGIN } from "../redux/actions";
+import { LOGIN } from "../../redux/actions";
 import { useNavigate } from "react-router-dom";
 
 interface FormData {

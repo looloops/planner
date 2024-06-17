@@ -50,10 +50,13 @@ const Media: React.FC = () => {
 
   return (
     <>
-      <div>
+      <div className="min-div-widgets">
         {media?.settings?.map((setting, index) => (
           <div key={index}>
-            <img src={setting.img} style={{ width: "300px" }}></img>
+            <div className="media-img-div">
+              {" "}
+              <img src={setting.img} style={{ objectFit: "fill" }}></img>
+            </div>
             <p>Title: {setting.title}</p>
             <p>Description: {setting.description}</p>
             <p>Type: {setting.type}</p>

@@ -1,0 +1,31 @@
+.homepage-template-grid {
+  display: grid;
+  grid-template-areas:
+    "sidebar topbar topbar"
+    "sidebar main rightbar";
+  grid-template-columns: 15% 65% 20%;
+  grid-template-rows: 150px auto;
+  height: 100vh; // Adjust the height as needed
+}
+
+.homepage-template-grid > div:nth-child(1) {
+  grid-area: sidebar;
+}
+
+.homepage-template-grid > div:nth-child(2) {
+  grid-area: topbar;
+}
+
+.homepage-template-grid > div:nth-child(3) {
+  grid-area: main;
+}
+
+.homepage-template-grid > div:nth-child(4) {
+  grid-area: rightbar;
+}
+
+.min-div-widgets {
+  width: 380px;
+  height: 200px;
+  overflow: hidden;
+}

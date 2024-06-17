@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
-import { LOGIN } from "../redux/actions";
+import { LOGIN } from "../../redux/actions";
 import { Link, useNavigate } from "react-router-dom";
 
 // Define the shape of form data
