@@ -20,7 +20,7 @@ axios.defaults.withXSRFToken = true;
 
 const App: React.FC = () => {
   // Use RootState to type the state parameter
-  const user = useSelector((state: RootState) => state.user);
+  const user = useSelector((state: RootState) => state._persist);
   console.log("user", user);
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState<boolean>(false);
