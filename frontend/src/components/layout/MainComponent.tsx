@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Responsive, WidthProvider } from "react-grid-layout";
 import Schedule from "../widgets/Schedule";
+import Media from "../widgets/Media";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 const MainComponent = () => {
   const [staticOn, setStaticOn] = useState(true);
   const [layouts, setLayouts] = useState<Record<string, Layout[]>>(getInitialLayouts(true));
-
-  console.log("Layout", layouts);
 
   interface Layout {
     i: string;
@@ -25,29 +24,29 @@ const MainComponent = () => {
     return {
       lg: [
         { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: false },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: true },
+        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
+        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
       ],
       md: [
         { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: false },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: true },
+        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
+        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
       ],
       sm: [
         { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: false },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: true },
+        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
+        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
       ],
-      xs: [
-        { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: false },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: true },
-      ],
-      xxs: [
-        { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: false },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: true },
-      ],
+      // xs: [
+      //   { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
+      //   { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
+      //   { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
+      // ],
+      // xxs: [
+      //   { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
+      //   { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
+      //   { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
+      // ],
       // Add more breakpoints as needed
     };
   }
@@ -70,6 +69,19 @@ const MainComponent = () => {
     setLayouts(allLayouts);
   };
 
+  const renderComponent = (key: string) => {
+    switch (key) {
+      case "1":
+        return <Schedule />;
+
+      case "2":
+        return <Media />;
+
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <ResponsiveReactGridLayout
@@ -86,11 +98,11 @@ const MainComponent = () => {
               <div
                 key={layout.i}
                 style={{
-                  backgroundColor: layout.i === "1" ? "red" : layout.i === "2" ? "blue" : "green",
+                  //backgroundColor: layout.i === "1" ? "red" : layout.i === "2" ? "blue" : "green",
                   overflowY: "scroll",
                 }}
               >
-                <Schedule />
+                {renderComponent(layout.i)}
               </div>
             ))
         )}
