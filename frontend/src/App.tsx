@@ -15,6 +15,7 @@ import Media from "./components/widgets/Media";
 import MediaEdit from "./components/widgets/MediaEdit";
 import ScheduleCreate from "./components/widgets/ScheduleCreate";
 import Homepage from "./components/Homepage";
+import MainComponentCopy from "./components/layout/MainComponentCopy";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -55,6 +56,7 @@ const App: React.FC = () => {
           <Route path="/media" element={<Media />} />
           <Route path="/media/edit/:settingIndex" element={<MediaEdit />} />
           <Route path="/grid" element={<Homepage />} />
+          <Route path="/grid2" element={<MainComponentCopy />} />
         </Routes>
       </Router>
     )

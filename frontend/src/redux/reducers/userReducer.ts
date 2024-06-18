@@ -13,7 +13,16 @@ export interface User {
   email: string;
   profile_img: string;
   role: string;
+  widgets_layout: WidgetsLayout;
   // Add other user properties if needed
+}
+export interface WidgetsLayout {
+  i: string;
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+  static: boolean;
 }
 
 // Define the shape of the state
