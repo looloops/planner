@@ -18,6 +18,8 @@ return new class extends Migration {
             $table->string('password');
             $table->string('role', 20)->nullable();
             $table->string('profile_img')->nullable();
+
+            $table->json('widgets_layout'); //oggetto convertito in json 
             $table->rememberToken();
             $table->timestamps();
         });

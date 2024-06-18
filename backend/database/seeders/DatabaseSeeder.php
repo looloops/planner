@@ -22,6 +22,39 @@ class DatabaseSeeder extends Seeder
             'role' => 'admin',
             'password' => 'password',
             'profile_img' => '/storage/profiles/default-profile.jpg',
+            'widgets_layout' => json_encode([
+                [
+
+                    "lg" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "md" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "sm" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "xs" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "xxs" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+
+
+                ],
+            ]),
+
         ]);
 
         User::factory()->create([
@@ -31,6 +64,40 @@ class DatabaseSeeder extends Seeder
             'role' => 'guest',
             'password' => 'password',
             'profile_img' => '/storage/profiles/default-profile.jpg',
+            'widgets_layout' => json_encode([
+                [
+
+                    "lg" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "md" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "sm" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "xs" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "xxs" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+
+
+                ],
+            ]),
+
+
         ]);
 
         User::factory()->create([
@@ -40,6 +107,38 @@ class DatabaseSeeder extends Seeder
             'role' => 'guest',
             'password' => 'password',
             'profile_img' => '/storage/profiles/default-profile.jpg',
+            'widgets_layout' => json_encode([
+                [
+
+                    "lg" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "md" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "sm" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "xs" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+                    "xxs" => [
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "status" => false],
+                    ],
+
+
+                ],
+            ]),
         ]);
 
 
@@ -50,3 +149,10 @@ class DatabaseSeeder extends Seeder
         ]);
     }
 }
+
+
+
+
+
+
+

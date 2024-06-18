@@ -12,10 +12,7 @@ return new class extends Migration {
     {
         Schema::create('widget_details', function (Blueprint $table) {
             $table->id();
-            $table->boolean('status');
             $table->json('settings'); //oggetto convertito in json 
-            $table->string('positionX');
-            $table->string('positionY');
             $table->foreignId('user_id')->constrained(); // onDelete('cascade') farlo con il detach
             $table->foreignId('widget_id')->constrained(); // onDelete('cascade') farlo con il detach
             $table->timestamps();//non necessario

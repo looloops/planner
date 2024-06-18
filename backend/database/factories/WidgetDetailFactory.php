@@ -20,11 +20,11 @@ class WidgetDetailFactory extends Factory
     {
         $users = User::all()->all();
         $user_ids = User::all()->pluck('id')->all();
-$widget_ids = Widget::all()->pluck('id')->all();
+        $widget_ids = Widget::all()->pluck('id')->all();
 
         return [
-          
-            'user_id' =>fake()->randomElement($user_ids),
+
+            'user_id' => fake()->randomElement($user_ids),
             'widget_id' => fake()->randomElement($widget_ids),
             'settings' => json_encode([
                 'id' => 1,
@@ -35,14 +35,12 @@ $widget_ids = Widget::all()->pluck('id')->all();
                 'deadline' => fake()->date(),
                 'priority' => fake()->word,
             ]),
-            'status' => fake()->boolean,
-            'positionX' => fake()->randomNumber(),
-            'positionY' => fake()->randomNumber(),
-             
-             
+
+
+
         ];
 
-   
+
     }
 }
 

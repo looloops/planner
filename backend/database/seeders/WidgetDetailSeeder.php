@@ -44,9 +44,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'Urgent',
                 ],
             ]),
-            'status' => true,
-            'positionX' => 0,
-            'positionY' => 50,
+
         ]);
 
 
@@ -76,9 +74,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'High',
                 ]
             ]),
-            'status' => true,
-            'positionX' => 51,
-            'positionY' => 100,
+
         ]);
 
 
@@ -114,9 +110,7 @@ class WidgetDetailSeeder extends Seeder
                     'status' => 'experiencing',
                 ],
             ]),
-            'status' => true,
-            'positionX' => 50,
-            'positionY' => 150,
+
         ]);
 
         //Recipes User 2
@@ -150,9 +144,7 @@ class WidgetDetailSeeder extends Seeder
 
                 ],
             ]),
-            'status' => true,
-            'positionX' => 51,
-            'positionY' => 100,
+
         ]);
 
 
@@ -183,9 +175,7 @@ class WidgetDetailSeeder extends Seeder
                 ],
             ]),
 
-            'status' => true,
-            'positionX' => 150,
-            'positionY' => 150,
+
         ]);
 
 
@@ -214,9 +204,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'Urgent',
                 ],
             ]),
-            'status' => true,
-            'positionX' => 0,
-            'positionY' => 50,
+
         ]);
 
 
@@ -246,9 +234,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'High',
                 ]
             ]),
-            'status' => true,
-            'positionX' => 51,
-            'positionY' => 100,
+
         ]);
 
 
@@ -284,9 +270,7 @@ class WidgetDetailSeeder extends Seeder
                     'status' => 'experiencing',
                 ],
             ]),
-            'status' => true,
-            'positionX' => 50,
-            'positionY' => 150,
+
         ]);
 
         //Recipes User 1
@@ -320,9 +304,7 @@ class WidgetDetailSeeder extends Seeder
 
                 ],
             ]),
-            'status' => true,
-            'positionX' => 51,
-            'positionY' => 100,
+
         ]);
 
 
@@ -353,9 +335,7 @@ class WidgetDetailSeeder extends Seeder
                 ],
             ]),
 
-            'status' => true,
-            'positionX' => 150,
-            'positionY' => 150,
+
         ]);
 
 
@@ -384,9 +364,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'Urgent',
                 ],
             ]),
-            'status' => true,
-            'positionX' => 0,
-            'positionY' => 50,
+
         ]);
 
 
@@ -416,9 +394,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'High',
                 ]
             ]),
-            'status' => true,
-            'positionX' => 51,
-            'positionY' => 100,
+
         ]);
 
 
@@ -454,9 +430,7 @@ class WidgetDetailSeeder extends Seeder
                     'status' => 'experiencing',
                 ],
             ]),
-            'status' => true,
-            'positionX' => 50,
-            'positionY' => 150,
+
         ]);
 
         //Recipes User 3
@@ -490,9 +464,7 @@ class WidgetDetailSeeder extends Seeder
 
                 ],
             ]),
-            'status' => true,
-            'positionX' => 51,
-            'positionY' => 100,
+
         ]);
 
 
@@ -523,9 +495,7 @@ class WidgetDetailSeeder extends Seeder
                 ],
             ]),
 
-            'status' => true,
-            'positionX' => 150,
-            'positionY' => 150,
+
         ]);
     }
 }
