@@ -12,7 +12,7 @@ const ResponsiveReactGridLayout = WidthProvider(Responsive);
 const MainComponent = () => {
   const [staticOn, setStaticOn] = useState(true);
   const userLayout = useSelector((state: State) => state.user.user?.widgets_layout);
-  
+
   // Parse the userLayout from Redux
   const parsedLayout = JSON.parse(userLayout) as WidgetsLayout;
 
@@ -29,11 +29,10 @@ const MainComponent = () => {
   }
 
   // Initialize the layouts state using the user layout from Redux
-  const [layouts, setLayouts] = useState<Record<string, Layout[]>>(
-    getInitialLayouts(staticOn, parsedLayout)
-  );
+  const [layouts, setLayouts] = useState<Record<string, Layout[]>>(getInitialLayouts(staticOn, parsedLayout));
 
-  const activeWidgets = parsedLayout.xxs.map(layout => parseInt(layout.i));
+  // const activeWidgets = parsedLayout.xxs.map(layout => parseInt(layout.i));
+  const activeWidgets = [1, 2, 3];
 
   interface Layout {
     i: string;
@@ -104,7 +103,7 @@ const MainComponent = () => {
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
       >
-        {activeWidgets.map((widget) => (
+        {activeWidgets.map((widget: any) => (
           <div
             key={widget}
             style={{

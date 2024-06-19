@@ -11,11 +11,11 @@ import { State } from "../../redux/reducers/userReducer";
 const Schedule: React.FC = () => {
   // const [details, setDetails] = useState<WidgetDetails[]>([]);
 
-  const user = useSelector((state: State) => state.user);
+  // const user = useSelector((state: State) => state.user);
   const schedule = useSelector((state: State) => state.widgets.schedule);
 
-  console.log("USER FROM REDUX", user);
-  console.log("SCHEDULE FROM REDUX", schedule);
+  // console.log("USER FROM REDUX", user);
+  // console.log("SCHEDULE FROM REDUX", schedule);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -23,7 +23,7 @@ const Schedule: React.FC = () => {
     axios
       .get<ApiResponse>("/api/user/widgets/1")
       .then((res) => {
-        console.log("res", res);
+        // console.log("res", res);
         const parsedDetails = {
           ...res.data.data[0],
           settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[], // Parse the JSON string to an object
@@ -33,7 +33,7 @@ const Schedule: React.FC = () => {
           },
         };
 
-        console.log("parsedDetails", parsedDetails);
+        // console.log("parsedDetails", parsedDetails);
 
         // Dispatch the parsed details
         dispatch({
