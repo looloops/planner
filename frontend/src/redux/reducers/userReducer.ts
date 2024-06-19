@@ -13,7 +13,7 @@ export interface User {
   email: string;
   profile_img: string;
   role: string;
-  widgets_layout: WidgetsLayout;
+  widgets_layout: string;
   // Add other user properties if needed
 }
 export interface WidgetsLayout {

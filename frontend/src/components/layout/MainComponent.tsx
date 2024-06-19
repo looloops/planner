@@ -7,34 +7,24 @@ import { State, UserState } from "../../redux/reducers/userReducer";
 import { WidgetsLayout } from "../../redux/reducers/userReducer";
 import axios from "axios";
 import Weather from "../widgets/Weather";
+import { forEach } from "lodash";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 const MainComponent = () => {
   const [staticOn, setStaticOn] = useState(true);
-  const userLayout = useSelector((state: State) => state.user.user?.widgets_layout);
+  const userLayout: any = useSelector((state: State) => state.user.user?.widgets_layout);
+
+  //TAKES LAYOUTS FROM REDUX USER "WIDGETS_LAYOUT"
+  function getInitialLayouts(staticState: boolean): Record<string, Layout[]> {
+    const parsedLayouts: Record<string, Layout[]> = JSON.parse(userLayout);
+
+    console.log("Layout parsed", parsedLayouts);
+    return parsedLayouts;
+  }
+  const [layouts, setLayouts] = useState<Record<string, Layout[]>>(getInitialLayouts(staticOn));
 
   // Parse the userLayout from Redux
-  const parsedLayout = JSON.parse(userLayout) as WidgetsLayout[];
-
-  // Function to get initial layouts based on staticOn state and user layout from Redux
-  function getInitialLayouts(staticState: boolean, defaultLayout: WidgetsLayout[]): Record<string, Layout[]> {
-    const layoutWithStatic: Record<string, Layout[]> = {};
-    for (const breakpoint in defaultLayout) {
-      layoutWithStatic[breakpoint] = defaultLayout[breakpoint].map((layout: object) => ({
-        ...layout,
-        static: staticState,
-      }));
-    }
-    return layoutWithStatic;
-  }
-
-  // Initialize the layouts state using the user layout from Redux
-  const [layouts, setLayouts] = useState<Record<string, Layout[]>>(getInitialLayouts(staticOn, parsedLayout));
-
-  // const activeWidgets = parsedLayout.xxs.map(layout => parseInt(layout.i));
-  const activeWidgets = [1, 2, 3, 4];
-
   interface Layout {
     i: string;
     x: number;
@@ -44,22 +34,15 @@ const MainComponent = () => {
     static: boolean;
   }
 
+  // Function to get initial layouts based on staticOn state and user layout from Redux
+
   useEffect(() => {
     // No need to reset layouts on staticOn change, just update the static property
-    setLayouts((prevLayouts) => {
-      const updatedLayouts: Record<string, Layout[]> = {};
-      Object.keys(prevLayouts).forEach((breakpoint) => {
-        updatedLayouts[breakpoint] = prevLayouts[breakpoint].map((layout) => ({
-          ...layout,
-          static: staticOn, // Update the static property based on staticOn state
-        }));
-      });
-      return updatedLayouts;
-    });
-
+    
     const body = {
       widgets_layout: layouts,
     };
+
     console.log("body", body);
 
     axios
@@ -76,9 +59,21 @@ const MainComponent = () => {
       });
   }, [staticOn]);
 
-  const handleLayoutChange = (currentLayout: Layout[], allLayouts: Record<string, Layout[]>) => {
-    setLayouts(allLayouts);
-  };
+  //onLayoutChange: (currentLayout: Layout, allLayouts: {[key: $Keys<breakpoints>]: Layout}) => void,
+
+  // const handleLayoutChange = (currentLayout: Layout[], allLayouts: Record<string, Layout[]>) => {
+  //   setLayouts(allLayouts);
+  //   console.log("allLayoputs", all);
+  // };
+
+  const handleLayoutChange = (layout, layouts) => {
+  setLayouts(JSON.stringify(layouts));
+};
+export const Grid = () => {
+  const handleLayoutChange = (layout, layouts) => {
+  localStorage.setItem("grid-layout", JSON.stringify(layouts));
+};
+//https://isamatov.com/react-grid-layout-tutorial/
 
   const renderComponent = (key: number) => {
     switch (key) {
@@ -99,6 +94,9 @@ const MainComponent = () => {
     }
   };
 
+  // const activeWidgets = parsedLayout.xxs.map(layout => parseInt(layout.i));
+  const activeWidgets = [1, 2, 3, 4];
+
   return (
     <>
       <ResponsiveReactGridLayout
@@ -108,7 +106,7 @@ const MainComponent = () => {
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
       >
-        {activeWidgets.map((widget: any) => (
+        {activeWidgets.map((widget: number) => (
           <div
             key={widget}
             style={{
