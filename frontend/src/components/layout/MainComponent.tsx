@@ -5,17 +5,35 @@ import Media from "../widgets/Media";
 import { useSelector } from "react-redux";
 import { State, UserState } from "../../redux/reducers/userReducer";
 import { WidgetsLayout } from "../../redux/reducers/userReducer";
+import axios from "axios";
 
 const ResponsiveReactGridLayout = WidthProvider(Responsive);
 
 const MainComponent = () => {
   const [staticOn, setStaticOn] = useState(true);
-  const [layouts, setLayouts] = useState<Record<string, Layout[]>>(getInitialLayouts(true));
   const userLayout = useSelector((state: State) => state.user.user?.widgets_layout);
-  const parsedLayout = JSON.parse(userLayout) as Partial<WidgetsLayout>[];
-  const element = parsedLayout[0].lg[0].i;
-  console.log("parsedLayout", parsedLayout);
-  console.log("element", element);
+  
+  // Parse the userLayout from Redux
+  const parsedLayout = JSON.parse(userLayout) as WidgetsLayout;
+
+  // Function to get initial layouts based on staticOn state and user layout from Redux
+  function getInitialLayouts(staticState: boolean, defaultLayout: WidgetsLayout): Record<string, Layout[]> {
+    const layoutWithStatic: Record<string, Layout[]> = {};
+    for (const breakpoint in defaultLayout) {
+      layoutWithStatic[breakpoint] = defaultLayout[breakpoint].map((layout) => ({
+        ...layout,
+        static: staticState,
+      }));
+    }
+    return layoutWithStatic;
+  }
+
+  // Initialize the layouts state using the user layout from Redux
+  const [layouts, setLayouts] = useState<Record<string, Layout[]>>(
+    getInitialLayouts(staticOn, parsedLayout)
+  );
+
+  const activeWidgets = parsedLayout.xxs.map(layout => parseInt(layout.i));
 
   interface Layout {
     i: string;
@@ -24,39 +42,6 @@ const MainComponent = () => {
     w: number;
     h: number;
     static: boolean;
-    status: boolean;
-  }
-
-  // Function to get initial layouts based on staticOn state
-  function getInitialLayouts(staticState: boolean): Record<string, Layout[]> {
-    return {
-      lg: [
-        { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
-      ],
-      md: [
-        { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
-      ],
-      sm: [
-        { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
-      ],
-      xs: [
-        { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
-      ],
-      xxs: [
-        { i: "1", x: 0, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "2", x: 2, y: 0, w: 2, h: 2, static: staticState, status: true },
-        { i: "3", x: 4, y: 0, w: 2, h: 2, static: staticState, status: false },
-      ],
-      // Add more breakpoints as needed
-    };
   }
 
   useEffect(() => {
@@ -71,6 +56,23 @@ const MainComponent = () => {
       });
       return updatedLayouts;
     });
+
+    const body = {
+      widgets_layout: layouts,
+    };
+
+    axios
+      .put(`http://localhost:8000/api/user/layout/edit`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Data updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating data:", error);
+      });
   }, [staticOn]);
 
   const handleLayoutChange = (currentLayout: Layout[], allLayouts: Record<string, Layout[]>) => {
@@ -85,12 +87,13 @@ const MainComponent = () => {
       case 2:
         return <Media />;
 
+      case 3:
+        return <Schedule />;
+
       default:
         return null;
     }
   };
-
-  const widgetsAttivi = [1, 2];
 
   return (
     <>
@@ -101,11 +104,11 @@ const MainComponent = () => {
         breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
       >
-        {widgetsAttivi.map((widget) => (
+        {activeWidgets.map((widget) => (
           <div
             key={widget}
             style={{
-              //backgroundColor: layout.i === "1" ? "red" : layout.i === "2" ? "blue" : "green",
+              backgroundColor: "#dddddd",
               overflowY: "scroll",
             }}
           >

@@ -70,7 +70,6 @@ class RegisteredUserController extends Controller
     }
     public function edit($id)
     {
-
     }
     public function Update($id)
     {
@@ -84,4 +83,26 @@ class RegisteredUserController extends Controller
             'data' => $user
         ];
     }
+
+
+
+
+   public function updateWidgetsPosition(Request $request)
+{
+    $data = $request->all();
+
+    $user_id = Auth::id();
+
+    // Trova l'utente autenticato
+    $user = User::findOrFail($user_id);
+
+    // Aggiorna i campi con i dati della richiesta
+    $user->widgets_layout = json_encode($data['widgets_layout']);
+
+    // Salva le modifiche
+    $user->save();
+
+    return response()->json(['message' => 'Layout updated successfully'], 200);
 }
+    }
+

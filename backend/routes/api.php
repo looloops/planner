@@ -33,3 +33,9 @@ Route::get('/widgets/settings/{widget_id}', [WidgetDetailController::class, 'sin
 
 // CREATE, UPDATE OR DELETE DATA FROM A SINGLE 'settings' FIELD IN 'widget_details' TABLE USING A SPECIFIC 'widget_id' AND 'user_id'
 Route::put('user/widgets/edit/{id}', [WidgetDetailController::class, 'update'])->name('api.widget.update');
+
+
+// ------------ ENDPOINTS FOR LAYOUT SETTINGS OF A SPECIFIC USER  ------------ 
+
+// CREATE, UPDATE OR DELETE DATA FROM A SINGLE 'widgets_layout' FIELD IN 'users' TABLE USING A SPECIFIC 'user_id'
+Route::put('user/layout/edit', [RegisteredUserController::class, 'updateWidgetsPosition'])->name('api.layout.update');
