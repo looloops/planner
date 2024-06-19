@@ -14,6 +14,7 @@ import ScheduleEdit from "./components/widgets/ScheduleEdit";
 import Media from "./components/widgets/Media";
 import MediaEdit from "./components/widgets/MediaEdit";
 import ScheduleCreate from "./components/widgets/ScheduleCreate";
+import Weather from "./components/widgets/Weather";
 import Homepage from "./components/Homepage";
 import MainComponentCopy from "./components/layout/MainComponentCopy";
 
@@ -55,6 +56,7 @@ const App: React.FC = () => {
           <Route path="/schedule/edit/:settingIndex" element={<ScheduleEdit />} />
           <Route path="/media" element={<Media />} />
           <Route path="/media/edit/:settingIndex" element={<MediaEdit />} />
+          <Route path="/weather" element={<Weather />} />
           <Route path="/grid" element={<Homepage />} />
           <Route path="/grid2" element={<MainComponentCopy />} />
         </Routes>
