@@ -137,6 +137,7 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
+
         $this->call([
             PlanSeeder::class,
             WidgetSeeder::class,
