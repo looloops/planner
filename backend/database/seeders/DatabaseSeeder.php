@@ -111,30 +111,29 @@ class DatabaseSeeder extends Seeder
                 [
 
                     "lg" => [
-                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, 
-                        "resizeHandles" => "se"],
-                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
                     ],
                     "md" => [
-                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                    , "resizeHandles" => "se"],
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                    ],
                     "sm" => [
-                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                    , "resizeHandles" => "se"],
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                    ],
                     "xs" => [
-                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                    , "resizeHandles" => "se"],
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                    ],
                     "xxs" => [
-                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
-                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true, "resizeHandles" => "se"],
+                        ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
+                        ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
                     ],
 
 
