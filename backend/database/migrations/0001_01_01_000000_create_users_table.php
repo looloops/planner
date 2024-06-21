@@ -20,6 +20,7 @@ return new class extends Migration {
             $table->string('profile_img')->nullable();
 
             $table->json('widgets_layout'); //oggetto convertito in json 
+            $table->json('active_widgets'); //oggetto convertito in json 
             $table->rememberToken();
             $table->timestamps();
         });

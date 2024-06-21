@@ -23,8 +23,6 @@ class DatabaseSeeder extends Seeder
             'password' => 'password',
             'profile_img' => '/storage/profiles/default-profile.jpg',
             'widgets_layout' => json_encode([
-
-
                 "lg" => [
                     ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true],
                     ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true],
@@ -54,6 +52,12 @@ class DatabaseSeeder extends Seeder
 
 
             ]),
+            'active_widgets' => json_encode([
+                1,
+                2,
+                3
+            ]),
+
 
         ]);
 
@@ -92,9 +96,11 @@ class DatabaseSeeder extends Seeder
                     ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true],
                     ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true],
                 ],
-
-
-
+            ]),
+            'active_widgets' => json_encode([
+                1,
+                2,
+                3
             ]),
 
 
@@ -133,6 +139,11 @@ class DatabaseSeeder extends Seeder
                     ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
                     ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true,],
                 ],
+            ]),
+            'active_widgets' => json_encode([
+                1,
+                2,
+                3
             ]),
         ]);
 

@@ -37,5 +37,6 @@ Route::put('user/widgets/edit/{id}', [WidgetDetailController::class, 'update'])-
 
 // ------------ ENDPOINTS FOR LAYOUT SETTINGS OF A SPECIFIC USER  ------------ 
 
-// CREATE, UPDATE OR DELETE DATA FROM A SINGLE 'widgets_layout' FIELD IN 'users' TABLE USING A SPECIFIC 'user_id'
+// GET, CREATE, UPDATE OR DELETE 'widgets_layout' and 'active_widgets' FIELDS IN 'users' TABLE USING A SPECIFIC 'user_id'
 Route::put('user/layout/edit', [RegisteredUserController::class, 'updateWidgetsPosition'])->name('api.layout.update');
+Route::get('user/layout', [RegisteredUserController::class, 'showWidgetsPosition'])->name('api.layout');

@@ -1,18 +1,27 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Layouts, Layout, Responsive, WidthProvider } from "react-grid-layout";
 import { State } from "../../redux/reducers/userReducer";
-import { SAVE_LAYOUT } from "../../redux/actions";
+import { SAVE_ACTIVE_WIDGETS, SAVE_LAYOUT } from "../../redux/actions";
+import Schedule from "../widgets/Schedule";
+import Media from "../widgets/Media";
+import Weather from "../widgets/Weather";
+import axios from "axios";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
-const FinalGrid = () => {
+const FinalGridCopy = () => {
   useMemo(() => ResponsiveGridLayout, []);
   const dispatch = useDispatch();
 
   // Stato per togglare il "static"
   const [staticOn, setStaticOn] = useState(true);
-  console.log("staticOn:", staticOn);
+  console.log("Initial staticOn:", staticOn);
+
+  //ACTIVE WIDGETS FROM REDUX
+  const activeWidgetsFromRedux = useSelector((state: State) => state.user.user?.active_widgets);
+  console.log("tipo activewidgets", typeof activeWidgetsFromRedux);
+  const active_widgets: Array<number> = activeWidgetsFromRedux ? JSON.parse(activeWidgetsFromRedux) : [];
 
   // {lg: layout1, md: layout2, ...}
   const layoutsFromRedux = useSelector((state: State) => state.user.user?.widgets_layout);
@@ -30,20 +39,7 @@ const FinalGrid = () => {
     console.log("currentLayout:", currentLayout);
     console.log("allLayouts:", allLayouts);
     setLayoutState(allLayouts);
-    dispatch({
-      type: SAVE_LAYOUT,
-      payload: JSON.stringify(allLayouts),
-    });
   };
-
-  interface T {
-    i: string;
-    x: number;
-    y: number;
-    w: number;
-    h: number;
-    static: boolean;
-  }
 
   // Cambiamo lo static al click del bottone, aggiornando anche lo stato
   const handleStatic = () => {
@@ -62,6 +58,59 @@ const FinalGrid = () => {
     console.log("updatedLayoutState:", updatedLayoutState); // Log del nuovo stato del layout
   };
 
+  const handleLayoutSave = () => {
+    dispatch({
+      type: SAVE_LAYOUT,
+      payload: JSON.stringify(layoutState),
+    });
+    dispatch({
+      type: SAVE_ACTIVE_WIDGETS,
+      payload: JSON.stringify(active_widgets),
+    });
+
+    handleStatic();
+
+    // Salva layout e active widgets
+    const body = {
+      widgets_layout: layoutState,
+      active_widgets: active_widgets,
+    };
+    axios
+      .put(`http://localhost:8000/api/user/layout/edit`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Data updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating data:", error);
+      });
+  };
+
+  interface T {
+    i: string;
+    x: number;
+    y: number;
+    w: number;
+    h: number;
+    static: boolean;
+  }
+
+  const renderComponent = (key: number) => {
+    switch (key) {
+      case 1:
+        return <Schedule />;
+      case 2:
+        return <Media />;
+      case 3:
+        return <Weather />;
+      default:
+        return null;
+    }
+  };
+
   return (
     <>
       <ResponsiveGridLayout
@@ -71,21 +120,29 @@ const FinalGrid = () => {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         onLayoutChange={handleLayoutChange}
       >
-        <div key="1" style={{ backgroundColor: "#dddddd" }}>
-          1
-        </div>
-        <div key="2" style={{ backgroundColor: "#dddddd" }}>
-          2
-        </div>
-        <div key="3" style={{ backgroundColor: "#dddddd" }}>
-          3
-        </div>
+        {active_widgets.map((widget: number) => (
+          <div
+            key={widget}
+            style={{
+              backgroundColor: "#dddddd",
+              overflowY: "scroll",
+            }}
+          >
+            {renderComponent(widget)}
+          </div>
+        ))}
       </ResponsiveGridLayout>
 
       {/* Bottone per editare o salvare il layout */}
-      <button onClick={handleStatic} className="btn btn-success m-4">
-        {staticOn ? "Edit layout" : "Save Layout"}
-      </button>
+      {staticOn ? (
+        <button onClick={handleStatic} className="btn btn-success m-4">
+          Edit Layout
+        </button>
+      ) : (
+        <button onClick={handleLayoutSave} className="btn btn-success m-4">
+          Save Layout
+        </button>
+      )}
 
       {/* Bottone per aggiungere un nuovo widget */}
       {/* {!staticOn && (
@@ -97,4 +154,4 @@ const FinalGrid = () => {
   );
 };
 
-export default FinalGrid;
+export default FinalGridCopy;

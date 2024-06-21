@@ -87,22 +87,39 @@ class RegisteredUserController extends Controller
 
 
 
-   public function updateWidgetsPosition(Request $request)
-{
-    $data = $request->all();
+    public function updateWidgetsPosition(Request $request)
+    {
+        $data = $request->all();
 
-    $user_id = Auth::id();
+        $user_id = Auth::id();
 
-    // Trova l'utente autenticato
-    $user = User::findOrFail($user_id);
+        // Trova l'utente autenticato
+        $user = User::findOrFail($user_id);
 
-    // Aggiorna i campi con i dati della richiesta
-    $user->widgets_layout = json_encode($data['widgets_layout']);
+        // Aggiorna i campi con i dati della richiesta
+        $user->widgets_layout = json_encode($data['widgets_layout']);
+        $user->active_widgets = json_encode($data['active_widgets']);
 
-    // Salva le modifiche
-    $user->save();
+        // Salva le modifiche
+        $user->save();
 
-    return response()->json(['message' => 'Layout updated successfully'], 200);
-}
+        return response()->json(['message' => 'Layout updated successfully'], 200);
     }
 
+
+    public function showWidgetsPosition($id)
+    {
+        $user = User::find($id);
+        if (!$user) {
+            return response()->json(['message' => 'Not found'], 404);
+        }
+
+        return response()->json([
+            'success' => true,
+            'data' => [
+                'widgets_layout' => $user->widgets_layout,
+                'active_widgets' => $user->active_widgets,
+            ]
+        ]);
+    }
+}

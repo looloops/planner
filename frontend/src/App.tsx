@@ -20,7 +20,7 @@ import GridProva from "./components/layout/GridProva";
 import GridFunzionante from "./components/layout/GridFunzionante";
 import GridVerde from "./components/layout/GridVerde";
 import FinalGrid from "./components/layout/FinalGrid";
-import FinalGridCopy from "./components/layout/FinalGrid copy";
+import FinalGridCopy from "./components/layout/FinalGridCopy";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;

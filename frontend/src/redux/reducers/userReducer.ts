@@ -1,4 +1,4 @@
-import { LOGIN, LOGOUT, SAVE_LAYOUT } from "../actions";
+import { LOGIN, LOGOUT, SAVE_ACTIVE_WIDGETS, SAVE_LAYOUT } from "../actions";
 import { WidgetsState } from "./WidgetsReducer";
 
 export interface State {
@@ -13,8 +13,8 @@ export interface User {
   email: string;
   profile_img: string;
   role: string;
-  widgets_layout: string; // Assicurarsi che widgets_layout sia una stringa, se è JSON serializzato
-  // Add other user properties if needed
+  widgets_layout: Layout; // Assicurarsi che widgets_layout sia una stringa, se è JSON serializzato
+  active_widgets: Array<number>;
 }
 
 export interface WidgetsLayout {
@@ -63,8 +63,12 @@ interface SaveLayoutAction {
   type: typeof SAVE_LAYOUT;
   payload: Layout; // Assicurarsi che il tipo sia corretto
 }
+interface SaveActiveWidgets {
+  type: typeof SAVE_ACTIVE_WIDGETS;
+  payload: Array<number>; // Assicurarsi che il tipo sia corretto
+}
 
-type ActionTypes = LoginAction | LogoutAction | SaveLayoutAction;
+type ActionTypes = LoginAction | LogoutAction | SaveLayoutAction | SaveActiveWidgets;
 
 // Main reducer function
 const userReducer = (state = initialState, action: ActionTypes): UserState => {
@@ -88,6 +92,16 @@ const userReducer = (state = initialState, action: ActionTypes): UserState => {
           ? {
               ...state.user,
               widgets_layout: action.payload,
+            }
+          : null,
+      };
+    case SAVE_ACTIVE_WIDGETS:
+      return {
+        ...state,
+        user: state.user
+          ? {
+              ...state.user,
+              active_widgets: action.payload,
             }
           : null,
       };
