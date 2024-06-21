@@ -101,26 +101,35 @@ const FinalGridCopy = () => {
       .get("/api/user/layout")
       .then((res) => {
         console.log("Res data layout", res);
-        const { widgets_layout, active_widgets } = res.data.data;
-
-        dispatch({
-          type: SAVE_LAYOUT,
-          payload: JSON.stringify(widgets_layout),
-        });
-
-        dispatch({
-          type: SAVE_ACTIVE_WIDGETS,
-          payload: JSON.stringify(active_widgets),
-        });
-
-        // setLoading(false);
+  
+        // Verifica che res.data e res.data.data siano definiti
+        if (res.data && res.data.data) {
+          const widgets_layout = res.data.data.widgets_layout;
+          const active_widgets = res.data.data.active_widgets;
+  
+          dispatch({
+            type: SAVE_LAYOUT,
+            payload: JSON.stringify(widgets_layout),
+          });
+  
+          dispatch({
+            type: SAVE_ACTIVE_WIDGETS,
+            payload: JSON.stringify(active_widgets),
+          });
+  
+          // Imposta lo stato dei layout solo se widgets_layout è definito
+          if (widgets_layout) {
+            setLayoutState(JSON.parse(widgets_layout));
+          }
+        }
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
+        // Gestisci l'errore, ad esempio naviga altrove
         // navigate("/");
       });
   }, [dispatch]);
-
+  
   interface T {
     i: string;
     x: number;
@@ -157,10 +166,9 @@ const FinalGridCopy = () => {
             key={widget}
             style={{
               backgroundColor: "#dddddd",
-              overflowY: "scroll",
             }}
           >
-            {renderComponent(widget)}
+            <div style={{ height: "95%", overflowY: "scroll" }}>{renderComponent(widget)}</div>
           </div>
         ))}
       </ResponsiveGridLayout>

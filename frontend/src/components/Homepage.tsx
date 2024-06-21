@@ -1,4 +1,4 @@
-import Main from "./layout/MainComponent";
+import FinalGridCopy from "./layout/FinalGridCopy";
 import RightBar from "./layout/RightBar";
 import SideBar from "./layout/SideBar";
 
@@ -14,7 +14,7 @@ function Homepage() {
         <TopBar />
       </div>
       <div>
-        <Main />
+        <FinalGridCopy />
       </div>
       <div>
         <RightBar />

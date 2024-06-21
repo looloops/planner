@@ -16,11 +16,6 @@ import MediaEdit from "./components/widgets/MediaEdit";
 import ScheduleCreate from "./components/widgets/ScheduleCreate";
 import Weather from "./components/widgets/Weather";
 import Homepage from "./components/Homepage";
-import GridProva from "./components/layout/GridProva";
-import GridFunzionante from "./components/layout/GridFunzionante";
-import GridVerde from "./components/layout/GridVerde";
-import FinalGrid from "./components/layout/FinalGrid";
-import FinalGridCopy from "./components/layout/FinalGridCopy";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -61,12 +56,7 @@ const App: React.FC = () => {
           <Route path="/media" element={<Media />} />
           <Route path="/media/edit/:settingIndex" element={<MediaEdit />} />
           <Route path="/weather" element={<Weather />} />
-          <Route path="/grid" element={<Homepage />} />
-          <Route path="/grid2" element={<GridProva />} />
-          <Route path="/grid3" element={<GridFunzionante />} />
-          <Route path="/grid4" element={<GridVerde />} />
-          <Route path="/grid5" element={<FinalGrid />} />
-          <Route path="/grid6" element={<FinalGridCopy />} />
+          <Route path="/" element={<Homepage />} />
         </Routes>
       </Router>
     )

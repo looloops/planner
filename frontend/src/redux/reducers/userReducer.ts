@@ -6,37 +6,24 @@ export interface State {
   widgets: WidgetsState;
 }
 
-// Define the shape of the user object
 export interface User {
   id: number;
   name: string;
   email: string;
   profile_img: string;
   role: string;
-  widgets_layout: Layout; // Assicurarsi che widgets_layout sia una stringa, se è JSON serializzato
+  widgets_layout: string;
   active_widgets: Array<number>;
 }
 
-export interface WidgetsLayout {
-  i: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  static: boolean;
-}
-
-// Define the shape of the state
 export interface UserState {
   user: User | null;
 }
 
-// Define the initial state
 const initialState: UserState = {
   user: null,
 };
 
-// Define the action types
 interface LoginAction {
   type: typeof LOGIN;
   payload: User;
@@ -47,31 +34,18 @@ interface LogoutAction {
   payload: null;
 }
 
-interface Layout {
-  breakpoint: string;
-  layout: Array<T>;
-}
-interface T {
-  i: string;
-  x: number;
-  y: number;
-  w: number;
-  h: number;
-  static: boolean;
-}
-
 interface SaveLayoutAction {
   type: typeof SAVE_LAYOUT;
-  payload: Layout; // Assicurarsi che il tipo sia corretto
+  payload: string;
 }
-interface SaveActiveWidgets {
+
+interface SaveActiveWidgetsAction {
   type: typeof SAVE_ACTIVE_WIDGETS;
-  payload: Array<number>; // Assicurarsi che il tipo sia corretto
+  payload: Array<number>;
 }
 
-type ActionTypes = LoginAction | LogoutAction | SaveLayoutAction | SaveActiveWidgets;
+type ActionTypes = LoginAction | LogoutAction | SaveLayoutAction | SaveActiveWidgetsAction;
 
-// Main reducer function
 const userReducer = (state = initialState, action: ActionTypes): UserState => {
   switch (action.type) {
     case LOGIN:
@@ -87,25 +61,28 @@ const userReducer = (state = initialState, action: ActionTypes): UserState => {
       };
 
     case SAVE_LAYOUT:
-      return {
-        ...state,
-        user: state.user
-          ? {
-              ...state.user,
-              widgets_layout: action.payload,
-            }
-          : null,
-      };
+      if (state.user) {
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            widgets_layout: action.payload,
+          },
+        };
+      }
+      return state;
+
     case SAVE_ACTIVE_WIDGETS:
-      return {
-        ...state,
-        user: state.user
-          ? {
-              ...state.user,
-              active_widgets: action.payload,
-            }
-          : null,
-      };
+      if (state.user) {
+        return {
+          ...state,
+          user: {
+            ...state.user,
+            active_widgets: action.payload,
+          },
+        };
+      }
+      return state;
 
     default:
       return state;

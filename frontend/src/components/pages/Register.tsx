@@ -59,6 +59,8 @@ const Register = () => {
       })
       .then(() => axios.get("/api/user"))
       .then((res) => {
+        console.log("res register data", res.data);
+        console.log("res register data data", res.data.data);
         navigate("/");
         dispatch({
           type: LOGIN,
