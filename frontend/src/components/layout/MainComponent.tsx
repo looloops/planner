@@ -38,7 +38,7 @@ const MainComponent = () => {
 
   useEffect(() => {
     // No need to reset layouts on staticOn change, just update the static property
-    
+
     const body = {
       widgets_layout: layouts,
     };
@@ -67,63 +67,64 @@ const MainComponent = () => {
   // };
 
   const handleLayoutChange = (layout, layouts) => {
-  setLayouts(JSON.stringify(layouts));
-};
-export const Grid = () => {
-  const handleLayoutChange = (layout, layouts) => {
-  localStorage.setItem("grid-layout", JSON.stringify(layouts));
-};
-//https://isamatov.com/react-grid-layout-tutorial/
-
-  const renderComponent = (key: number) => {
-    switch (key) {
-      case 1:
-        return <Schedule />;
-
-      case 2:
-        return <Media />;
-
-      case 3:
-        return <Schedule />;
-
-      case 4:
-        return <Weather />;
-
-      default:
-        return null;
-    }
+    setLayouts(JSON.stringify(layouts));
   };
+  const Grid = () => {
+    const handleLayoutChange = (layout, layouts) => {
+      localStorage.setItem("grid-layout", JSON.stringify(layouts));
+    };
+    //https://isamatov.com/react-grid-layout-tutorial/
 
-  // const activeWidgets = parsedLayout.xxs.map(layout => parseInt(layout.i));
-  const activeWidgets = [1, 2, 3, 4];
+    const renderComponent = (key: number) => {
+      switch (key) {
+        case 1:
+          return <Schedule />;
 
-  return (
-    <>
-      <ResponsiveReactGridLayout
-        className="layout"
-        layouts={layouts}
-        onLayoutChange={handleLayoutChange}
-        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-      >
-        {activeWidgets.map((widget: number) => (
-          <div
-            key={widget}
-            style={{
-              backgroundColor: "#dddddd",
-              overflowY: "scroll",
-            }}
-          >
-            {renderComponent(widget)}
-          </div>
-        ))}
-      </ResponsiveReactGridLayout>
+        case 2:
+          return <Media />;
 
-      <button onClick={() => setStaticOn(!staticOn)} className="btn btn-success m-4">
-        {staticOn ? "Edit layout" : "Save Layout"}
-      </button>
-    </>
-  );
+        case 3:
+          return <Schedule />;
+
+        case 4:
+          return <Weather />;
+
+        default:
+          return null;
+      }
+    };
+
+    // const activeWidgets = parsedLayout.xxs.map(layout => parseInt(layout.i));
+    const activeWidgets = [1, 2, 3, 4];
+
+    return (
+      <>
+        <ResponsiveReactGridLayout
+          className="layout"
+          layouts={layouts}
+          onLayoutChange={handleLayoutChange}
+          breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+          cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+        >
+          {activeWidgets.map((widget: number) => (
+            <div
+              key={widget}
+              style={{
+                backgroundColor: "#dddddd",
+                overflowY: "scroll",
+              }}
+            >
+              {renderComponent(widget)}
+            </div>
+          ))}
+        </ResponsiveReactGridLayout>
+
+        <button onClick={() => setStaticOn(!staticOn)} className="btn btn-success m-4">
+          {staticOn ? "Edit layout" : "Save Layout"}
+        </button>
+      </>
+    );
+  };
 };
 
 export default MainComponent;
