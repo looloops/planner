@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers\Auth;
 
-use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Models\WidgetDetail;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use Illuminate\Validation\Rules;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
+use Illuminate\Auth\Events\Registered;
 
 class RegisteredUserController extends Controller
 {
@@ -37,7 +39,39 @@ class RegisteredUserController extends Controller
         $user->password = $data['password'];
         $user->role = 'guest';
         $user->profile_img = asset('storage/' . $file_path);
+        $user->widgets_layout = json_encode([
+            "lg" => [
+                ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+            ],
+            "md" => [
+                ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+            ],
+            "sm" => [
+                ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+            ],
+            "xs" => [
+                ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+            ],
+            "xxs" => [
+                ["i" => "1", "x" => 0, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "2", "x" => 2, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+                ["i" => "3", "x" => 4, "y" => 0, "w" => 2, "h" => 2, "static" => true],
+            ],
+
+
+
+        ]);
+        $user->active_widgets = json_encode([1, 2, 3]);
         $user->save();
+
 
         // $user = User::create([
         //     'name' => $request->name,
@@ -48,6 +82,30 @@ class RegisteredUserController extends Controller
         event(new Registered($user));
 
         Auth::login($user);
+
+        $user = Auth::user();
+        $user_id = $user->id;
+        $active_widgets = [1, 2, 3]; // Esempio di array di widget attivi
+
+        //METODO CON ELOQUENT
+        foreach ($active_widgets as $widget_id) {
+            $widgetDetail = new WidgetDetail();
+            $widgetDetail->user_id = $user_id;
+            $widgetDetail->widget_id = $widget_id;
+            $widgetDetail->settings = json_encode([]); // Converte un array vuoto in JSON vuoto
+            $widgetDetail->save();
+        }
+
+
+        //METODO CON DB::RAW
+        // foreach ($active_widgets as $widget_id) {
+        //     DB::table('widget_details')->insert([
+        //         'user_id' => $user_id,
+        //         'widget_id' => $widget_id,
+        //         'settings' => json_encode([]), // Converte un array vuoto in JSON vuoto
+        //     ]);
+        // }
+
 
         return response()->noContent();
 
@@ -133,5 +191,4 @@ class RegisteredUserController extends Controller
             ], 404);
         }
     }
-
 }

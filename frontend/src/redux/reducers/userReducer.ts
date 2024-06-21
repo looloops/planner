@@ -44,6 +44,7 @@ interface LoginAction {
 
 interface LogoutAction {
   type: typeof LOGOUT;
+  payload: null;
 }
 
 interface Layout {
