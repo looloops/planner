@@ -107,19 +107,31 @@ class RegisteredUserController extends Controller
     }
 
 
-    public function showWidgetsPosition($id)
+    public function showWidgetsPosition(User $user)
     {
-        $user = User::find($id);
-        if (!$user) {
-            return response()->json(['message' => 'Not found'], 404);
-        }
+        $user_id = Auth::id();
+        // $user_id = 1;
 
-        return response()->json([
-            'success' => true,
-            'data' => [
-                'widgets_layout' => $user->widgets_layout,
-                'active_widgets' => $user->active_widgets,
-            ]
-        ]);
+        // Recupera i dati dal database
+        $user = User::select('widgets_layout', 'active_widgets')->where('id', $user_id)->first();
+
+        // Controlla se l'utente esiste e ha i dati necessari
+        if ($user) {
+            // Decodifica i dati JSON
+            $widgets_layout = json_decode($user->widgets_layout, true);
+            $active_widgets = json_decode($user->active_widgets, true);
+
+            return response()->json([
+                'success' => true,
+                'widgets_layout' => $widgets_layout,
+                'active_widgets' => $active_widgets,
+            ]);
+        } else {
+            return response()->json([
+                'success' => false,
+                'message' => 'User not found or data not available',
+            ], 404);
+        }
     }
+
 }

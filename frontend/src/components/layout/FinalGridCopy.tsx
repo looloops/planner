@@ -7,18 +7,20 @@ import Schedule from "../widgets/Schedule";
 import Media from "../widgets/Media";
 import Weather from "../widgets/Weather";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
 const FinalGridCopy = () => {
   useMemo(() => ResponsiveGridLayout, []);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   // Stato per togglare il "static"
   const [staticOn, setStaticOn] = useState(true);
   console.log("Initial staticOn:", staticOn);
 
-  //ACTIVE WIDGETS FROM REDUX
+  // ACTIVE WIDGETS FROM REDUX
   const activeWidgetsFromRedux = useSelector((state: State) => state.user.user?.active_widgets);
   console.log("tipo activewidgets", typeof activeWidgetsFromRedux);
   const active_widgets: Array<number> = activeWidgetsFromRedux ? JSON.parse(activeWidgetsFromRedux) : [];
@@ -59,22 +61,24 @@ const FinalGridCopy = () => {
   };
 
   const handleLayoutSave = () => {
-    dispatch({
-      type: SAVE_LAYOUT,
-      payload: JSON.stringify(layoutState),
-    });
-    dispatch({
-      type: SAVE_ACTIVE_WIDGETS,
-      payload: JSON.stringify(active_widgets),
-    });
+    // Imposta static su true prima di salvare
+    const layoutStateWithStaticTrue = Object.entries(layoutState).reduce((acc, [breakpoint, layout]) => {
+      acc[breakpoint] = (layout as Array<T>).map((item) => ({
+        ...item,
+        static: true,
+      }));
+      return acc;
+    }, {} as Layouts);
 
-    handleStatic();
+    // Aggiorna lo stato
+    setLayoutState(layoutStateWithStaticTrue);
 
     // Salva layout e active widgets
     const body = {
-      widgets_layout: layoutState,
+      widgets_layout: layoutStateWithStaticTrue,
       active_widgets: active_widgets,
     };
+
     axios
       .put(`http://localhost:8000/api/user/layout/edit`, body, {
         headers: {
@@ -87,7 +91,35 @@ const FinalGridCopy = () => {
       .catch((error) => {
         console.error("Error updating data:", error);
       });
+
+    // Cambia lo stato staticOn
+    handleStatic();
   };
+
+  useEffect(() => {
+    axios
+      .get("/api/user/layout")
+      .then((res) => {
+        console.log("Res data layout", res);
+        const { widgets_layout, active_widgets } = res.data.data;
+
+        dispatch({
+          type: SAVE_LAYOUT,
+          payload: JSON.stringify(widgets_layout),
+        });
+
+        dispatch({
+          type: SAVE_ACTIVE_WIDGETS,
+          payload: JSON.stringify(active_widgets),
+        });
+
+        // setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Error fetching data:", err);
+        // navigate("/");
+      });
+  }, [dispatch]);
 
   interface T {
     i: string;

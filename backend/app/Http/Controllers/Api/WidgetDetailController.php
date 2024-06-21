@@ -75,7 +75,7 @@ class WidgetDetailController extends Controller
     public function singleWidgetUser(WidgetDetail $widgetDetail, $widget_id)
     {
         $user_id = Auth::user()->id;
-        //$user_id = 1;
+        //  $user_id = 1;
         $singleWidgetUser = WidgetDetail::with('widget')->where('widget_id', $widget_id)->where('user_id', $user_id)->get();
         return [
             'success' => true,
