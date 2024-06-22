@@ -16,6 +16,7 @@ import MediaEdit from "./components/widgets/MediaEdit";
 import ScheduleCreate from "./components/widgets/ScheduleCreate";
 import Weather from "./components/widgets/Weather";
 import Homepage from "./components/Homepage";
+import ScheduleTimeline from "./components/widgets/ScheduleTimeline";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -56,6 +57,7 @@ const App: React.FC = () => {
           <Route path="/media" element={<Media />} />
           <Route path="/media/edit/:settingIndex" element={<MediaEdit />} />
           <Route path="/weather" element={<Weather />} />
+          <Route path="/Timeline" element={<ScheduleTimeline />} />
           <Route path="/" element={<Homepage />} />
         </Routes>
       </Router>
