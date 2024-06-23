@@ -63,15 +63,16 @@ const Schedule: React.FC = () => {
         <Link to={`/schedule/add`}>
           <h3 className="my-5">ADD A NEW APPOINTMENT</h3>
         </Link>
-        {schedule?.settings?.map((setting, index) => (
-          <div key={index}>
+        {schedule?.settings?.map((setting) => (
+          <div key={setting.id}>
             <p>Title: {setting.title}</p>
             <p>{setting.description}</p>
-            <p>Start: {setting.start ? new Date(setting.start).toLocaleString() : "N/A"}</p>
-            <p>Finish: {setting.finish ? new Date(setting.finish).toLocaleString() : "N/A"}</p>
+            <p>Date: {setting.date}</p>
+            <p>Start: {setting.start}</p>
+            <p>Finish: {setting.finish}</p>
             <p>Deadline: {setting.deadline ? new Date(setting.deadline).toLocaleString() : ""}</p>
             <p>Priority: {setting.priority}</p>
-            <Link to={`/schedule/edit/${index}`}>Edit</Link>
+            <Link to={`/schedule/edit/${setting.id}`}>Edit</Link>
           </div>
         ))}
       </div>

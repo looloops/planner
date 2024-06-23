@@ -1,18 +1,25 @@
-import { State } from "../../redux/reducers/userReducer";
 import { useState, ChangeEvent, FormEvent } from "react";
 import axios from "axios";
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useSelector } from "react-redux";
+import { State } from "../../redux/reducers/userReducer";
 
-const ScheduleCreate: () => JSX.Element = () => {
+const ScheduleCreate: React.FC = () => {
   // GETTING SCHEDULE DATA FROM REDUX
   const schedule = useSelector((state: State) => state.widgets.schedule);
+  console.log("schedule", schedule);
 
+  // GETTING HIGHEST ID IN THE SCHEDULE SETTINGS ARRAY
+  const arrId: number[] = schedule.settings?.map((element) => element.id) || [];
+  const maxId = Math.max(...arrId); 
+  
   // CREATING A LOCAL STATE FOR DATA COMING FROM THE FORM
-  const [formData, setFormData] = useState<Partial<GeneralSettings>>({});
+  const [formData, setFormData] = useState<Partial<GeneralSettings>>({
+    id: maxId + 1, // Initialize ID with the next available ID
+  });
 
   // UPDATING THE LOCAL STATE
-  const createInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
+  const createInputValue = (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = ev.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
@@ -26,9 +33,10 @@ const ScheduleCreate: () => JSX.Element = () => {
     if (!schedule || !schedule.settings) return;
 
     // Taking the new settings from the local state
-    const newSetting = {
+    const newSetting: GeneralSettings = {
       ...formData,
-      deadline: formData.deadline ? new Date(formData.deadline) : undefined,
+      date: formData.date ? new Date(formData.date).toLocaleDateString() : undefined, // Ensure date is formatted correctly
+      deadline: formData.deadline ? new Date(formData.deadline).toLocaleDateString() : undefined, // Ensure deadline is formatted correctly
     };
 
     // Adding the new settings into the array
@@ -58,102 +66,114 @@ const ScheduleCreate: () => JSX.Element = () => {
   };
 
   return (
-    <>
-      <div>
-        <h1>Add New Schedule</h1>
-        {schedule && (
-          <form onSubmit={submitNewData} noValidate>
-            <label htmlFor="title" className="form-label">
-              Title
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="title"
-              name="title"
-              onChange={createInputValue}
-              value={formData.title ?? ""}
-            />
+    <div>
+      <h1>Add New Schedule</h1>
+      {schedule && (
+        <form onSubmit={submitNewData} noValidate>
+          <label htmlFor="id" className="form-label">
+            ID
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="id"
+            name="id"
+            onChange={createInputValue}
+            value={formData.id}
+            disabled // Disable editing of ID
+          />
 
-            <label htmlFor="description" className="form-label">
-              Description
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="description"
-              name="description"
-              onChange={createInputValue}
-              value={formData.description ?? ""}
-            />
+          <label htmlFor="title" className="form-label">
+            Title
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="title"
+            name="title"
+            onChange={createInputValue}
+            value={formData.title || ""}
+            required
+          />
 
-            <label htmlFor="date" className="form-label">
-              Date
-            </label>
-            <input
-              className="form-control"
-              type="date"
-              id="date"
-              name="date"
-              onChange={createInputValue}
-              value={formData.date ?? ""}
-            />
+          <label htmlFor="description" className="form-label">
+            Description
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="description"
+            name="description"
+            onChange={createInputValue}
+            value={formData.description || ""}
+          />
 
-            <label htmlFor="start" className="form-label">
-              Start
-            </label>
-            <input
-              className="form-control"
-              type="time"
-              id="start"
-              name="start"
-              onChange={createInputValue}
-              value={formData.start ?? ""}
-            />
+          <label htmlFor="date" className="form-label">
+            Date
+          </label>
+          <input
+            className="form-control"
+            type="date"
+            id="date"
+            name="date"
+            onChange={createInputValue}
+            value={formData.date || ""}
+          />
 
-            <label htmlFor="finish" className="form-label">
-              Finish
-            </label>
-            <input
-              type="time"
-              className="form-control"
-              id="finish"
-              name="finish"
-              onChange={createInputValue}
-              value={formData.finish ?? ""}
-            />
+          <label htmlFor="start" className="form-label">
+            Start
+          </label>
+          <input
+            className="form-control"
+            type="time"
+            id="start"
+            name="start"
+            onChange={createInputValue}
+            value={formData.start || ""}
+          />
 
-            <label htmlFor="deadline" className="form-label">
-              Deadline
-            </label>
-            <input
-              type="date"
-              className="form-control"
-              id="deadline"
-              name="deadline"
-              onChange={createInputValue}
-              value={formData.deadline ?? ""}
-            />
+          <label htmlFor="finish" className="form-label">
+            Finish
+          </label>
+          <input
+            type="time"
+            className="form-control"
+            id="finish"
+            name="finish"
+            onChange={createInputValue}
+            value={formData.finish || ""}
+          />
 
-            <label htmlFor="priority" className="form-label">
-              Priority
-            </label>
-            <input
-              type="text"
-              className="form-control"
-              id="priority"
-              name="priority"
-              onChange={createInputValue}
-              value={formData.priority ?? ""}
-            />
+          <label htmlFor="deadline" className="form-label">
+            Deadline
+          </label>
+          <input
+            type="date"
+            className="form-control"
+            id="deadline"
+            name="deadline"
+            onChange={createInputValue}
+            value={formData.deadline || ""}
+          />
 
-            <button type="submit" className="btn btn-primary">
-              Add Schedule
-            </button>
-          </form>
-        )}
-      </div>
-    </>
+          <label htmlFor="priority" className="form-label">
+            Priority
+          </label>
+          <input
+            type="text"
+            className="form-control"
+            id="priority"
+            name="priority"
+            onChange={createInputValue}
+            value={formData.priority || ""}
+          />
+
+          <button type="submit" className="btn btn-primary">
+            Add Schedule
+          </button>
+        </form>
+      )}
+    </div>
   );
 };
 

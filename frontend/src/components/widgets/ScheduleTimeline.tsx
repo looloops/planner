@@ -9,12 +9,8 @@ import { SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/userReducer";
 
 const ScheduleTimeline: React.FC = () => {
-  // const [details, setDetails] = useState<WidgetDetails[]>([]);
-
-  // const user = useSelector((state: State) => state.user);
   const schedule = useSelector((state: State) => state.widgets.schedule);
 
-  // console.log("USER FROM REDUX", user);
   console.log("SCHEDULE FROM REDUX", schedule);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -23,7 +19,6 @@ const ScheduleTimeline: React.FC = () => {
     axios
       .get<ApiResponse>("/api/user/widgets/1")
       .then((res) => {
-        // console.log("res", res);
         const parsedDetails = {
           ...res.data.data[0],
           settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[], // Parse the JSON string to an object
@@ -33,73 +28,284 @@ const ScheduleTimeline: React.FC = () => {
           },
         };
 
-        // console.log("parsedDetails", parsedDetails);
-
-        // Dispatch the parsed details
         dispatch({
           type: SCHEDULE_DETAILS,
           payload: parsedDetails,
         });
-
-        // Optionally, set form data with the settings if needed
-        // setFormData(parsedDetails.settings); // Uncomment and define setFormData if needed
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
         navigate("/");
       });
-  }, []);
+  }, [dispatch, navigate]);
 
-
+  // Getting today's date
   const todaysDate = new Date().toLocaleDateString();
-  const todaysSchedule = schedule.settings?.filter((setting) => setting.date === todaysDate)
-  console.log(todaysSchedule)
+  console.log("todaysDate", todaysDate);
 
-  
+  // Getting schedule for today
+  const todaysSchedule = schedule.settings?.filter((setting) => setting.date === todaysDate);
+  console.log("todaysSchedule", todaysSchedule);
 
   return (
     <>
-      {schedule.settings?.filter((setting) => setting.date === todaysDate).length > 0 && (
-        <p></p>
-      )}
+      <div>
+        6:00 am
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 6 && appointment.start.substring(0, 2) < 7;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        7:00 am
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 7 && appointment.start.substring(0, 2) < 8;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        8:00 am
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 8 && appointment.start.substring(0, 2) < 9;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+              
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        9:00 am
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 9 && appointment.start.substring(0, 2) < 10;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        10:00 am
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 10 && appointment.start.substring(0, 2) < 11;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        11:00 am
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 11 && appointment.start.substring(0, 2) < 12;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        12:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 12 && appointment.start.substring(0, 2) < 13;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        1:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 13 && appointment.start.substring(0, 2) < 14;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        2:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 14 && appointment.start.substring(0, 2) < 15;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        3:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 15 && appointment.start.substring(0, 2) < 16;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        4:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 16 && appointment.start.substring(0, 2) < 17;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        5:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 17 && appointment.start.substring(0, 2) < 18;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        6:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 18 && appointment.start.substring(0, 2) < 19;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        7:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 19 && appointment.start.substring(0, 2) < 20;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        8:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 20 && appointment.start.substring(0, 2) < 21;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        9:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 21 && appointment.start.substring(0, 2) < 22;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
+
+      <div>
+        10:00 pm
+        {todaysSchedule
+          ?.filter((appointment) => {
+            return appointment.start.substring(0, 2) >= 22 && appointment.start.substring(0, 2) < 23;
+          })
+          .map((appointment) => (
+            <React.Fragment key={appointment.id}>
+              <span>{appointment.title}</span>
+              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
+              <span>{appointment.id}</span>
+            </React.Fragment>
+          ))}
+      </div>
     </>
   );
-  
-  
-
-  
-
-
-  
-  
 };
 
 export default ScheduleTimeline;
-
-
-
-
-/* return (
-  <>
-    {schedule.settings?.filter((setting) => setting.date === todaysDate).length > 0 && (
-      <>
-        {[...Array(15)].map((_, hourIndex) => {
-          const hour = hourIndex + 6; // Adjusting hour range from 6 to 20
-
-          return (
-            <div key={`hour-${hour}`}>
-              <p>{hour}:00</p>
-              {schedule.settings
-                .filter((setting) => setting.date === todaysDate && new Date(setting.start).getHours() === hour)
-                .map((setting, index) => (
-                  <p key={`${hour}-${index}`}>
-                    {setting.title}
-                  </p>
-                ))}
-            </div>
-          );
-        })}
-      </>
-    )}
-  </>
-); */
