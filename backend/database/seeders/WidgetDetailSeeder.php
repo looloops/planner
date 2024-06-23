@@ -26,7 +26,7 @@ class WidgetDetailSeeder extends Seeder
             'widget_id' => 1,
             'settings' => json_encode([
                 [
-                    'id' => 0,
+                    'id' => 1,
                     'title' => "John's birthday!",
                     'description' => 'Remember to buy a cake!',
                     'date' => '23/06/2024',
@@ -36,7 +36,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'Not urgent',
                 ],
                 [
-                    'id' => 1,
+                    'id' => 2,
                     'title' => "Dentist",
                     'description' => 'Book a follow-up!',
                     'date' => '23/06/2024',
@@ -188,7 +188,7 @@ class WidgetDetailSeeder extends Seeder
             'widget_id' => 1,
             'settings' => json_encode([
                 [
-                    'id' => 0,
+                    'id' => 1,
                     'title' => "John's birthday!",
                     'description' => 'Remember to buy a cake!',
                     'date' => '23/06/2024',
@@ -198,7 +198,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'Not urgent',
                 ],
                 [
-                    'id' => 1,
+                    'id' => 2,
                     'title' => "Dentist",
                     'description' => 'Book a follow-up!',
                     'date' => '23/06/2024',
@@ -350,7 +350,7 @@ class WidgetDetailSeeder extends Seeder
             'widget_id' => 1,
             'settings' => json_encode([
                 [
-                    'id' => 0,
+                    'id' => 1,
                     'title' => "John's birthday!",
                     'description' => 'Remember to buy a cake!',
                     'date' => '23/06/2024',
@@ -360,7 +360,7 @@ class WidgetDetailSeeder extends Seeder
                     'priority' => 'Not urgent',
                 ],
                 [
-                    'id' => 1,
+                    'id' => 2,
                     'title' => "Dentist",
                     'description' => 'Book a follow-up!',
                     'date' => '23/06/2024',
