@@ -145,8 +145,7 @@ class WidgetDetailController extends Controller
 
 
         // Aggiorna i campi con i dati della richiesta
-        $widgetDetail->status = $data['status'];
-        $widgetDetail->settings = $data['settings'];
+        $widgetDetail->settings = json_encode($data['settings']);
         $widgetDetail->user_id = $data['user_id'];
         // Non serve aggiornare widget_id se è usato come identificatore per trovare il record
 
@@ -154,7 +153,7 @@ class WidgetDetailController extends Controller
         $widgetDetail->save();
 
         // Reindirizza alla route desiderata
-        return redirect()->route('/');
+        return response()->json(['message' => 'Settings updated successfully'], 200);
     }
     /**
      * Remove the specified resource from storage.

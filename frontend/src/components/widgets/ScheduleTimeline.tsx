@@ -50,66 +50,56 @@ const ScheduleTimeline: React.FC = () => {
       });
   }, []);
 
+
+  const todaysDate = new Date().toLocaleDateString();
+  const todaysSchedule = schedule.settings?.filter((setting) => setting.date === todaysDate)
+  console.log(todaysSchedule)
+
+  
+
   return (
-    /* VIEWING DATA IN DATA IN PAGE
-    
-      {schedule?.settings?.map((setting: Partial<GeneralSettings>, index) => {
-        return <p key={index}>{setting.title}</p>;
-      })}
-
-         */
     <>
-      {/* <div>
-        <Link to={`/schedule/add`}>
-          <h3 className="my-5">ADD A NEW APPOINTMENT</h3>
-        </Link>
-        {schedule?.settings?.map((setting, index) => (
-          <div key={index}>
-            <p>Title: {setting.title}</p>
-            <p>{setting.description}</p>
-            <p>Start: {setting.start ? new Date(setting.start).toLocaleString() : "N/A"}</p>
-            <p>Finish: {setting.finish ? new Date(setting.finish).toLocaleString() : "N/A"}</p>
-            <p>Deadline: {setting.deadline ? new Date(setting.deadline).toLocaleString() : ""}</p>
-            <p>Priority: {setting.priority}</p>
-            <Link to={`/schedule/edit/${index}`}>Edit</Link>
-          </div>
-        ))}
-      </div> */}
-
-      <div>
-        {schedule?.settings
-          ?.filter((setting) => {
-        const todaysDate = new Date().toLocaleDateString();
-            const hour: number = 7
-            const dateOfAppointment = new Date(setting.date).toLocaleString;
-            const hourOfAppointment = new Date(setting.start).toLocaleString;
-            return ( dateOfAppointment === todaysDate && 
-            (hourOfAppointment  >= hour && hourOfAppointment  <= hour + 1));
-          })
-          .map((setting, index) => (
-            <div key={index}>
-              <p>{hour} {setting.start} {setting.title}</p>
-            </div>
-          ))}
-        <p>7:00</p>
-        <p>8:00</p>
-        <p>9:00</p>
-        <p>10:00</p>
-        <p>11:00</p>
-        <p>12:00</p>
-        <p>1:00</p>
-        <p>2:00</p>
-        <p>3:00</p>
-        <p>4:00</p>
-        <p>5:00</p>
-        <p>6:00</p>
-        <p>7:00</p>
-        <p>8:00</p>
-        <p>9:00</p>
-        <p>10:00</p>
-      </div>
+      {schedule.settings?.filter((setting) => setting.date === todaysDate).length > 0 && (
+        <p></p>
+      )}
     </>
   );
+  
+  
+
+  
+
+
+  
+  
 };
 
 export default ScheduleTimeline;
+
+
+
+
+/* return (
+  <>
+    {schedule.settings?.filter((setting) => setting.date === todaysDate).length > 0 && (
+      <>
+        {[...Array(15)].map((_, hourIndex) => {
+          const hour = hourIndex + 6; // Adjusting hour range from 6 to 20
+
+          return (
+            <div key={`hour-${hour}`}>
+              <p>{hour}:00</p>
+              {schedule.settings
+                .filter((setting) => setting.date === todaysDate && new Date(setting.start).getHours() === hour)
+                .map((setting, index) => (
+                  <p key={`${hour}-${index}`}>
+                    {setting.title}
+                  </p>
+                ))}
+            </div>
+          );
+        })}
+      </>
+    )}
+  </>
+); */

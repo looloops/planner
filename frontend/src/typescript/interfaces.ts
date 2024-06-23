@@ -74,9 +74,10 @@ export interface GeneralSettings {
   id: number;
   title: string;
   description: string;
-  start: Date;
-  finish: Date;
-  deadline: Date;
+  date: string;
+  start: string;
+  finish: string;
+  deadline: string;
   priority: string;
   type: string;
   img: string;

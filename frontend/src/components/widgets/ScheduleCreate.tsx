@@ -25,11 +25,9 @@ const ScheduleCreate: () => JSX.Element = () => {
     ev.preventDefault();
     if (!schedule || !schedule.settings) return;
 
-    // Taking the new settings from the local state and converting date values
+    // Taking the new settings from the local state
     const newSetting = {
       ...formData,
-      start: formData.start ? new Date(formData.start) : undefined,
-      finish: formData.finish ? new Date(formData.finish) : undefined,
       deadline: formData.deadline ? new Date(formData.deadline) : undefined,
     };
 
@@ -89,28 +87,40 @@ const ScheduleCreate: () => JSX.Element = () => {
               value={formData.description ?? ""}
             />
 
+            <label htmlFor="date" className="form-label">
+              Date
+            </label>
+            <input
+              className="form-control"
+              type="date"
+              id="date"
+              name="date"
+              onChange={createInputValue}
+              value={formData.date ?? ""}
+            />
+
             <label htmlFor="start" className="form-label">
               Start
             </label>
             <input
               className="form-control"
-              type="date"
+              type="time"
               id="start"
               name="start"
               onChange={createInputValue}
-              value={formData.start ? new Date(formData.start).toISOString().substring(0, 10) : ""}
+              value={formData.start ?? ""}
             />
 
             <label htmlFor="finish" className="form-label">
               Finish
             </label>
             <input
-              type="date"
+              type="time"
               className="form-control"
               id="finish"
               name="finish"
               onChange={createInputValue}
-              value={formData.finish ? new Date(formData.finish).toISOString().substring(0, 10) : ""}
+              value={formData.finish ?? ""}
             />
 
             <label htmlFor="deadline" className="form-label">
@@ -122,7 +132,7 @@ const ScheduleCreate: () => JSX.Element = () => {
               id="deadline"
               name="deadline"
               onChange={createInputValue}
-              value={formData.deadline ? new Date(formData.deadline).toISOString().substring(0, 10) : ""}
+              value={formData.deadline ?? ""}
             />
 
             <label htmlFor="priority" className="form-label">

@@ -119,19 +119,30 @@ const ScheduleEdit: () => JSX.Element = () => {
               value={formData.description ?? schedule?.settings?.[indexInt]?.description ?? ""}
             />
 
-           {/*  <label htmlFor="start" className="form-label">
+<label htmlFor="description" className="form-label">
+              Description
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="description"
+              name="description"
+              onChange={updateInputValue}
+              value={formData.date ?? schedule?.settings?.[indexInt]?.date ?? ""}
+            />
+
+           <label htmlFor="start" className="form-label">
               Start
             </label>
             <input
               className="form-control"
-              type="date"
+              type="time"
               id="start"
               name="start"
               onChange={updateInputValue}
               value={
-                formData.start
-                  ? new Date(formData.start).toISOString().substring(0, 10)
-                  : new Date(schedule?.settings?.[indexInt]?.start ?? "").toISOString().substring(0, 10)
+                formData.start ? formData.start : ""
+    
               }
             />
 
@@ -139,15 +150,14 @@ const ScheduleEdit: () => JSX.Element = () => {
               Finish
             </label>
             <input
-              type="date"
+              type="time"
               className="form-control"
               id="finish"
               name="finish"
               onChange={updateInputValue}
               value={
-                formData.finish
-                  ? new Date(formData.finish).toISOString().substring(0, 10)
-                  : new Date(schedule?.settings?.[indexInt]?.finish ?? "").toISOString().substring(0, 10)
+                formData.finish ? formData.finish : ""
+    
               }
             />
 
@@ -165,7 +175,7 @@ const ScheduleEdit: () => JSX.Element = () => {
                   ? new Date(formData.deadline).toISOString().substring(0, 10)
                   : new Date(schedule?.settings?.[indexInt]?.deadline ?? "").toISOString().substring(0, 10)
               }
-            /> */}
+            /> 
 
             <label htmlFor="priority" className="form-label">
               Priority
