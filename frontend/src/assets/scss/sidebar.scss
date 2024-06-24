@@ -1,0 +1,80 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.sidebar_container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+}
+
+.tab {
+  height: 150px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  position: relative;
+  z-index: 2;
+}
+
+.tab:hover {
+  opacity: 1;
+}
+
+.tab input {
+  display: none;
+}
+
+.tab input:checked + label {
+  opacity: 1;
+}
+
+.tab label {
+  opacity: 0.5;
+  color: #000000;
+  transition: 0.5s;
+  cursor: pointer;
+}
+
+.indicator {
+  position: absolute;
+  width: 140px;
+  height: 150px;
+  background-color: #c8c8c8;
+  z-index: 1;
+  border-top-left-radius: 30px;
+  border-bottom-left-radius: 30px;
+  transition: top 0.3s ease;
+}
+.indicator::before {
+  content: "";
+  position: absolute;
+  top: -20px;
+  right: -1px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border-bottom-right-radius: 20px;
+  box-shadow: 8px 8px 0 8px #c8c8c8;
+}
+.indicator::after {
+  content: "";
+  position: absolute;
+  bottom: -20px;
+  right: -1px;
+  width: 20px;
+  height: 20px;
+  background-color: transparent;
+  border-top-right-radius: 20px;
+  box-shadow: 8px -8px 0 8px #c8c8c8;
+}

@@ -43,7 +43,7 @@ const App: React.FC = () => {
   return (
     loaded && (
       <Router>
-        <MyNav />
+        {/* <MyNav /> */}
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
