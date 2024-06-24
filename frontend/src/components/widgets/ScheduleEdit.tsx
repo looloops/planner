@@ -1,6 +1,6 @@
 import { useParams } from "react-router-dom";
 import { State } from "../../redux/reducers/userReducer";
-import { useState, ChangeEvent, FormEvent } from "react";
+import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useSelector } from "react-redux";
@@ -9,15 +9,24 @@ type Params = {
   settingIndex: string;
 };
 
-const ScheduleEdit: () => JSX.Element = () => {
+const ScheduleEdit: React.FC = () => {
   const { settingIndex } = useParams<Params>();
-  const indexInt: number = settingIndex !== undefined ? parseInt(settingIndex, 10) : 0;
+  // const indexInt: number = settingIndex !== undefined ? parseInt(settingIndex, 10) : 0;
 
   // GETTING SCHEDULE DATA FROM REDUX
   const schedule = useSelector((state: State) => state.widgets.schedule);
-
-  // CREATING AND MANAGING A LOCAL STATE FOR FUTURE UPDATED DATA
   const [formData, setFormData] = useState<Partial<GeneralSettings>>({});
+
+  // Fetch specific schedule item on component mount
+  useEffect(() => {
+    if (schedule.settings && settingIndex) {
+      const settingId = parseInt(settingIndex, 10);
+      const foundSetting = schedule.settings.find((setting) => setting.id === settingId);
+      if (foundSetting) {
+        setFormData(foundSetting);
+      }
+    }
+  }, [schedule.settings, settingIndex]);
 
   const updateInputValue = (ev: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = ev.target;
@@ -27,23 +36,21 @@ const ScheduleEdit: () => JSX.Element = () => {
     }));
   };
 
-  const submitUpdatedData = (ev: FormEvent<HTMLFormElement>, index: number) => {
+  const submitUpdatedData = (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
-    if (!schedule || !schedule.settings) return;
+    if (!schedule || !schedule.settings || !formData.id) return;
 
     const updatedSettings = {
-      ...schedule.settings[index],
       ...formData,
-      start: formData.start ? new Date(formData.start) : schedule.settings[index].start,
-      finish: formData.finish ? new Date(formData.finish) : schedule.settings[index].finish,
-      deadline: formData.deadline ? new Date(formData.deadline) : schedule.settings[index].deadline,
+      // Assicurati che la data sia formattata correttamente
+      date: formData.date,
+      // Assicurati che la deadline sia formattata correttamente
+      deadline: formData.deadline,
     };
 
-    const updatedSettingsArray = [
-      ...schedule.settings.slice(0, index),
-      updatedSettings,
-      ...schedule.settings.slice(index + 1),
-    ];
+    const updatedSettingsArray = schedule.settings.map((setting) =>
+      setting.id === formData.id ? updatedSettings : setting
+    );
 
     const body = {
       ...schedule,
@@ -64,11 +71,10 @@ const ScheduleEdit: () => JSX.Element = () => {
       });
   };
 
-  // MANAGING THE DELETE OF A SINGLE ITEM WITHIN THE SETTINGS ARRAY
-  const deleteItem = (index: number) => {
-    if (!schedule || !schedule.settings) return;
+  const deleteItem = () => {
+    if (!schedule || !schedule.settings || !formData.id) return;
 
-    const updatedSettingsArray = [...schedule.settings.slice(0, index), ...schedule.settings.slice(index + 1)];
+    const updatedSettingsArray = schedule.settings.filter((setting) => setting.id !== formData.id);
 
     const body = {
       ...schedule,
@@ -93,8 +99,21 @@ const ScheduleEdit: () => JSX.Element = () => {
     <>
       <div>
         <h1>Edit Schedule</h1>
-        {schedule && schedule.settings && schedule.settings.length > 0 && (
-          <form onSubmit={(ev) => submitUpdatedData(ev, indexInt)} noValidate>
+        {schedule && schedule.settings && formData && (
+          <form onSubmit={submitUpdatedData} noValidate>
+            <label htmlFor="id" className="form-label">
+              ID
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="id"
+              name="id"
+              onChange={updateInputValue}
+              value={formData.id ?? ""}
+              readOnly
+            />
+
             <label htmlFor="title" className="form-label">
               Title
             </label>
@@ -104,7 +123,8 @@ const ScheduleEdit: () => JSX.Element = () => {
               id="title"
               name="title"
               onChange={updateInputValue}
-              value={formData.title ?? schedule?.settings?.[indexInt]?.title ?? ""}
+              value={formData.title ?? ""}
+              required
             />
 
             <label htmlFor="description" className="form-label">
@@ -116,39 +136,43 @@ const ScheduleEdit: () => JSX.Element = () => {
               id="description"
               name="description"
               onChange={updateInputValue}
-              value={formData.description ?? schedule?.settings?.[indexInt]?.description ?? ""}
+              value={formData.description ?? ""}
+            />
+
+            <label htmlFor="date" className="form-label">
+              Date
+            </label>
+            <input
+              type="date"
+              className="form-control"
+              id="date"
+              name="date"
+              onChange={updateInputValue}
+              value={formData.date ?? ""}
             />
 
             <label htmlFor="start" className="form-label">
               Start
             </label>
             <input
+              type="time"
               className="form-control"
-              type="date"
               id="start"
               name="start"
               onChange={updateInputValue}
-              value={
-                formData.start
-                  ? new Date(formData.start).toISOString().substring(0, 10)
-                  : new Date(schedule?.settings?.[indexInt]?.start ?? "").toISOString().substring(0, 10)
-              }
+              value={formData.start ?? ""}
             />
 
             <label htmlFor="finish" className="form-label">
               Finish
             </label>
             <input
-              type="date"
+              type="time"
               className="form-control"
               id="finish"
               name="finish"
               onChange={updateInputValue}
-              value={
-                formData.finish
-                  ? new Date(formData.finish).toISOString().substring(0, 10)
-                  : new Date(schedule?.settings?.[indexInt]?.finish ?? "").toISOString().substring(0, 10)
-              }
+              value={formData.finish ?? ""}
             />
 
             <label htmlFor="deadline" className="form-label">
@@ -160,11 +184,7 @@ const ScheduleEdit: () => JSX.Element = () => {
               id="deadline"
               name="deadline"
               onChange={updateInputValue}
-              value={
-                formData.deadline
-                  ? new Date(formData.deadline).toISOString().substring(0, 10)
-                  : new Date(schedule?.settings?.[indexInt]?.deadline ?? "").toISOString().substring(0, 10)
-              }
+              value={formData.deadline ?? ""}
             />
 
             <label htmlFor="priority" className="form-label">
@@ -176,13 +196,13 @@ const ScheduleEdit: () => JSX.Element = () => {
               id="priority"
               name="priority"
               onChange={updateInputValue}
-              value={formData.priority ?? schedule?.settings?.[indexInt]?.priority ?? ""}
+              value={formData.priority ?? ""}
             />
 
             <button type="submit" className="btn btn-primary">
               Save changes
             </button>
-            <button type="button" className="btn btn-danger" onClick={() => deleteItem(indexInt)}>
+            <button type="button" className="btn btn-danger" onClick={deleteItem}>
               Delete
             </button>
           </form>
