@@ -68,11 +68,24 @@ const ScheduleTimeline: React.FC = () => {
   };
 
   // Getting today's date
-  const todaysDate = new Date().toLocaleDateString();
-  console.log("todaysDate", todaysDate);
+  const todaysDate = new Date();
+
+  // Ottieni l'anno
+  const year = todaysDate.getFullYear();
+
+  // Ottieni il mese e aggiungi 1 perché i mesi in JavaScript sono indicizzati da 0 (gennaio è 0)
+  const month = String(todaysDate.getMonth() + 1).padStart(2, "0");
+
+  // Ottieni il giorno del mese
+  const day = String(todaysDate.getDate()).padStart(2, "0");
+
+  // Combina le parti in formato yyyy-mm-dd
+  const formattedTodaysDate = `${year}-${month}-${day}`;
+
+  console.log(formattedTodaysDate); // Stampa la data nel formato yyyy-mm-dd
 
   // Getting schedule for today
-  const todaysSchedule = schedule.settings?.filter((setting) => setting.date === todaysDate);
+  const todaysSchedule = schedule.settings?.filter((setting) => setting.date === formattedTodaysDate);
   console.log("todaysSchedule", todaysSchedule);
 
   return (
@@ -81,7 +94,7 @@ const ScheduleTimeline: React.FC = () => {
         6:00 am
         {todaysSchedule
           ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "6" && appointment.start.substring(0, 2) < "7";
+            return appointment.start.substring(0, 2) >= "06" && appointment.start.substring(0, 2) < "07";
           })
           .map((appointment) => (
             <React.Fragment key={appointment.id}>
@@ -98,7 +111,7 @@ const ScheduleTimeline: React.FC = () => {
         7:00 am
         {todaysSchedule
           ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "7" && appointment.start.substring(0, 2) < "8";
+            return appointment.start.substring(0, 2) >= "07" && appointment.start.substring(0, 2) < "08";
           })
           .map((appointment) => (
             <React.Fragment key={appointment.id}>
@@ -115,7 +128,7 @@ const ScheduleTimeline: React.FC = () => {
         8:00 am
         {todaysSchedule
           ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "8" && appointment.start.substring(0, 2) < "9";
+            return appointment.start.substring(0, 2) >= "08" && appointment.start.substring(0, 2) < "09";
           })
           .map((appointment) => (
             <React.Fragment key={appointment.id}>
@@ -132,7 +145,7 @@ const ScheduleTimeline: React.FC = () => {
         9:00 am
         {todaysSchedule
           ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "9" && appointment.start.substring(0, 2) < "10";
+            return appointment.start.substring(0, 2) >= "09" && appointment.start.substring(0, 2) < "10";
           })
           .map((appointment) => (
             <React.Fragment key={appointment.id}>

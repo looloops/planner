@@ -11,7 +11,7 @@ type Params = {
 
 const ScheduleEdit: React.FC = () => {
   const { settingIndex } = useParams<Params>();
-  const indexInt: number = settingIndex !== undefined ? parseInt(settingIndex, 10) : 0;
+  // const indexInt: number = settingIndex !== undefined ? parseInt(settingIndex, 10) : 0;
 
   // GETTING SCHEDULE DATA FROM REDUX
   const schedule = useSelector((state: State) => state.widgets.schedule);
@@ -41,9 +41,11 @@ const ScheduleEdit: React.FC = () => {
     if (!schedule || !schedule.settings || !formData.id) return;
 
     const updatedSettings = {
-      ...formData, // Use formData directly for updates
-      date: formData.date ? new Date(formData.date).toLocaleDateString() : formData.date,
-      deadline: formData.deadline ? new Date(formData.deadline).toLocaleDateString() : formData.deadline,
+      ...formData,
+      // Assicurati che la data sia formattata correttamente
+      date: formData.date,
+      // Assicurati che la deadline sia formattata correttamente
+      deadline: formData.deadline,
     };
 
     const updatedSettingsArray = schedule.settings.map((setting) =>

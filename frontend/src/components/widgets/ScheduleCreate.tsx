@@ -11,8 +11,8 @@ const ScheduleCreate: React.FC = () => {
 
   // GETTING HIGHEST ID IN THE SCHEDULE SETTINGS ARRAY
   const arrId: number[] = schedule.settings?.map((element) => element.id) || [];
-  const maxId = Math.max(...arrId); 
-  
+  const maxId = Math.max(...arrId);
+
   // CREATING A LOCAL STATE FOR DATA COMING FROM THE FORM
   const [formData, setFormData] = useState<Partial<GeneralSettings>>({
     id: maxId + 1, // Initialize ID with the next available ID
@@ -33,10 +33,12 @@ const ScheduleCreate: React.FC = () => {
     if (!schedule || !schedule.settings) return;
 
     // Taking the new settings from the local state
-    const newSetting: GeneralSettings = {
+    const newSetting: Partial<GeneralSettings> = {
       ...formData,
-      date: formData.date ? new Date(formData.date).toLocaleDateString() : undefined, // Ensure date is formatted correctly
-      deadline: formData.deadline ? new Date(formData.deadline).toLocaleDateString() : undefined, // Ensure deadline is formatted correctly
+      // Assicurati che la data sia formattata correttamente
+      date: formData.date,
+      // Assicurati che la deadline sia formattata correttamente
+      deadline: formData.deadline,
     };
 
     // Adding the new settings into the array

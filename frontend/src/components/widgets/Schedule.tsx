@@ -70,7 +70,7 @@ const Schedule: React.FC = () => {
             <p>Date: {setting.date}</p>
             <p>Start: {setting.start}</p>
             <p>Finish: {setting.finish}</p>
-            <p>Deadline: {setting.deadline ? new Date(setting.deadline).toLocaleString() : ""}</p>
+            <p>Deadline: {setting.deadline}</p>
             <p>Priority: {setting.priority}</p>
             <Link to={`/schedule/edit/${setting.id}`}>Edit</Link>
           </div>
