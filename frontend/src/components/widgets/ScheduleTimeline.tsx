@@ -9,28 +9,23 @@ import { SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/userReducer";
 
 const ScheduleTimeline: React.FC = () => {
-  // Getting schedule from state
   const schedule = useSelector((state: State) => state.widgets.schedule);
-
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // Getting widget details from API and parsing its data
-  // It makes sure data stay updated at every re-rendering
   useEffect(() => {
     axios
       .get<ApiResponse>("/api/user/widgets/1")
       .then((res) => {
         const parsedDetails = {
           ...res.data.data[0],
-          settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[], // Parse the JSON string to an object
+          settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[],
           widget: {
             ...res.data.data[0].widget,
-            field_list: JSON.parse(res.data.data[0].widget.field_list), // Parse the JSON string to an object
+            field_list: JSON.parse(res.data.data[0].widget.field_list),
           },
         };
 
-        // Updating the redux state
         dispatch({
           type: SCHEDULE_DETAILS,
           payload: parsedDetails,
@@ -42,7 +37,6 @@ const ScheduleTimeline: React.FC = () => {
       });
   }, [dispatch, navigate]);
 
-  // Function to delete an item
   const deleteItem = (appointmentId: number) => {
     if (!schedule || !schedule.settings) return;
 
@@ -67,319 +61,64 @@ const ScheduleTimeline: React.FC = () => {
       });
   };
 
-  // Getting today's date
   const todaysDate = new Date();
-
-  // Ottieni l'anno
   const year = todaysDate.getFullYear();
-
-  // Ottieni il mese e aggiungi 1 perché i mesi in JavaScript sono indicizzati da 0 (gennaio è 0)
   const month = String(todaysDate.getMonth() + 1).padStart(2, "0");
-
-  // Ottieni il giorno del mese
   const day = String(todaysDate.getDate()).padStart(2, "0");
-
-  // Combina le parti in formato yyyy-mm-dd
   const formattedTodaysDate = `${year}-${month}-${day}`;
 
-  console.log(formattedTodaysDate); // Stampa la data nel formato yyyy-mm-dd
-
-  // Getting schedule for today
   const todaysSchedule = schedule.settings?.filter((setting) => setting.date === formattedTodaysDate);
   console.log("todaysSchedule", todaysSchedule);
 
-  return (
-    <>
-      <div>
-        6:00 am
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "06" && appointment.start.substring(0, 2) < "07";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>{" "}
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
+  const renderScheduleForHour = (hour: number) => {
+    const startHour = String(hour).padStart(2, "0");
+    const endHour = String(hour + 1).padStart(2, "0");
+    const meridian = hour < 12 ? "am" : "pm";
+    const displayHour = hour % 12 === 0 ? 12 : hour % 12;
 
-      <div>
-        7:00 am
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "07" && appointment.start.substring(0, 2) < "08";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
+    return (
+      <>
+        {/* Div container for single item */}
+        <div className="glass-item" key={hour}>
+          {/* Div container for top of the item  */}
+          <div className="glass-item-top">
+            <span className="timeline-hour">
+              {displayHour}:00 {meridian}
+            </span>
 
-      <div>
-        8:00 am
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "08" && appointment.start.substring(0, 2) < "09";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
+            <button className="timelineButton addButton">
+              <div className="timelineIcons">+</div>
+            </button>
+          </div>
 
-      <div>
-        9:00 am
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "09" && appointment.start.substring(0, 2) < "10";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
+          {/* Div container for appointments */}
+          <div className="item-content">
+            {todaysSchedule
+              ?.filter(
+                (appointment) =>
+                  appointment.start.substring(0, 2) >= startHour && appointment.start.substring(0, 2) < endHour
+              )
+              .map((appointment) => (
+                <React.Fragment key={appointment.id}>
+                  <span className="timeline-title">{appointment.title}</span>
+                  <div className="buttons-container">
+                  <button className="timelineButton editButton" onClick={() => navigate(`/schedule/edit/${appointment.id}`)}>
+                    <div className="timelineIcons"><svg width="8px" height="6px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z" fill="#000000"/>
+</svg></div>
+                  </button>
+                  <button className="timelineButton deleteButton" onClick={() => deleteItem(appointment.id)}>
+                    <div className="timelineIcons">-</div>
+                  </button></div>
+                </React.Fragment>
+              ))}
+          </div>
+        </div>
+      </>
+    );
+  };
 
-      <div>
-        10:00 am
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "10" && appointment.start.substring(0, 2) < "11";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        11:00 am
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "11" && appointment.start.substring(0, 2) < "12";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        12:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "12" && appointment.start.substring(0, 2) < "13";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        1:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "13" && appointment.start.substring(0, 2) < "14";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        2:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "14" && appointment.start.substring(0, 2) < "15";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        3:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "15" && appointment.start.substring(0, 2) < "16";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        4:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "16" && appointment.start.substring(0, 2) < "17";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        5:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "17" && appointment.start.substring(0, 2) < "18";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        6:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "18" && appointment.start.substring(0, 2) < "19";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        7:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "19" && appointment.start.substring(0, 2) < "20";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        8:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "20" && appointment.start.substring(0, 2) < "21";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        9:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "21" && appointment.start.substring(0, 2) < "22";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-
-      <div>
-        10:00 pm
-        {todaysSchedule
-          ?.filter((appointment) => {
-            return appointment.start.substring(0, 2) >= "22" && appointment.start.substring(0, 2) < "23";
-          })
-          .map((appointment) => (
-            <React.Fragment key={appointment.id}>
-              <span> {appointment.title}</span>
-              <Link to={`/schedule/edit/${appointment.id}`}>✎</Link>
-              <span onClick={() => deleteItem(appointment.id)} style={{ color: "red" }}>
-                XXX
-              </span>
-            </React.Fragment>
-          ))}
-      </div>
-    </>
-  );
+  return <>{Array.from({ length: 24 }, (_, index) => renderScheduleForHour(index))}</>;
 };
 
 export default ScheduleTimeline;

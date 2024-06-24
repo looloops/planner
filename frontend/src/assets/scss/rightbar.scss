@@ -1,0 +1,150 @@
+.glass-background {
+  background: rgba(255, 255, 255, 0.24);
+  // border-radius: 16px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.glass-item {
+  background: rgba(255, 255, 255, 0.363);
+  border-radius: 5px;
+  box-shadow: 0 4px 10px rgba(68, 50, 126, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding-bottom: 5px;
+  margin: 5px;
+  text-align: left;
+  &:hover {
+    // https://www.joshwcomeau.com/gradient-generator/
+    background-image: linear-gradient(
+      -50deg,
+      hsl(0deg 0% 100%) 0%,
+      hsl(200deg 60% 98%) 4%,
+      hsl(200deg 60% 97%) 10%,
+      hsl(200deg 60% 95%) 18%,
+      hsl(200deg 60% 94%) 27%,
+      hsl(200deg 60% 92%) 38%,
+      hsl(206deg 66% 91%) 49%,
+      hsl(212deg 70% 91%) 61%,
+      hsl(221deg 69% 91%) 73%,
+      hsl(233deg 63% 91%) 86%,
+      hsl(252deg 56% 89%) 100%
+    );
+  }
+}
+
+.glass-item-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: rgb(183, 183, 183);
+  padding-inline: 15px;
+  font-size: 12px;
+  border-bottom: 1px solid white;
+}
+
+.timeline-title {
+  color: rgb(147, 147, 147);
+}
+
+// ADD BUTTON ANIMATION
+.timelineButton {
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  &.addButton {
+    background-color: rgb(127, 137, 234);
+    &:hover {
+      width: 40px;
+      border-radius: 50px;
+      transition-duration: 0.3s;
+      background-color: rgb(181, 160, 255);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Add";
+      color: white;
+      font-size: 0px;
+    }
+  }
+  &.deleteButton {
+    background-color: rgb(218, 82, 125);
+    &:hover {
+      width: 40px;
+      border-radius: 50px;
+      transition-duration: 0.3s;
+      background-color: rgb(255, 160, 166);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Delete";
+      color: white;
+      font-size: 0px;
+    }
+  }
+  &.editButton {
+    background-color: rgba(111, 111, 111, 0);
+    &:hover {
+      width: 40px;
+      border-radius: 50px;
+      transition-duration: 0.3s;
+      background-color: rgba(111, 111, 111, 0);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Edit";
+      color: white;
+      font-size: 0px;
+    }
+  }
+  border: none;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 0px 1px rgba(180, 160, 255, 0.253);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+
+  &:hover::before {
+    font-size: 10px;
+    opacity: 1;
+    bottom: unset;
+    transition-duration: 0.3s;
+  }
+}
+
+.timelineIcons {
+  transition-duration: 0.3s;
+  color: white;
+  font-size: 10px;
+}
+
+.timelineButton:hover .timelineIcons {
+  transition-duration: 0.3s;
+  transform: translateY(-200%);
+}
+
+.item-content {
+  padding-top: 5px;
+  padding-inline: 15px;
+  font-size: 12px;
+  display: flex;
+  justify-content: space-between;
+}
+
+.buttons-container {
+    display: flex;
+    gap: 5px;
+}

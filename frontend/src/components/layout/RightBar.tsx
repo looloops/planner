@@ -1,7 +1,9 @@
+import ScheduleTimeline from "../widgets/ScheduleTimeline";
+
 function RightBar() {
   return (
-    <div>
-      <h1>RIGHTBAR</h1>
+    <div className="glass-background">
+      <ScheduleTimeline />
     </div>
   );
 }

@@ -3,9 +3,9 @@
   grid-template-areas:
     "sidebar topbar topbar"
     "sidebar main rightbar";
-  grid-template-columns: 15% 65% 20%;
+  grid-template-columns: 10% 70% 20%;
   grid-template-rows: 150px auto;
-  height: 100vh; // Adjust the height as needed
+  // height: 100vh; // Adjust the height as needed
 }
 
 .homepage-template-grid > div:nth-child(1) {
@@ -29,7 +29,6 @@
   height: 200px;
   overflow: hidden;
 }
-.media-img-div{
+.media-img-div {
   overflow: hidden;
-  
 }
