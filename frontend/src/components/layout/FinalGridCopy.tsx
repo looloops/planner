@@ -15,17 +15,51 @@ const FinalGridCopy = () => {
   useMemo(() => ResponsiveGridLayout, []);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [selectedWidget, setSelectedWidget] = useState("");
 
   // Stato per togglare il "static"
   const [staticOn, setStaticOn] = useState(true);
   console.log("Initial staticOn:", staticOn);
 
+  // GETTING ALL WIDGETS
+  const allWidgets = {
+    1: "Schedule",
+    2: "Media",
+    3: "Weather",
+    4: "Books",
+    5: "Recipes",
+    6: "Calendar",
+  };
+  console.log("allWidgets", allWidgets);
+
   // ACTIVE WIDGETS FROM REDUX
   const activeWidgetsFromRedux = useSelector((state: State) => state.user.user?.active_widgets);
-  console.log("tipo activewidgets", typeof activeWidgetsFromRedux);
-  const active_widgets: Array<number> = activeWidgetsFromRedux ? JSON.parse(activeWidgetsFromRedux) : [];
+  const active_widgets = activeWidgetsFromRedux ? JSON.parse(activeWidgetsFromRedux) : [];
+  console.log("active_widgets", active_widgets);
 
-  // {lg: layout1, md: layout2, ...}
+  // GETTING AVAILABLE WIDGETS
+  const availableWidgets = Object.keys(allWidgets).filter((key) => !active_widgets.includes(parseInt(key)));
+  console.log("availableWidgets", availableWidgets);
+  const addWidget = () => {
+    if (!selectedWidget) return;
+
+    const newWidget: Layout = { i: selectedWidget, x: 0, y: Infinity, w: 2, h: 4, minH: 2, maxH: 2 };
+
+    const updatedLayoutState = Object.entries(layoutState).reduce((acc, [breakpoint, layout]) => {
+      acc[breakpoint] = [...(layout as Array<T>), newWidget];
+      return acc;
+    }, {} as Layouts);
+
+    setLayoutState(updatedLayoutState);
+    setSelectedWidget("");
+
+    const updatedActiveWidgets = [...active_widgets, parseInt(selectedWidget)];
+    dispatch({
+      type: SAVE_ACTIVE_WIDGETS,
+      payload: JSON.stringify(updatedActiveWidgets),
+    });
+  };
+
   const layoutsFromRedux = useSelector((state: State) => state.user.user?.widgets_layout);
 
   // Parsiamo il JSON e assegniamo i layouts come prop di ResponsiveGridLayout
@@ -101,22 +135,22 @@ const FinalGridCopy = () => {
       .get("/api/user/layout")
       .then((res) => {
         console.log("Res data layout", res);
-  
+
         // Verifica che res.data e res.data.data siano definiti
         if (res.data && res.data.data) {
           const widgets_layout = res.data.data.widgets_layout;
           const active_widgets = res.data.data.active_widgets;
-  
+
           dispatch({
             type: SAVE_LAYOUT,
             payload: JSON.stringify(widgets_layout),
           });
-  
+
           dispatch({
             type: SAVE_ACTIVE_WIDGETS,
             payload: JSON.stringify(active_widgets),
           });
-  
+
           // Imposta lo stato dei layout solo se widgets_layout è definito
           if (widgets_layout) {
             setLayoutState(JSON.parse(widgets_layout));
@@ -129,7 +163,7 @@ const FinalGridCopy = () => {
         // navigate("/");
       });
   }, [dispatch]);
-  
+
   interface T {
     i: string;
     x: number;
@@ -147,6 +181,8 @@ const FinalGridCopy = () => {
         return <Media />;
       case 3:
         return <Weather />;
+      case 4:
+        return <Schedule />;
       default:
         return null;
     }
@@ -161,14 +197,14 @@ const FinalGridCopy = () => {
         cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
         onLayoutChange={handleLayoutChange}
       >
-        {active_widgets.map((widget: number) => (
+        {active_widgets.map((widget: number | string) => (
           <div
             key={widget}
             style={{
               backgroundColor: "#dddddd",
             }}
           >
-            <div style={{ height: "95%", overflowY: "scroll" }}>{renderComponent(widget)}</div>
+            <div style={{ height: "95%", overflowY: "scroll" }}>{renderComponent(parseInt(widget as string))}</div>
           </div>
         ))}
       </ResponsiveGridLayout>
@@ -184,12 +220,21 @@ const FinalGridCopy = () => {
         </button>
       )}
 
-      {/* Bottone per aggiungere un nuovo widget */}
-      {/* {!staticOn && (
+      {/* Select menu for choosing a new widget to add */}
+      <select className="selectMenu" value={selectedWidget} onChange={(e) => setSelectedWidget(e.target.value)}>
+        <option value="">Select</option>
+        {availableWidgets.map((key) => (
+          <option key={key} value={key}>
+            {allWidgets[key]}
+          </option>
+        ))}
+      </select>
+
+      {!staticOn && (
         <button onClick={addWidget} className="btn btn-primary m-4">
           Aggiungi Widget
         </button>
-      )} */}
+      )}
     </>
   );
 };
