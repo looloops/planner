@@ -51,11 +51,39 @@
 }
 
 // ADD BUTTON ANIMATION
+
+#singleAdd {
+  display: none;
+  text-align: center;
+  position: relative; /* Added to make sure ::before is positioned relative to the button */
+}
+
+.glass-item:hover #singleAdd {
+  display: flex;
+}
+
+#singleAdd:hover {
+  width: 40px;
+  border-radius: 50px;
+  transition-duration: 0.3s;
+  background-color: rgb(181, 160, 255);
+  align-items: center;
+}
+
+#singleAdd:hover::after {
+  position: absolute;
+  bottom: -20px;
+  content: "Add";
+  color: white;
+  font-size: 10px;
+  transition: font-size 0.3s;
+}
+
 .timelineButton {
-  width: 15px;
   height: 15px;
-  border-radius: 50%;
   &.addButton {
+    border-radius: 50%;
+    width: 15px;
     background-color: rgb(127, 137, 234);
     &:hover {
       width: 40px;
@@ -73,12 +101,14 @@
     }
   }
   &.deleteButton {
-    background-color: rgb(218, 82, 125);
+    border-radius: 50%;
+    width: 15px;
+    background-color: rgba(127, 3, 42, 0.432);
     &:hover {
       width: 40px;
       border-radius: 50px;
       transition-duration: 0.3s;
-      background-color: rgb(255, 160, 166);
+      background-color: rgba(9, 9, 9, 0.112);
       align-items: center;
     }
     &::before {
@@ -90,12 +120,14 @@
     }
   }
   &.editButton {
-    background-color: rgba(111, 111, 111, 0);
+    border-radius: 50%;
+    width: 15px;
+    background-color: rgba(9, 9, 9, 0.112);
     &:hover {
       width: 40px;
       border-radius: 50px;
       transition-duration: 0.3s;
-      background-color: rgba(111, 111, 111, 0);
+      background-color: rgba(9, 9, 9, 0.112);
       align-items: center;
     }
     &::before {
@@ -143,8 +175,73 @@
   display: flex;
   justify-content: space-between;
 }
-
 .buttons-container {
-    display: flex;
-    gap: 5px;
+  display: flex;
+  gap: 5px;
+}
+
+/* .addBigButton {
+  position: relative;
+  overflow: hidden;
+  height: 1rem;
+  padding: 0 2rem;
+  border-radius: 1.5rem;
+  background: #3d3a4e;
+  background-size: 400%;
+  color: #fff;
+  border: none;
+  font-size: 10px;
+  cursor: pointer;
+  &:hover::before {
+    transform: scaleX(1);
+  }
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform: scaleX(0);
+    transform-origin: 0 50%;
+    width: 100%;
+    height: inherit;
+    border-radius: inherit;
+    background: linear-gradient(
+      82.3deg,
+      rgba(150, 93, 233, 1) 10.8%,
+      rgba(99, 88, 238, 1) 94.3%
+    );
+    transition: all 0.475s;
+}
+}
+
+.addBigButton-content {
+  position: relative;
+  z-index: 1;
+} */
+
+// ADD BUTTON ANIMATION
+.selectMenu {
+  height: 15px;
+  border-radius: 50%;
+  width: 15px;
+  background-color: rgb(127, 137, 234);
+  border: none;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 0px 1px rgba(180, 160, 255, 0.253);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+  font-size: 10px;
+  color: white;
+  &:hover {
+    width: 60px;
+    border-radius: 50px;
+    transition-duration: 0.3s;
+    background-color: rgb(181, 160, 255);
+    align-items: center;
+  }
 }

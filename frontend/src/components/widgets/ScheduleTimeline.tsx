@@ -86,7 +86,7 @@ const ScheduleTimeline: React.FC = () => {
               {displayHour}:00 {meridian}
             </span>
 
-            <button className="timelineButton addButton">
+            <button className="timelineButton addButton" id="singleAdd">
               <div className="timelineIcons">+</div>
             </button>
           </div>
@@ -102,14 +102,29 @@ const ScheduleTimeline: React.FC = () => {
                 <React.Fragment key={appointment.id}>
                   <span className="timeline-title">{appointment.title}</span>
                   <div className="buttons-container">
-                  <button className="timelineButton editButton" onClick={() => navigate(`/schedule/edit/${appointment.id}`)}>
-                    <div className="timelineIcons"><svg width="8px" height="6px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z" fill="#000000"/>
-</svg></div>
-                  </button>
-                  <button className="timelineButton deleteButton" onClick={() => deleteItem(appointment.id)}>
-                    <div className="timelineIcons">-</div>
-                  </button></div>
+                    <button
+                      className="timelineButton editButton"
+                      onClick={() => navigate(`/schedule/edit/${appointment.id}`)}
+                    >
+                      <div className="timelineIcons">
+                        <svg
+                          width="8px"
+                          height="6px"
+                          viewBox="0 0 15 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
+                            fill="#ffffff"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                    <button className="timelineButton deleteButton" onClick={() => deleteItem(appointment.id)}>
+                      <div className="timelineIcons">-</div>
+                    </button>
+                  </div>
                 </React.Fragment>
               ))}
           </div>
@@ -118,7 +133,27 @@ const ScheduleTimeline: React.FC = () => {
     );
   };
 
-  return <>{Array.from({ length: 24 }, (_, index) => renderScheduleForHour(index))}</>;
+  return (
+    <>
+      <div style={{ display: "flex", justifyContent: "flex-end", paddingRight: "10px", paddingTop: "2px", gap: "5px" }}>
+        {/* <button className="addBigButton"
+  <span className="addBigButton-content">Add</span>
+</button> */}
+
+        <select className="selectMenu">
+          <option value="option1">Select</option>
+          <option value="option2">Appointments</option>
+          <option value="option3">Urgent</option>
+          <option value="option3">Not urgent</option>
+        </select>
+
+        <button className="timelineButton addButton">
+          <div className="timelineIcons">+</div>
+        </button>
+      </div>
+      {Array.from({ length: 24 }, (_, index) => renderScheduleForHour(index))}
+    </>
+  );
 };
 
 export default ScheduleTimeline;
