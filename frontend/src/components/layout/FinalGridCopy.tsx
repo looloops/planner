@@ -40,10 +40,11 @@ const FinalGridCopy = () => {
   // GETTING AVAILABLE WIDGETS
   const availableWidgets = Object.keys(allWidgets).filter((key) => !active_widgets.includes(parseInt(key)));
   console.log("availableWidgets", availableWidgets);
+
   const addWidget = () => {
     if (!selectedWidget) return;
 
-    const newWidget: Layout = { i: selectedWidget, x: 0, y: Infinity, w: 2, h: 4, minH: 2, maxH: 2 };
+    const newWidget: Layout = { i: selectedWidget, x: 0, y: 0, w: 2, h: 2, minH: 2, maxH: 2, static: staticOn };
 
     const updatedLayoutState = Object.entries(layoutState).reduce((acc, [breakpoint, layout]) => {
       acc[breakpoint] = [...(layout as Array<T>), newWidget];
