@@ -1,90 +1,164 @@
+import { useEffect, useState } from "react";
+
 const Calendar: React.FC = () => {
+  const months = [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ];
+
+  const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const [currentDate, setCurrentDate] = useState(new Date());
+  const [currentMonth, setCurrentMonth] = useState(currentDate.getMonth());
+  const [currentYear, setCurrentYear] = useState(currentDate.getFullYear());
+  const [days, setDays] = useState<JSX.Element[]>([]);
+  const [events, setEvents] = useState<{ [key: string]: boolean }>({});
+
+  useEffect(() => {
+    renderCalendar();
+  }, [currentMonth, currentYear, events]);
+
+  const renderCalendar = () => {
+    const firstDay = new Date(currentYear, currentMonth, 1);
+    const lastDay = new Date(currentYear, currentMonth + 1, 0);
+    const lastDayIndex = lastDay.getDay();
+    const lastDayDate = lastDay.getDate();
+    const prevLastDay = new Date(currentYear, currentMonth, 0);
+    const prevLastDayDate = prevLastDay.getDate();
+    const nextDays = 7 - lastDayIndex - 1;
+
+    const today = new Date();
+    const daysArray: JSX.Element[] = [];
+    let rowsArray: JSX.Element[] = [];
+    let cellsArray: JSX.Element[] = [];
+
+    for (let x = firstDay.getDay(); x > 0; x--) {
+      cellsArray.push(
+        <td className="day prev" key={`prev-${x}`}>
+          {prevLastDayDate - x + 1}
+        </td>
+      );
+    }
+
+    for (let i = 1; i <= lastDayDate; i++) {
+      const isToday = i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
+      const eventKey = `${currentYear}-${currentMonth + 1}-${i}`;
+      const isEvent = !!events[eventKey];
+      const classNames = ["day", "current"];
+      if (isToday) classNames.push("today");
+      if (isEvent) classNames.push("event");
+
+      cellsArray.push(
+        <td className={classNames.join(" ")} key={`current-${i}`} onClick={() => handleDateClick(eventKey)}>
+          {i}
+        </td>
+      );
+
+      if (cellsArray.length === 7) {
+        rowsArray.push(<tr key={`row-${rowsArray.length}`}>{cellsArray}</tr>);
+        cellsArray = [];
+      }
+    }
+
+    for (let j = 1; j <= nextDays; j++) {
+      cellsArray.push(
+        <td className="day next" key={`next-${j}`}>
+          {j}
+        </td>
+      );
+
+      if (cellsArray.length === 7) {
+        rowsArray.push(<tr key={`row-${rowsArray.length}`}>{cellsArray}</tr>);
+        cellsArray = [];
+      }
+    }
+
+    if (cellsArray.length > 0) {
+      rowsArray.push(<tr key={`row-${rowsArray.length}`}>{cellsArray}</tr>);
+    }
+
+    setDays(rowsArray);
+  };
+
+  const handlePrevMonth = () => {
+    setCurrentMonth((prev) => {
+      if (prev === 0) {
+        setCurrentYear(currentYear - 1);
+        return 11;
+      } else {
+        return prev - 1;
+      }
+    });
+  };
+
+  const handleNextMonth = () => {
+    setCurrentMonth((prev) => {
+      if (prev === 11) {
+        setCurrentYear(currentYear + 1);
+        return 0;
+      } else {
+        return prev + 1;
+      }
+    });
+  };
+
+  const handleToday = () => {
+    const today = new Date();
+    setCurrentMonth(today.getMonth());
+    setCurrentYear(today.getFullYear());
+    setCurrentDate(today);
+  };
+
+  const handleDateClick = (dateKey: string) => {
+    setEvents((prevEvents) => ({
+      ...prevEvents,
+      [dateKey]: !prevEvents[dateKey],
+    }));
+  };
+  const hideTodayBtn = () => {
+    return currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear() ? "none" : "flex";
+  };
+
   return (
     <>
       <div className="container calendar_body">
         <div className="calendar">
           <header>
-            <h2>September</h2>
-
-            <a className="btn-prev fontawesome-angle-left" href="#"></a>
-            <a className="btn-next fontawesome-angle-right" href="#"></a>
+            <h2>
+              {months[currentMonth]} {currentYear}
+            </h2>
+            <div className="btn today" onClick={handleToday} style={{ display: hideTodayBtn() }}>
+              <i className="fas fa-calendar-day"></i>
+            </div>
+            <a className="btn-prev fontawesome-angle-left" onClick={handlePrevMonth} href="#"></a>
+            <a className="btn-next fontawesome-angle-right" onClick={handleNextMonth} href="#"></a>
           </header>
 
           <table>
             <thead>
               <tr>
-                <td>Mo</td>
-                <td>Tu</td>
-                <td>We</td>
-                <td>Th</td>
-                <td>Fr</td>
-                <td>Sa</td>
-                <td>Su</td>
+                {daysOfWeek.map((day) => (
+                  <td className="day" key={day}>
+                    {day}
+                  </td>
+                ))}
               </tr>
             </thead>
 
-            <tbody>
-              <tr>
-                <td className="prev-month">26</td>
-                <td className="prev-month">27</td>
-                <td className="prev-month">28</td>
-                <td className="prev-month">29</td>
-                <td className="prev-month">30</td>
-                <td className="prev-month">31</td>
-                <td>1</td>
-              </tr>
-              <tr>
-                <td>2</td>
-                <td>3</td>
-                <td>4</td>
-                <td>5</td>
-                <td>6</td>
-                <td>7</td>
-                <td>8</td>
-              </tr>
-              <tr>
-                <td>9</td>
-                <td className="event">10</td>
-                <td>11</td>
-                <td>12</td>
-                <td>13</td>
-                <td>14</td>
-                <td>15</td>
-              </tr>
-              <tr>
-                <td>16</td>
-                <td>17</td>
-                <td>18</td>
-                <td>19</td>
-                <td>20</td>
-                <td className="event">21</td>
-                <td>22</td>
-              </tr>
-
-              <tr>
-                <td className="current-day event">23</td>
-                <td>24</td>
-                <td>25</td>
-                <td>26</td>
-                <td>27</td>
-                <td>28</td>
-                <td>29</td>
-              </tr>
-              <tr>
-                <td>30</td>
-                <td className="next-month">1</td>
-                <td className="next-month">2</td>
-                <td className="next-month">3</td>
-                <td className="next-month">4</td>
-                <td className="next-month">5</td>
-                <td className="next-month">6</td>
-              </tr>
-            </tbody>
+            <tbody>{days}</tbody>
           </table>
         </div>
-        {/* <!-- end calendar --> */}
       </div>
-      {/* <!-- end container --> */}
     </>
   );
 };
