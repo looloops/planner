@@ -1,23 +1,13 @@
-/* ---------- FONTAWESOME ---------- */
-/* ---------- https://fortawesome.github.com/Font-Awesome/ ---------- */
-/* ---------- http://weloveiconfonts.com/ ---------- */
-
-@import url(https://weloveiconfonts.com/api/?family=fontawesome);
-
-*[class*="fontawesome-"]:before {
-  font-family: "FontAwesome", sans-serif;
-}
-
 /* ---------- GENERAL ---------- */
 
 .calendar_body {
   background: #f9f9f9;
   color: #0e171c;
-  display: grid;
-  font: 300 100%/1.5em "Lato", sans-serif;
+  font: 300 100% / 1.5em "Lato", sans-serif;
   margin: 0;
-
   place-items: center;
+  display: flex;
+  justify-content: center;
 }
 
 a {
@@ -39,16 +29,16 @@ h3 {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-
-.container {
-  width: 510px;
+  width: 100%;
+  table-layout: fixed;
 }
 
 /* ---------- CALENDAR ---------- */
 
 .calendar {
   text-align: center;
+  width: 100%;
+  margin-block: 18px;
 }
 
 .calendar header {
@@ -63,9 +53,18 @@ table {
   font-weight: 600;
   text-transform: uppercase;
 }
+.calendar thead > tr {
+  display: flex;
+  justify-content: space-around;
+}
 
 .calendar tbody {
   color: #7c8a95;
+}
+.calendar tbody > tr {
+  color: #7c8a95;
+  display: flex;
+  justify-content: space-around;
 }
 
 .calendar tbody td:hover {
@@ -76,10 +75,10 @@ table {
   border: 2px solid transparent;
   border-radius: 50%;
   display: inline-block;
-  height: 4em;
-  line-height: 4em;
+  height: 2em;
+  line-height: 2em;
   text-align: center;
-  width: 4em;
+  width: 2em;
 }
 
 .calendar .prev-month,
@@ -92,7 +91,7 @@ table {
   border: 2px solid #cbd1d2;
 }
 
-.current-day {
+.today {
   background: #00addf;
   color: #f9f9f9;
 }
@@ -105,7 +104,7 @@ table {
 .event:after {
   background: #00addf;
   border-radius: 50%;
-  bottom: 0.5em;
+  bottom: -0.3em;
   display: block;
   content: "";
   height: 0.5em;
@@ -145,4 +144,22 @@ table {
 
 .btn-next {
   right: 6em;
+}
+
+/* Specific styles for different days */
+.calendar .prev {
+  color: #cbd1d2; /* Lighter color for previous month */
+}
+
+.calendar .current {
+  color: #0e171c; /* Darker color for current month */
+}
+
+.calendar .next {
+  color: #cbd1d2; /* Lighter color for next month */
+}
+
+.current-day {
+  background: #00addf;
+  color: #f9f9f9;
 }
