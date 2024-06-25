@@ -216,25 +216,25 @@ const FinalGridCopy = () => {
           Edit Layout
         </button>
       ) : (
-        <button onClick={handleLayoutSave} className="btn btn-success m-4">
-          Save Layout
-        </button>
-      )}
+        <>
+          <button onClick={handleLayoutSave} className="btn btn-success m-4">
+            Save Layout
+          </button>
 
-      {/* Select menu for choosing a new widget to add */}
-      <select className="selectMenu" value={selectedWidget} onChange={(e) => setSelectedWidget(e.target.value)}>
-        <option value="">Select</option>
-        {availableWidgets.map((key) => (
-          <option key={key} value={key}>
-            {allWidgets[key]}
-          </option>
-        ))}
-      </select>
+          {/* Select menu for choosing a new widget to add */}
+          <select value={selectedWidget} onChange={(e) => setSelectedWidget(e.target.value)}>
+            <option value="">Select</option>
+            {availableWidgets.map((key) => (
+              <option key={key} value={key}>
+                {allWidgets[key]}
+              </option>
+            ))}
+          </select>
 
-      {!staticOn && (
-        <button onClick={addWidget} className="btn btn-primary m-4">
-          Aggiungi Widget
-        </button>
+          <button onClick={addWidget} className="btn btn-primary m-4">
+            Aggiungi Widget
+          </button>
+        </>
       )}
     </>
   );

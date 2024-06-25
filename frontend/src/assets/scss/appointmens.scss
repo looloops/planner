@@ -1,0 +1,208 @@
+.appointment-glass-background {
+  background: rgba(255, 255, 255, 0.24);
+  border-radius: 10px;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: left;
+  padding: 15px;
+}
+
+.appointment-single-row {
+  display: flex;
+  gap: 1rem;
+  min-height: 30px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.485);
+}
+
+.appointment-hour {
+  font-size: 10px;
+  color: #a5a5a5;
+  width: 15%;
+  padding-top: 5px;
+  line-height: 10px;
+}
+
+.appointment-container {
+  border-left: 1px solid rgba(255, 255, 255, 0.366);
+  padding-block: 5px;
+  padding-left: 5px;
+  flex-grow: 1;
+  align-items: stretch;
+  font-size: 12px;
+}
+
+.appointment-title {
+  font-size: 12px;
+  color: #ffffff;
+}
+
+.single-appointment {
+  margin-block: 5px;
+  padding: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: stretch;
+  flex-grow: 1;
+  background: #7f8aea61;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  border-radius: 2px;
+  &:hover {
+    background-color: rgba(127, 138, 234, 0.756);
+  }
+  &.high {
+    background-color: rgba(180, 72, 95, 0.541);
+  }
+  &.high:hover {
+    background-color: rgba(180, 72, 95, 0.756);
+  }
+  &.medium {
+    background-color: rgba(72, 180, 162, 0.541);
+  }
+  &.medium:hover {
+    background-color: rgba(72, 180, 162, 0.756);
+  }
+  &.low {
+    background-color: rgba(164, 180, 72, 0.541);
+  }
+  &.low:hover {
+    background-color: rgba(164, 180, 72, 0.756);
+  }
+}
+
+// ADD BUTTON ANIMATION
+
+.appointmentButtons {
+  height: 15px;
+  &.addButton {
+    border-radius: 50%;
+    width: 15px;
+    background-color: rgb(127, 137, 234);
+    &:hover {
+      width: 40px;
+      border-radius: 50px;
+      transition-duration: 0.3s;
+      background-color: rgb(181, 160, 255);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Add";
+      color: white;
+      font-size: 0px;
+    }
+  }
+  &.deleteButton {
+    border-radius: 50%;
+    width: 15px;
+    background-color: rgba(173, 59, 59, 0.501);
+    &:hover {
+      width: 40px;
+      border-radius: 50px;
+      transition-duration: 0.3s;
+      background-color: rgba(173, 59, 59, 0.501);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Delete";
+      color: white;
+      font-size: 0px;
+    }
+  }
+  &.editButton {
+    border-radius: 50%;
+    width: 15px;
+    background-color: rgba(28, 68, 170, 0.29);
+    &:hover {
+      width: 40px;
+      border-radius: 50px;
+      transition-duration: 0.3s;
+      background-color: rgba(28, 68, 170, 0.29);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Edit";
+      color: white;
+      font-size: 0px;
+    }
+  }
+  border: none;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 0px 1px rgba(180, 160, 255, 0.253);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+
+  &:hover::before {
+    font-size: 10px;
+    opacity: 1;
+    bottom: unset;
+    transition-duration: 0.3s;
+  }
+}
+
+.appointment-timelineIcons {
+  transition-duration: 0.3s;
+  color: white;
+  font-size: 10px;
+}
+
+.appointmentButtons:hover .appointment-timelineIcons {
+  transition-duration: 0.3s;
+  transform: translateY(-200%);
+}
+
+.appointment-buttons-container {
+  display: flex;
+  gap: 5px;
+}
+
+/* .addBigButton {
+    position: relative;
+    overflow: hidden;
+    height: 1rem;
+    padding: 0 2rem;
+    border-radius: 1.5rem;
+    background: #3d3a4e;
+    background-size: 400%;
+    color: #fff;
+    border: none;
+    font-size: 10px;
+    cursor: pointer;
+    &:hover::before {
+      transform: scaleX(1);
+    }
+    &::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      transform: scaleX(0);
+      transform-origin: 0 50%;
+      width: 100%;
+      height: inherit;
+      border-radius: inherit;
+      background: linear-gradient(
+        82.3deg,
+        rgba(150, 93, 233, 1) 10.8%,
+        rgba(99, 88, 238, 1) 94.3%
+      );
+      transition: all 0.475s;
+  }
+  }
+  
+  .addBigButton-content {
+    position: relative;
+    z-index: 1;
+  } */

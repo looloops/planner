@@ -190,15 +190,25 @@ const ScheduleEdit: React.FC = () => {
             <label htmlFor="priority" className="form-label">
               Priority
             </label>
-            <input
-              type="text"
-              className="form-control"
+            <select
+              value={formData.priority ?? ""}
+              onChange={(e) =>
+                setFormData((prevFormData) => ({
+                  ...prevFormData,
+                  priority: e.target.value,
+                }))
+              }
               id="priority"
               name="priority"
-              onChange={updateInputValue}
-              value={formData.priority ?? ""}
-            />
+              className="form-control"
+            >
+              <option value="">Select Priority</option>
+              <option value="High">High</option>
+              <option value="Medium">Medium</option>
+              <option value="Low">Low</option>
+            </select>
 
+            
             <button type="submit" className="btn btn-primary">
               Save changes
             </button>

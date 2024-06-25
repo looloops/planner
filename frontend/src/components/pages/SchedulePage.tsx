@@ -1,3 +1,4 @@
+import Appointments from "../widgets/Appointments";
 import Calendar from "../widgets/Calendar";
 
 const SchedulePage: React.FC = () => {
@@ -6,7 +7,7 @@ const SchedulePage: React.FC = () => {
       <div>
         <Calendar />
       </div>
-      <div>Appointments</div>
+      <div><Appointments /></div>
       <div>todos</div>
       <div>timeline</div>
       <div>schedule form</div>
