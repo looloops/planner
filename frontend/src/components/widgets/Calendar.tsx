@@ -1,4 +1,6 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { SAVE_ACTIVE_DATE } from "../../redux/actions/index";
 
 const Calendar: React.FC = () => {
   const months = [
@@ -24,8 +26,23 @@ const Calendar: React.FC = () => {
   const [days, setDays] = useState<JSX.Element[]>([]);
   const [events, setEvents] = useState<{ [key: string]: boolean }>({});
 
+  // SETTING REDUX
+  const startingDay = String(currentDate.getDate()).padStart(2, "0");
+  const startingMonth = String(currentDate.getMonth() + 1).padStart(2, "0"); // Adding 1 because getMonth() returns 0-11
+  const startingYear = currentDate.getFullYear();
+  const startingDate = `${startingYear}-${startingMonth}-${startingDay}`;
+  const [selectedDate, setSelectedDate] = useState(startingDate);
+
+  const dispatch = useDispatch();
+  // END OF SETTING REDUX
+
   useEffect(() => {
     renderCalendar();
+    // DISPATCH FOR REDUX STATE
+    dispatch({
+      type: SAVE_ACTIVE_DATE,
+      payload: selectedDate,
+    });
   }, [currentMonth, currentYear, events]);
 
   const renderCalendar = () => {
@@ -124,7 +141,12 @@ const Calendar: React.FC = () => {
       ...prevEvents,
       [dateKey]: !prevEvents[dateKey],
     }));
+
+    // SETTING SELECTED DATE FOR REDUX
+    const [year, month, day] = dateKey.split("-");
+    setSelectedDate(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
   };
+
   const hideTodayBtn = () => {
     return currentMonth === new Date().getMonth() && currentYear === new Date().getFullYear() ? "none" : "flex";
   };

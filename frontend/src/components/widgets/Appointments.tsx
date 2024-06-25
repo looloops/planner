@@ -11,7 +11,10 @@ import { SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/userReducer";
 
 const Appointments: React.FC = () => {
+  // Getting schedule and selected date from calendar from redux
   const schedule = useSelector((state: State) => state.widgets.schedule);
+  const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -69,7 +72,10 @@ const Appointments: React.FC = () => {
   const day = String(todaysDate.getDate()).padStart(2, "0");
   const formattedTodaysDate = `${year}-${month}-${day}`;
 
-  const todaysSchedule = schedule.settings?.filter((setting) => setting.date === formattedTodaysDate);
+  // console.log("datefrom calendar", dateFromCalendar)
+  //  console.log("fromatted", formattedTodaysDate)
+
+  const todaysSchedule = schedule.settings?.filter((setting) => setting.date === dateFromCalendar);
   console.log("todaysSchedule", todaysSchedule);
 
   const renderScheduleForHour = (hour: number) => {
@@ -78,75 +84,73 @@ const Appointments: React.FC = () => {
     const meridian = hour < 12 ? "am" : "pm";
     const displayHour = hour % 12 === 0 ? 12 : hour % 12;
 
-    return (
-      <>
-        {/* Div container for single item */}
-        <div key={hour}>
-          {/* Div container for top of the item  */}
-          <div className="appointment-single-row">
-            <div className="appointment-hour">
-              {displayHour}:00 {meridian}
-            </div>
+    // Filter and sort appointments for the current hour
+    const sortedAppointments = todaysSchedule
+      ?.filter(
+        (appointment) => appointment.start.substring(0, 2) >= startHour && appointment.start.substring(0, 2) < endHour
+      )
+      .sort((a, b) => a.start.localeCompare(b.start));
 
-            {/* Div container for appointments */}
-            <div className="appointment-container">
-              {todaysSchedule
-                ?.filter(
-                  (appointment) =>
-                    appointment.start.substring(0, 2) >= startHour && appointment.start.substring(0, 2) < endHour
-                )
-                .map((appointment) => (
-                  <React.Fragment key={appointment.id}>
-                    <div
-                      className={
-                        appointment.priority === "High"
-                          ? "single-appointment high"
-                          : appointment.priority === "Medium"
-                          ? "single-appointment medium"
-                          : appointment.priority === "Low"
-                          ? "single-appointment low"
-                          : "single-appointment"
-                      }
+    return (
+      <div key={hour}>
+        <div className="appointment-single-row">
+          <div className="appointment-hour">
+            {displayHour}:00 {meridian}
+          </div>
+          <div className="appointment-container">
+            {sortedAppointments?.map((appointment) => (
+              <React.Fragment key={appointment.id}>
+                <div
+                  className={
+                    appointment.priority === "High"
+                      ? "single-appointment high"
+                      : appointment.priority === "Medium"
+                      ? "single-appointment medium"
+                      : appointment.priority === "Low"
+                      ? "single-appointment low"
+                      : "single-appointment"
+                  }
+                >
+                  <span className="appointment-title">{appointment.title}</span>
+                  <div className="appointment-buttons-container">
+                    <button
+                      className="appointmentButtons editButton"
+                      onClick={() => navigate(`/schedule/edit/${appointment.id}`)}
                     >
-                      <span className="appointment-title">{appointment.title}</span>
-                      <div className="appointment-buttons-container">
-                        <button
-                          className="appointmentButtons editButton"
-                          onClick={() => navigate(`/schedule/edit/${appointment.id}`)}
+                      <div className="appointment-timelineIcons">
+                        <svg
+                          width="8px"
+                          height="6px"
+                          viewBox="0 0 15 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
                         >
-                          <div className="appointment-timelineIcons">
-                            <svg
-                              width="8px"
-                              height="6px"
-                              viewBox="0 0 15 15"
-                              fill="none"
-                              xmlns="http://www.w3.org/2000/svg"
-                            >
-                              <path
-                                d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
-                                fill="#ffffff"
-                              />
-                            </svg>
-                          </div>
-                        </button>
-                        <button className="appointmentButtons deleteButton" onClick={() => deleteItem(appointment.id)}>
-                          <div className="appointment-timelineIcons">-</div>
-                        </button>
+                          <path
+                            d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
+                            fill="#ffffff"
+                          />
+                        </svg>
                       </div>
-                    </div>
-                  </React.Fragment>
-                ))}
-            </div>
+                    </button>
+                    <button className="appointmentButtons deleteButton" onClick={() => deleteItem(appointment.id)}>
+                      <div className="appointment-timelineIcons">-</div>
+                    </button>
+                  </div>
+                </div>
+              </React.Fragment>
+            ))}
           </div>
         </div>
-      </>
+      </div>
     );
   };
 
   return (
     <>
       <div className="appointment-glass-background">
-        <h6 style={{ color: "#a5a5a5", marginBottom: "15px" }}>Appointments for [date coming from calendar] </h6>
+        <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
+          {dateFromCalendar as string} <span style={{ color: "#8D8D8D" }}>Scheduled Appointments</span>
+        </h6>
         {Array.from({ length: 24 }, (_, index) => renderScheduleForHour(index))}
       </div>
     </>
