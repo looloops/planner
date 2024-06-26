@@ -28,13 +28,11 @@ const Todos: React.FC = () => {
           },
         };
 
-
         // Dispatch the parsed details
         dispatch({
           type: TODOS_DETAILS,
           payload: parsedDetails,
         });
-
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
