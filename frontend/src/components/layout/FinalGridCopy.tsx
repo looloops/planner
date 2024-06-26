@@ -8,6 +8,8 @@ import Media from "../widgets/Media";
 import Weather from "../widgets/Weather";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Todos from "../widgets/Todos";
+import Calendar from "../widgets/Calendar";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -24,11 +26,13 @@ const FinalGridCopy = () => {
   // GETTING ALL WIDGETS
   const allWidgets = {
     1: "Schedule",
-    2: "Media",
-    3: "Weather",
-    4: "Books",
-    5: "Recipes",
-    6: "Calendar",
+    2: "Goals",
+    3: "Media",
+    4: "Recipes",
+    5: "Journal",
+    6: "Todos",
+    7: "Calendar", // to be decided
+    8: "Weather", // to be decided
   };
   console.log("allWidgets", allWidgets);
 
@@ -177,13 +181,22 @@ const FinalGridCopy = () => {
   const renderComponent = (key: number) => {
     switch (key) {
       case 1:
-        return <Schedule />;
+        return <Schedule />; // schedule
       case 2:
-        return <Media />;
+        return <Weather />; //goals
       case 3:
-        return <Weather />;
+        return <Media />; // media
       case 4:
-        return <Schedule />;
+        return <Schedule />; // recipes
+      case 5:
+        return <Schedule />; // journal
+      case 6:
+        return <Todos />; // todos
+      case 7:
+        return <Calendar />; // to be decided
+      case 8:
+        return <Weather />; // to be decided
+
       default:
         return null;
     }

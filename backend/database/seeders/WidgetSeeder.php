@@ -72,7 +72,15 @@ class WidgetSeeder extends Seeder
             ])
         ]);
 
+        Widget::factory()->create([
+            'name' => "todos",
+            'description' => "your to-dos list",
+            'field_list' => json_encode([
+                "title",
+                "description",
+                "priority",
+                "status",
+            ])
+        ]);
     }
 }
-
-
