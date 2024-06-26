@@ -1,5 +1,6 @@
 import Appointments from "../widgets/Appointments";
 import Calendar from "../widgets/Calendar";
+import NewAppointmentCopy from "../widgets/NewAppointmentCopy";
 
 const SchedulePage: React.FC = () => {
   return (
@@ -7,10 +8,14 @@ const SchedulePage: React.FC = () => {
       <div>
         <Calendar />
       </div>
-      <div><Appointments /></div>
+      <div>
+        <Appointments />
+      </div>
       <div>todos</div>
       <div>timeline</div>
-      <div>schedule form</div>
+      <div>
+        <NewAppointmentCopy />
+      </div>
     </div>
   );
 };

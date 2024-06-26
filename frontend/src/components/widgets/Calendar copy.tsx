@@ -5,7 +5,6 @@ import { State } from "../../redux/reducers/userReducer";
 
 const Calendar: React.FC = () => {
   const schedule = useSelector((state: State) => state.widgets.schedule);
-  const appointments = schedule.settings || [];
 
   const months = [
     "January",
@@ -43,7 +42,7 @@ const Calendar: React.FC = () => {
   useEffect(() => {
     renderCalendar();
     // DISPATCH FOR REDUX STATE
-  }, [selectedDate, currentMonth, currentYear, appointments]);
+  }, [selectedDate, currentMonth, currentYear]);
 
   const renderCalendar = () => {
     const firstDay = new Date(currentYear, currentMonth, 1);
@@ -69,8 +68,8 @@ const Calendar: React.FC = () => {
 
     for (let i = 1; i <= lastDayDate; i++) {
       const isToday = i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
-      const eventKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
-      const isEvent = appointments.some((appointment) => appointment.date === eventKey);
+      const eventKey = `${currentYear}-${currentMonth + 1}-${i}`;
+      const isEvent = !!events[eventKey];
       const classNames = ["day", "current"];
       if (isToday) classNames.push("today");
       if (isEvent) classNames.push("event");
