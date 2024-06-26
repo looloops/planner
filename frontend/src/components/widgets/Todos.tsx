@@ -1,3 +1,4 @@
+import "../../assets/scss/todos.scss";
 import { useState, ChangeEvent, FormEvent, useEffect } from "react";
 import axios from "axios";
 import { GeneralSettings } from "../../typescript/interfaces";
@@ -27,7 +28,6 @@ const Todos: React.FC = () => {
           },
         };
 
-        // console.log("parsedDetails", parsedDetails);
 
         // Dispatch the parsed details
         dispatch({
@@ -35,8 +35,6 @@ const Todos: React.FC = () => {
           payload: parsedDetails,
         });
 
-        // Optionally, set form data with the settings if needed
-        // setFormData(parsedDetails.settings); // Uncomment and define setFormData if needed
       })
       .catch((err) => {
         console.error("Error fetching data:", err);
@@ -47,7 +45,7 @@ const Todos: React.FC = () => {
   const initialState: Partial<GeneralSettings> = {
     title: "",
     description: "",
-    priority: "None",
+    priority: "No priority",
     status: "To-do",
   };
 
@@ -92,77 +90,189 @@ const Todos: React.FC = () => {
       console.log("Data added successfully:", response.data);
       // Reset form after successful submission
       setFormData(initialState);
+      dispatch({
+        type: TODOS_DETAILS,
+        payload: body,
+      });
     } catch (error) {
       console.error("Error adding data:", error);
     }
   };
 
+  // MANAGING THE DELETE OF A SINGLE ITEM WITHIN THE SETTINGS ARRAY
+  const deleteItem = (index: number) => {
+    if (!todos || !todos.settings) return;
+
+    const updatedSettingsArray = [...todos.settings.slice(0, index), ...todos.settings.slice(index + 1)];
+
+    const body = {
+      ...todos,
+      settings: updatedSettingsArray,
+    };
+
+    axios
+      .put(`http://localhost:8000/api/user/widgets/edit/${todos.widget_id}`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Item deleted successfully:", response.data);
+        // Update the Redux store with the new state
+        dispatch({
+          type: TODOS_DETAILS,
+          payload: body,
+        });
+      })
+      .catch((error) => {
+        console.error("Error deleting item:", error);
+      });
+  };
+
   return (
-    <div>
-      <h1>Add New todos</h1>
-      {todos && (
-        <form onSubmit={submitNewData} noValidate>
-          <label htmlFor="title" className="form-label">
-            Title
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="title"
-            name="title"
-            onChange={createInputValue}
-            value={formData.title || ""}
-            required
-          />
-
-          <label htmlFor="description" className="form-label">
-            Description
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="description"
-            name="description"
-            onChange={createInputValue}
-            value={formData.description || ""}
-          />
-
-          <label htmlFor="priority" className="form-label">
-            Priority
-          </label>
+    <div className="todos-glass-background">
+      <p className="todos-big-title">Add New todos</p>
+      <form onSubmit={submitNewData} noValidate>
+        <div className="todosSelectContainer">
           <select
             value={formData.priority ?? ""}
             onChange={createInputValue}
             id="priority"
             name="priority"
-            className="form-control"
+            className="selectTodos"
           >
-            <option value="None">None</option>
+            <option value="No priority">No priority</option>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>
           </select>
 
-          <label htmlFor="status" className="form-label">
-            Status
-          </label>
           <select
-            value={formData.status ?? ""}
+            value={formData.status || ""}
             onChange={createInputValue}
             id="status"
             name="status"
-            className="form-control"
+            className="selectTodos"
           >
             <option value="To-do">To-do</option>
             <option value="On-going">On-going</option>
             <option value="Done">Done</option>
           </select>
+        </div>
 
-          <button type="submit" className="btn btn-primary">
-            Add todos
+        <input
+          type="text"
+          className="form-control todos-input"
+          placeholder="Title"
+          id="title"
+          name="title"
+          onChange={createInputValue}
+          value={formData.title || ""}
+          required
+        />
+
+        <input
+          type="text"
+          className="form-control todos-input"
+          placeholder="Description"
+          id="description"
+          name="description"
+          onChange={createInputValue}
+          value={formData.description || ""}
+        />
+
+        <div className="todos-submit-btn-container">
+          <button type="submit" className="todos-submit-btn">
+            <p className="todos-submit-btn-content">Add</p>
           </button>
-        </form>
-      )}
+        </div>
+      </form>
+
+      <div className="todos-container">
+        <p className="todos-section-title">To-do list</p>
+        {todos.settings
+          ?.filter((todo, index) => todo.status === "To-do")
+          .map((todo, index) => (
+            <div>
+              <p className="todos-title">
+                <span
+                  className={
+                    todo.priority === "High"
+                      ? "todos-dot high-priority"
+                      : todo.priority === "Medium"
+                      ? "todos-dot medium-priority"
+                      : todo.priority === "Low"
+                      ? "todos-dot low-priority"
+                      : "todos-dot"
+                  }
+                ></span>
+                {todo.title}
+              </p>
+              <p>{todo.description}</p>
+              <button type="button" className="btn btn-danger" onClick={() => deleteItem(index)}>
+                Delete
+              </button>
+            </div>
+          ))}
+      </div>
+
+      <div className="todos-container">
+        <p className="todos-section-title">Doing list</p>
+        {todos.settings
+          ?.filter((todo) => todo.status === "On-going")
+          .map((doing) => (
+            <div>
+              <p className="todos-title">
+                {" "}
+                <span
+                  className={
+                    doing.priority === "High"
+                      ? "todos-dot high-priority"
+                      : doing.priority === "Medium"
+                      ? "todos-dot medium-priority"
+                      : doing.priority === "Low"
+                      ? "todos-dot low-priority"
+                      : "todos-dot"
+                  }
+                ></span>
+                {doing.title}
+              </p>
+              <p>{doing.description}</p>
+              <button type="button" className="btn btn-danger" onClick={() => deleteItem(index)}>
+                Delete
+              </button>
+            </div>
+          ))}
+      </div>
+
+      <div className="todos-container">
+        <p className="todos-section-title">Done list</p>
+        {todos.settings
+          ?.filter((todo) => todo.status === "Done")
+          .map((done) => (
+            <div>
+              <p className="todos-title">
+                {" "}
+                <span
+                  className={
+                    done.priority === "High"
+                      ? "todos-dot high-priority"
+                      : done.priority === "Medium"
+                      ? "todos-dot medium-priority"
+                      : done.priority === "Low"
+                      ? "todos-dot low-priority"
+                      : "todos-dot"
+                  }
+                ></span>
+                {done.title}
+              </p>
+              <p>{done.description}</p>
+              <button type="button" className="btn btn-danger" onClick={() => deleteItem(index)}>
+                Delete
+              </button>
+            </div>
+          ))}
+      </div>
     </div>
   );
 };

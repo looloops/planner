@@ -39,11 +39,7 @@ const Calendar: React.FC = () => {
   useEffect(() => {
     renderCalendar();
     // DISPATCH FOR REDUX STATE
-    dispatch({
-      type: SAVE_ACTIVE_DATE,
-      payload: selectedDate,
-    });
-  }, [currentMonth, currentYear, events]);
+  }, [selectedDate, currentMonth, currentYear]);
 
   const renderCalendar = () => {
     const firstDay = new Date(currentYear, currentMonth, 1);
@@ -144,7 +140,25 @@ const Calendar: React.FC = () => {
 
     // SETTING SELECTED DATE FOR REDUX
     const [year, month, day] = dateKey.split("-");
-    setSelectedDate(`${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`);
+    const fullDate = `${year}-${month.padStart(2, "0")}-${day.padStart(2, "0")}`;
+    console.log("date from calendar", fullDate);
+    console.log("selecteddate before if", selectedDate);
+
+    if (selectedDate === fullDate) {
+      setSelectedDate(startingDate);
+      dispatch({
+        type: SAVE_ACTIVE_DATE,
+        payload: startingDate,
+      });
+    } else {
+      setSelectedDate(fullDate);
+      dispatch({
+        type: SAVE_ACTIVE_DATE,
+        payload: fullDate,
+      });
+    }
+
+    console.log("selecteddate after if", selectedDate);
   };
 
   const hideTodayBtn = () => {
