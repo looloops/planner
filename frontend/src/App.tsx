@@ -61,6 +61,7 @@ const App: React.FC = () => {
           <Route path="/Timeline" element={<ScheduleTimeline />} />
           <Route path="/" element={<Homepage />} />
           <Route path="/schedule-page" element={<SchedulePage />} />
+          <Route path="/navbar" element={<MyNav />} />
         </Routes>
       </Router>
     )

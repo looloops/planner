@@ -9,14 +9,36 @@ const ScheduleCreate: React.FC = () => {
   const schedule = useSelector((state: State) => state.widgets.schedule);
   console.log("schedule", schedule);
 
+  // GETTING TODAYS DATE TO USE AS DEFAULT VALUE
+  const todaysDate = new Date();
+  const year = todaysDate.getFullYear();
+  const month = String(todaysDate.getMonth() + 1).padStart(2, "0");
+  const day = String(todaysDate.getDate()).padStart(2, "0");
+  const formattedTodaysDate = `${year}-${month}-${day}`;
+
+  // GETTING CURRENT TIME TO USE AS DEFAULT VALUE
+  const hours = todaysDate.getHours().toString().padStart(2, "0");
+  const minutes = todaysDate.getMinutes().toString().padStart(2, "0");
+  const timeString = `${hours}:${minutes}`;
+
   // GETTING HIGHEST ID IN THE SCHEDULE SETTINGS ARRAY
   const arrId: number[] = schedule.settings?.map((element) => element.id) || [];
   const maxId = Math.max(...arrId);
 
-  // CREATING A LOCAL STATE FOR DATA COMING FROM THE FORM
-  const [formData, setFormData] = useState<Partial<GeneralSettings>>({
+  // Initial state with defined default values
+  const initialState: Partial<GeneralSettings> = {
     id: maxId + 1, // Initialize ID with the next available ID
-  });
+    title: "",
+    description: "",
+    date: formattedTodaysDate,
+    start: timeString,
+    finish: timeString,
+    deadline: formattedTodaysDate,
+    priority: "None",
+  };
+
+  // CREATING A LOCAL STATE FOR DATA COMING FROM THE FORM WITH DEFAULT VALUES
+  const [formData, setFormData] = useState<Partial<GeneralSettings>>(initialState);
 
   // UPDATING THE LOCAL STATE
   const createInputValue = (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -60,7 +82,7 @@ const ScheduleCreate: React.FC = () => {
       .then((response) => {
         console.log("Data added successfully:", response.data);
         // Reset form after successful submission
-        setFormData({});
+        setFormData(initialState);
       })
       .catch((error) => {
         console.error("Error adding data:", error);
@@ -72,11 +94,8 @@ const ScheduleCreate: React.FC = () => {
       <h1>Add New Schedule</h1>
       {schedule && (
         <form onSubmit={submitNewData} noValidate>
-          <label htmlFor="id" className="form-label">
-            ID
-          </label>
           <input
-            type="text"
+            type="hidden"
             className="form-control"
             id="id"
             name="id"
@@ -173,7 +192,7 @@ const ScheduleCreate: React.FC = () => {
             name="priority"
             className="form-control"
           >
-            <option value="">Select Priority</option>
+            <option value="None">None</option>
             <option value="High">High</option>
             <option value="Medium">Medium</option>
             <option value="Low">Low</option>

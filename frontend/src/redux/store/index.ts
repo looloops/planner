@@ -8,6 +8,7 @@ import persistStore from "redux-persist/es/persistStore";
 // import { WidgetsState } from "../reducers/WidgetsReducer";
 import { State } from "../reducers/userReducer";
 
+
 // Define the RootState interface here
 
 // Persist configuration
@@ -27,6 +28,10 @@ const persistedReducer = persistReducer(persistConfig as any, rootReducer as any
 // Create the store
 export const store = configureStore({
   reducer: persistedReducer,
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({
+      serializableCheck: false,
+    }),
 });
 
 // Define the RootState type using the store's state

@@ -101,11 +101,8 @@ const ScheduleEdit: React.FC = () => {
         <h1>Edit Schedule</h1>
         {schedule && schedule.settings && formData && (
           <form onSubmit={submitUpdatedData} noValidate>
-            <label htmlFor="id" className="form-label">
-              ID
-            </label>
             <input
-              type="text"
+              type="hidden"
               className="form-control"
               id="id"
               name="id"
@@ -202,13 +199,12 @@ const ScheduleEdit: React.FC = () => {
               name="priority"
               className="form-control"
             >
-              <option value="">Select Priority</option>
+              <option value="None">None</option>
               <option value="High">High</option>
               <option value="Medium">Medium</option>
               <option value="Low">Low</option>
             </select>
 
-            
             <button type="submit" className="btn btn-primary">
               Save changes
             </button>
