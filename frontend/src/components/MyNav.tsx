@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { LOGOUT } from "../redux/actions";
 import axios from "axios";
+import { LOGOUT } from "../redux/actions";
 import { useLocation } from "react-router-dom";
-import { State } from "../redux/reducers/userReducer"; // Assuming you have a RootState type defined in your Redux store
+import { RootState } from "../redux/store"; // Import RootState from the correct location
 
 const MyNav: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
-  const user = useSelector((state: State) => state.user);
+  const userUser = useSelector((state: RootState) => state.user.user);
+  const user = useSelector((state: RootState) => state.user);
   const [isScrolled, setIsScrolled] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,11 +32,19 @@ const MyNav: React.FC = () => {
     };
   }, []);
 
-  const logout = () => {
-    axios.post("http://localhost:8000/logout").then(() => {
+  const logout = async () => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+      await axios.post("http://localhost:8000/logout");
       dispatch({ type: LOGOUT });
       navigate("/");
-    });
+    } catch (error) {
+      setError("Failed to logout. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -63,7 +74,6 @@ const MyNav: React.FC = () => {
                     location.pathname === "/" ? "bord-p" : ""
                   }`}
                 >
-                  {/* <IoMdHome /> */}
                   Home
                 </Link>
               </li>
@@ -71,7 +81,7 @@ const MyNav: React.FC = () => {
                 <Link
                   to="/login"
                   className={`nav-link d-flex align-items-center gap-1 text-secondary ${
-                    location.pathname === "/" ? "bord-p" : ""
+                    location.pathname === "/login" ? "bord-p" : ""
                   }`}
                 >
                   Login
@@ -80,7 +90,6 @@ const MyNav: React.FC = () => {
               {user?.user?.role === "guest" && (
                 <li className="nav-item">
                   <Link to="/corsiutente/1" className="nav-link text-secondary d-flex align-items-center gap-1">
-                    {/* <IoIosFitness /> */}
                     Your courses
                   </Link>
                 </li>
@@ -111,7 +120,6 @@ const MyNav: React.FC = () => {
                   </a>
                   <ul className="dropdown-menu">
                     <div className="d-flex px-2 align-items-center">
-                      {/* <IoIosSettings /> */}
                       <li>
                         <Link className="dropdown-item border-0 ps-1" to={`/dashboard/`}>
                           Profile
@@ -119,10 +127,9 @@ const MyNav: React.FC = () => {
                       </li>
                     </div>
                     <div className="d-flex px-2 align-items-center">
-                      {/* <RiLogoutBoxLine /> */}
                       <li>
-                        <button onClick={logout} className="dropdown-item border-0 ps-1">
-                          Logout
+                        <button onClick={logout} className="dropdown-item border-0 ps-1" disabled={isLoading}>
+                          {isLoading ? "Logging out..." : "Logout"}
                         </button>
                       </li>
                     </div>
@@ -132,7 +139,6 @@ const MyNav: React.FC = () => {
                     <div className="d-flex px-2 align-items-center">
                       {user?.user?.role === "admin" && (
                         <>
-                          {/* <RiAdminFill /> */}
                           <li>
                             <Link className="dropdown-item border-0 ps-1" to="backoffice">
                               BackOffice
@@ -145,16 +151,20 @@ const MyNav: React.FC = () => {
                 </li>
               </ul>
             ) : (
-              <button className="btn btn-light rounded-0 ms-2" onClick={() => navigate("/Login")}>
+              <button className="btn btn-light rounded-0 ms-2" onClick={() => navigate("/login")}>
                 Login
               </button>
-              // <Link to="/Login" className="nav-link ms-2">Login</Link>
             )}
           </div>
         </div>
       </nav>
+      <div>{userUser ? <p>Welcome, {userUser.name}!</p> : <p>You are not logged in.</p>}</div>;
     </>
   );
 };
 
 export default MyNav;
+
+{
+  /* <div>{userUser ? <p>Welcome, {userUser.name}!</p> : <p>You are not logged in.</p>}</div>; */
+}

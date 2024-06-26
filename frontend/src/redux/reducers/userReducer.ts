@@ -1,10 +1,4 @@
-import { LOGIN, LOGOUT, SAVE_ACTIVE_WIDGETS, SAVE_LAYOUT } from "../actions";
-import { WidgetsState } from "./WidgetsReducer";
-
-export interface State {
-  user: UserState;
-  widgets: WidgetsState;
-}
+import { LOGIN, LOGOUT, SAVE_ACTIVE_WIDGETS, SAVE_LAYOUT, ActionTypes } from "../actions";
 
 export interface User {
   id: number;
@@ -24,28 +18,6 @@ const initialState: UserState = {
   user: null,
 };
 
-interface LoginAction {
-  type: typeof LOGIN;
-  payload: User;
-}
-
-interface LogoutAction {
-  type: typeof LOGOUT;
-  payload: null;
-}
-
-interface SaveLayoutAction {
-  type: typeof SAVE_LAYOUT;
-  payload: string;
-}
-
-interface SaveActiveWidgetsAction {
-  type: typeof SAVE_ACTIVE_WIDGETS;
-  payload: Array<number>;
-}
-
-type ActionTypes = LoginAction | LogoutAction | SaveLayoutAction | SaveActiveWidgetsAction;
-
 const userReducer = (state = initialState, action: ActionTypes): UserState => {
   switch (action.type) {
     case LOGIN:
@@ -53,13 +25,11 @@ const userReducer = (state = initialState, action: ActionTypes): UserState => {
         ...state,
         user: action.payload,
       };
-
     case LOGOUT:
       return {
         ...state,
         user: null,
       };
-
     case SAVE_LAYOUT:
       if (state.user) {
         return {
@@ -71,7 +41,6 @@ const userReducer = (state = initialState, action: ActionTypes): UserState => {
         };
       }
       return state;
-
     case SAVE_ACTIVE_WIDGETS:
       if (state.user) {
         return {
@@ -83,7 +52,6 @@ const userReducer = (state = initialState, action: ActionTypes): UserState => {
         };
       }
       return state;
-
     default:
       return state;
   }
