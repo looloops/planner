@@ -1,0 +1,38 @@
+.schedule-template-grid {
+  display: grid;
+  grid-template-areas:
+    "calendar appointments todos"
+    "timeline appointments todos"
+    "schedule_form appointments todos";
+  grid-template-columns: 33% 33% 33%;
+  //   grid-template-rows: 150px auto;
+  // height: 100vh; // Adjust the height as needed
+}
+
+.schedule-template-grid > div:nth-child(1) {
+  grid-area: calendar;
+}
+
+.schedule-template-grid > div:nth-child(2) {
+  grid-area: appointments;
+}
+
+.schedule-template-grid > div:nth-child(3) {
+  grid-area: todos;
+}
+
+.schedule-template-grid > div:nth-child(4) {
+  grid-area: timeline;
+}
+.schedule-template-grid > div:nth-child(5) {
+  grid-area: schedule_form;
+}
+
+.min-div-widgets {
+  width: 380px;
+  height: 200px;
+  overflow: hidden;
+}
+.media-img-div {
+  overflow: hidden;
+}

@@ -11,6 +11,7 @@ import {
   THEME_DETAILS,
   TODOS_DETAILS,
   WISHLIST_DETAILS,
+  SAVE_ACTIVE_DATE,
 } from "../actions";
 import { WidgetDetails } from "../../typescript/interfaces";
 
@@ -74,6 +75,11 @@ interface WishlistAction {
   payload: Partial<WidgetDetails>;
 }
 
+interface SaveActiveDateAction {
+  type: typeof SAVE_ACTIVE_DATE;
+  payload: Partial<WidgetDetails>;
+}
+
 type ActionTypes =
   | BooksAction
   | GoalsAction
@@ -86,7 +92,8 @@ type ActionTypes =
   | ScheduleAction
   | ThemeAction
   | ToDosAction
-  | WishlistAction;
+  | WishlistAction
+  | SaveActiveDateAction;
 
 export interface WidgetsState {
   schedule: Partial<WidgetDetails>;
@@ -101,6 +108,7 @@ export interface WidgetsState {
   habits: Partial<WidgetDetails>;
   theme: Partial<WidgetDetails>;
   journal: Partial<WidgetDetails>;
+  active_date: Partial<WidgetDetails>;
 }
 
 const initialState: WidgetsState = {
@@ -116,10 +124,18 @@ const initialState: WidgetsState = {
   habits: {},
   theme: {},
   journal: {},
+  active_date: {},
 };
 
 const widgetsReducer = (state = initialState, action: ActionTypes): WidgetsState => {
   switch (action.type) {
+
+    case SAVE_ACTIVE_DATE:
+      return {
+        ...state,
+          active_date: action.payload,
+      };
+
     case SCHEDULE_DETAILS:
       return {
         ...state,

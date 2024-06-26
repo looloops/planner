@@ -1,0 +1,165 @@
+/* ---------- GENERAL ---------- */
+
+.calendar_body {
+  background: #f9f9f9;
+  color: #0e171c;
+  font: 300 100% / 1.5em "Lato", sans-serif;
+  margin: 0;
+  place-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+a {
+  text-decoration: none;
+}
+
+h2 {
+  font-size: 2em;
+  line-height: 1.25em;
+  margin: 0.25em 0;
+}
+
+h3 {
+  font-size: 1.5em;
+  line-height: 1em;
+  margin: 0.33em 0;
+}
+
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+  width: 100%;
+  table-layout: fixed;
+}
+
+/* ---------- CALENDAR ---------- */
+
+.calendar {
+  text-align: center;
+  width: 100%;
+  margin-block: 18px;
+}
+
+.calendar header {
+  position: relative;
+}
+
+.calendar h2 {
+  text-transform: uppercase;
+}
+
+.calendar thead {
+  font-weight: 600;
+  text-transform: uppercase;
+}
+.calendar thead > tr {
+  display: flex;
+  justify-content: space-around;
+}
+
+.calendar tbody {
+  color: #7c8a95;
+}
+.calendar tbody > tr {
+  color: #7c8a95;
+  display: flex;
+  justify-content: space-around;
+}
+
+.calendar tbody td:hover {
+  border: 2px solid #00addf;
+}
+
+.calendar td {
+  border: 2px solid transparent;
+  border-radius: 50%;
+  display: inline-block;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  width: 2em;
+}
+
+.calendar .prev-month,
+.calendar .next-month {
+  color: #cbd1d2;
+}
+
+.calendar .prev-month:hover,
+.calendar .next-month:hover {
+  border: 2px solid #cbd1d2;
+}
+
+.today {
+  background: #00addf;
+  color: #f9f9f9;
+}
+
+.event {
+  cursor: pointer;
+  position: relative;
+}
+
+.event:after {
+  background: #00addf;
+  border-radius: 50%;
+  bottom: -0.3em;
+  display: block;
+  content: "";
+  height: 0.5em;
+  left: 50%;
+  margin: -0.25em 0 0 -0.25em;
+  position: absolute;
+  width: 0.5em;
+}
+
+.event.current-day:after {
+  background: #f9f9f9;
+}
+
+.btn-prev,
+.btn-next {
+  border: 2px solid #cbd1d2;
+  border-radius: 50%;
+  color: #cbd1d2;
+  height: 2em;
+  font-size: 0.75em;
+  line-height: 2em;
+  margin: -1em;
+  position: absolute;
+  top: 50%;
+  width: 2em;
+}
+
+.btn-prev:hover,
+.btn-next:hover {
+  background: #cbd1d2;
+  color: #f9f9f9;
+}
+
+.btn-prev {
+  left: 6em;
+}
+
+.btn-next {
+  right: 6em;
+}
+
+/* Specific styles for different days */
+.calendar .prev {
+  color: #cbd1d2; /* Lighter color for previous month */
+}
+
+.calendar .current {
+  color: #0e171c; /* Darker color for current month */
+}
+
+.calendar .next {
+  color: #cbd1d2; /* Lighter color for next month */
+}
+
+.current-day {
+  background: #00addf;
+  color: #f9f9f9;
+}

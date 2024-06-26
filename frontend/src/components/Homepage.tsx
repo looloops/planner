@@ -1,8 +1,9 @@
+import MyNav from "./MyNav";
 import FinalGridCopy from "./layout/FinalGridCopy";
 import RightBar from "./layout/RightBar";
 import SideBar from "./layout/SideBar";
 
-import TopBar from "./layout/TopBar";
+//import TopBar from "./layout/TopBar";
 
 function Homepage() {
   return (
@@ -11,7 +12,7 @@ function Homepage() {
         <SideBar />
       </div>
       <div>
-        <TopBar />
+        <MyNav />
       </div>
       <div>
         <FinalGridCopy />
