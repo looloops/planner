@@ -26,7 +26,7 @@
   color: #686868;
 }
 
-.todos-container>div {
+.todos-container > div {
   line-height: 5px;
   margin-top: 10px;
 }
@@ -146,7 +146,6 @@
 
   &.high-priority {
     background-color: #f12323;
-   
   }
 
   &.medium-priority {

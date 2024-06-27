@@ -14,6 +14,7 @@ const Appointments: React.FC = () => {
   // Getting schedule and selected date from calendar from redux
   const schedule = useSelector((state: State) => state.widgets.schedule);
   const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
+  console.log("dateFromCalendar", dateFromCalendar);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
