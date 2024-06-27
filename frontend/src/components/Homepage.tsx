@@ -15,6 +15,7 @@ import ScheduleTimeline from "./widgets/ScheduleTimeline";
 import NewAppointmentCopy from "./widgets/NewAppointmentCopy";
 import SchedulePage from "./pages/SchedulePage";
 import { Routes, Route } from "react-router-dom";
+import DailySchedule from "./widgets/ DailySchedule";
 
 const Homepage: React.FC = () => {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ const Homepage: React.FC = () => {
           <Route path="/weather" element={<Weather />} />
           <Route path="/timeline" element={<ScheduleTimeline />} />
           <Route path="/newappointment" element={<NewAppointmentCopy />} />
+          <Route path="/daily-schedule" element={<DailySchedule />} />
         </Routes>
       </div>
     </div>
