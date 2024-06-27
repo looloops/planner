@@ -1,12 +1,18 @@
+// NewAppointment.tsx
+
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/reducers/userReducer";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../../assets/scss/newappointment.scss";
+import NewForm from "./NewAppointmentForm"; // Importa il nuovo componente NewForm
+import { SCHEDULE_DETAILS } from "../../redux/actions";
 
-const NewAppointment: React.FC = () => {
+const NewAppointmentCopy: React.FC = () => {
   const schedule = useSelector((state: State) => state.widgets.schedule);
   const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
+  console.log("datefromcalendar", dateFromCalendar);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -21,6 +27,17 @@ const NewAppointment: React.FC = () => {
     date: dateFromCalendar,
   });
 
+  useEffect(() => {
+    setFormData({
+      id: null,
+      title: "",
+      start: "",
+      end: "",
+      priority: "",
+      date: dateFromCalendar,
+    });
+  }, [dateFromCalendar, dispatch]);
+
   const hours = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, "0")}:00`);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
@@ -29,7 +46,7 @@ const NewAppointment: React.FC = () => {
   };
 
   const handleHourClick = (hour: string) => {
-    setSelectedHour(hour);
+    selectedHour ? setSelectedHour(null) : setSelectedHour(hour);
     setFormData((prevFormData) => ({ ...prevFormData, start: hour }));
   };
 
@@ -59,6 +76,10 @@ const NewAppointment: React.FC = () => {
         headers: {
           "Content-Type": "application/json",
         },
+      });
+      dispatch({
+        type: SCHEDULE_DETAILS,
+        payload: body,
       });
       console.log("Appointment saved successfully");
     } catch (error) {
@@ -95,8 +116,12 @@ const NewAppointment: React.FC = () => {
       });
   };
 
+  const appointmentsForDay = schedule.settings?.filter((appointment) => appointment.date === dateFromCalendar);
+  console.log("selectedHour", selectedHour);
+
   return (
     <div>
+      {/* CONTAINER HOURS PILLS */}
       <div className="hours-pills-container">
         {hours.map((hour) => (
           <div
@@ -108,81 +133,47 @@ const NewAppointment: React.FC = () => {
           </div>
         ))}
       </div>
+
+      {/* SELECTED DATE */}
       <div className="appointment-glass-background">
         <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
           {dateFromCalendar} <span style={{ color: "#8D8D8D" }}>Scheduled Appointments</span>
         </h6>
+        {/* SELECTED HOUR */}
 
-        {selectedHour ? (
-          <form onSubmit={handleSubmit}>
-            <div>
-              <label htmlFor="title">Title:</label>
-              <input type="text" id="title" name="title" value={formData.title} onChange={handleInputChange} required />
-            </div>
-            <div>
-              <label htmlFor="start">Start Time:</label>
-              <input type="text" id="start" name="start" value={formData.start} onChange={handleInputChange} required />
-            </div>
-            <div>
-              <label htmlFor="end">End Time:</label>
-              <input type="text" id="end" name="end" value={formData.end} onChange={handleInputChange} required />
-            </div>
-            <div>
-              <label htmlFor="priority">Priority:</label>
-              <select id="priority" name="priority" value={formData.priority} onChange={handleInputChange} required>
-                <option value="">Select Priority</option>
-                <option value="High">High</option>
-                <option value="Medium">Medium</option>
-                <option value="Low">Low</option>
-              </select>
-            </div>
-            <button type="submit">{formData.id ? "Update" : "Add"} Appointment</button>
-          </form>
-        ) : (
-          hours.map((hour, index) => {
-            const appointmentsForHour = schedule.settings?.filter(
-              (appointment) => appointment.date === dateFromCalendar && appointment.start.startsWith(hour)
-            );
-            return (
-              <div key={index} className="appointment-single-row">
-                <div className="appointment-hour">{hour}</div>
-                <div className="appointment-container">
-                  {appointmentsForHour?.map((appointment) => (
-                    <React.Fragment key={appointment.id}>
-                      <div
-                        className={
-                          appointment.priority === "High"
-                            ? "single-appointment high"
-                            : appointment.priority === "Medium"
-                            ? "single-appointment medium"
-                            : appointment.priority === "Low"
-                            ? "single-appointment low"
-                            : "single-appointment"
-                        }
-                      >
-                        <span className="appointment-title">{appointment.title}</span>
-                        <div className="appointment-buttons-container">
-                          <button className="appointmentButtons editButton" onClick={() => handleEdit(appointment)}>
-                            Edit
-                          </button>
-                          <button
-                            className="appointmentButtons deleteButton"
-                            onClick={() => deleteItem(appointment.id)}
-                          >
-                            Delete
-                          </button>
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  ))}
+        {selectedHour && (
+          <div>
+            <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+            <h6>Appointments for {selectedHour}:</h6>
+            {appointmentsForDay
+
+              ?.filter((appointment) => appointment.start.startsWith(selectedHour.substring(0, 2)))
+              .map((appointment) => (
+                <div key={appointment.id} className="appointment-summary">
+                  <span>
+                    {appointment.title} - {appointment.start}
+                  </span>
                 </div>
+              ))}
+          </div>
+        )}
+        {!selectedHour && (
+          <div className="appointments-list">
+            {/* <h6>All Appointments for the Day:</h6>
+            {appointmentsForDay?.map((appointment) => (
+              <div key={appointment.id} className="appointment-summary">
+                <span>
+                  {appointment.title} - {appointment.start}
+                </span>
               </div>
-            );
-          })
+            ))} */}
+
+            <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default NewAppointment;
+export default NewAppointmentCopy;

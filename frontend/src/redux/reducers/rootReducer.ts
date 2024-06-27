@@ -1,6 +1,6 @@
 import { combineReducers } from "@reduxjs/toolkit";
 import userReducer from "./userReducer";
-import widgetsReducer from "./widgetsReducer";
+import widgetsReducer from "./WidgetsReducer";
 import { LOGOUT } from "../actions";
 
 // Combine all the reducers

@@ -2,7 +2,7 @@
   display: grid;
   grid-template-areas:
     "calendar appointments todos"
-    "timeline appointments todos"
+    "schedule_form appointments todos"
     "schedule_form appointments todos";
   grid-template-columns: 33% 33% 33%;
   //   grid-template-rows: 150px auto;

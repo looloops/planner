@@ -43,7 +43,11 @@ const Calendar: React.FC = () => {
   useEffect(() => {
     renderCalendar();
     // DISPATCH FOR REDUX STATE
-  }, [selectedDate, currentMonth, currentYear, appointments]);
+    dispatch({
+      type: SAVE_ACTIVE_DATE,
+      payload: selectedDate,
+    });
+  }, [startingDate, selectedDate, currentMonth, currentYear, appointments]);
 
   const renderCalendar = () => {
     const firstDay = new Date(currentYear, currentMonth, 1);

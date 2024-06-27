@@ -1,11 +1,8 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SAVE_ACTIVE_DATE } from "../../redux/actions/index";
-import { State } from "../../redux/reducers/userReducer";
 
 const Calendar: React.FC = () => {
-  const schedule = useSelector((state: State) => state.widgets.schedule);
-
   const months = [
     "January",
     "February",
@@ -42,6 +39,10 @@ const Calendar: React.FC = () => {
   useEffect(() => {
     renderCalendar();
     // DISPATCH FOR REDUX STATE
+    dispatch({
+      type: SAVE_ACTIVE_DATE,
+      payload: selectedDate,
+    });
   }, [selectedDate, currentMonth, currentYear]);
 
   const renderCalendar = () => {

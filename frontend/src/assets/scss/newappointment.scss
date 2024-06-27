@@ -1,0 +1,15 @@
+.hours-pills-container {
+  display: flex;
+  overflow-x: scroll;
+}
+.hour-pill {
+  padding-inline: 10px;
+  border-radius: 13px;
+  margin-inline: 3px;
+  background-color: aquamarine;
+  cursor: pointer;
+}
+
+.hour-pill.selected {
+  background-color: chocolate;
+}

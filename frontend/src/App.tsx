@@ -18,6 +18,7 @@ import Weather from "./components/widgets/Weather";
 import Homepage from "./components/Homepage";
 import ScheduleTimeline from "./components/widgets/ScheduleTimeline";
 import SchedulePage from "./components/pages/SchedulePage";
+import NewAppointmentCopy from "./components/widgets/NewAppointmentCopy";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
@@ -62,6 +63,7 @@ const App: React.FC = () => {
           <Route path="/" element={<Homepage />} />
           <Route path="/schedule-page" element={<SchedulePage />} />
           <Route path="/navbar" element={<MyNav />} />
+          <Route path="/newappointment" element={<NewAppointmentCopy />} />
         </Routes>
       </Router>
     )
