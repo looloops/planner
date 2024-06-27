@@ -26,8 +26,7 @@
   color: #686868;
 }
 
-.todos-container > div {
-  line-height: 5px;
+.todos-item {
   margin-top: 10px;
 }
 
@@ -43,6 +42,9 @@
   padding: 0 2rem;
   border-radius: 1.5rem;
   background: #9a8cea;
+  &.update-btn {
+    background: #8496c5;
+  }
   background-size: 200%;
   color: #fff;
   border: none;
@@ -64,6 +66,9 @@
     background: linear-gradient(82.3deg, rgba(150, 93, 233, 1) 10.8%, rgba(99, 88, 238, 1) 94.3%);
     transition: all 0.475s;
   }
+  &.update-btn::before {
+    background: linear-gradient(82.3deg, #8496c5 10.8%, #33cc8f 94.3%);
+  }
 }
 
 .todos-submit-btn-content {
@@ -76,8 +81,9 @@
   height: 2rem;
   font-size: 12px;
   margin-block: 10px;
+  color: #959494;
   &::placeholder {
-    color: #b1b1b1;
+    color: #838282;
   }
   &:focus {
     background-color: #ededed;
@@ -140,20 +146,20 @@
   width: 10px;
   border-radius: 50%;
   display: inline-block;
-  background-color: transparent;
-  border: 1px solid gray;
+  background-color: rgb(206, 206, 206);
+  border: 1px solid rgb(255, 255, 255);
   margin-right: 5px;
 
   &.high-priority {
-    background-color: #f12323;
+    background-color: #bf6e7e;
   }
 
   &.medium-priority {
-    background-color: #9bf123;
+    background-color: #72beb1;
   }
 
   &.low-priority {
-    background-color: #3823f1;
+    background-color: #b1be6f;
   }
 }
 
@@ -162,4 +168,14 @@
   font-weight: bold;
   display: flex;
   align-items: center;
+  text-transform: uppercase;
+}
+
+.todos-title-buttons {
+  display: flex;
+  justify-content: space-between;
+}
+
+.todos-description {
+  text-align: justify;
 }

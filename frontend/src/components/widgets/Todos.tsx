@@ -95,6 +95,9 @@ const Todos: React.FC = () => {
   const deleteItem = (index: number) => {
     if (!todos || !todos.settings) return;
 
+    setFormData(initialState);
+    setEditMode(false);
+
     const updatedSettingsArray = [...todos.settings.slice(0, index), ...todos.settings.slice(index + 1)];
 
     const body = {
@@ -181,7 +184,7 @@ const Todos: React.FC = () => {
         />
 
         <div className="todos-submit-btn-container">
-          <button type="submit" className="todos-submit-btn">
+          <button type="submit" className={editMode ? "todos-submit-btn update-btn" : "todos-submit-btn"}>
             <p className="todos-submit-btn-content">{editMode ? "Update" : "Add"}</p>
           </button>
         </div>
@@ -192,29 +195,46 @@ const Todos: React.FC = () => {
         {todos.settings?.map(
           (todo, index) =>
             todo.status === "To-do" && (
-              <div key={index}>
-                <p className="todos-title">
-                  <span
-                    className={
-                      todo.priority === "High"
-                        ? "todos-dot high-priority"
-                        : todo.priority === "Medium"
-                        ? "todos-dot medium-priority"
-                        : todo.priority === "Low"
-                        ? "todos-dot low-priority"
-                        : "todos-dot"
-                    }
-                  ></span>
-                  {todo.title}
-                </p>
-                <p>{todo.description}</p>
-                <button type="button" className="btn btn-danger" onClick={() => deleteItem(index)}>
-                  Delete
-                </button>
+              <div key={index} className="todos-item">
+                <div className="todos-title-buttons">
+                  <div className="todos-title">
+                    <span
+                      className={
+                        todo.priority === "High"
+                          ? "todos-dot high-priority"
+                          : todo.priority === "Medium"
+                          ? "todos-dot medium-priority"
+                          : todo.priority === "Low"
+                          ? "todos-dot low-priority"
+                          : "todos-dot"
+                      }
+                    ></span>
+                    {todo.title}
+                  </div>
 
-                <button type="button" className="btn btn-primary" onClick={() => handleEditClick(index)}>
-                  Edit
-                </button>
+                  <div className="appointment-buttons-container">
+                    <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
+                      <div className="appointment-timelineIcons">
+                        <svg
+                          width="8px"
+                          height="6px"
+                          viewBox="0 0 15 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
+                            fill="#ffffff"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                    <button className="appointmentButtons deleteButton" onClick={() => deleteItem(index)}>
+                      <div className="appointment-timelineIcons">-</div>
+                    </button>
+                  </div>
+                </div>
+                <div className="todos-description">{todo.description}</div>
               </div>
             )
         )}
@@ -225,26 +245,45 @@ const Todos: React.FC = () => {
         {todos.settings?.map(
           (doing, index) =>
             doing.status === "On-going" && (
-              <div key={index}>
-                <p className="todos-title">
-                  {" "}
-                  <span
-                    className={
-                      doing.priority === "High"
-                        ? "todos-dot high-priority"
-                        : doing.priority === "Medium"
-                        ? "todos-dot medium-priority"
-                        : doing.priority === "Low"
-                        ? "todos-dot low-priority"
-                        : "todos-dot"
-                    }
-                  ></span>
-                  {doing.title}
-                </p>
-                <p>{doing.description}</p>
-                <button type="button" className="btn btn-danger" onClick={() => deleteItem(index)}>
-                  Delete
-                </button>
+              <div key={index} className="todos-item">
+                <div className="todos-title-buttons">
+                  <div className="todos-title">
+                    <span
+                      className={
+                        doing.priority === "High"
+                          ? "todos-dot high-priority"
+                          : doing.priority === "Medium"
+                          ? "todos-dot medium-priority"
+                          : doing.priority === "Low"
+                          ? "todos-dot low-priority"
+                          : "todos-dot"
+                      }
+                    ></span>
+                    {doing.title}
+                  </div>
+                  <div className="appointment-buttons-container">
+                    <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
+                      <div className="appointment-timelineIcons">
+                        <svg
+                          width="8px"
+                          height="6px"
+                          viewBox="0 0 15 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
+                            fill="#ffffff"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                    <button className="appointmentButtons deleteButton" onClick={() => deleteItem(index)}>
+                      <div className="appointment-timelineIcons">-</div>
+                    </button>
+                  </div>
+                </div>
+                <div className="todos-description">{doing.description}</div>
               </div>
             )
         )}
@@ -255,26 +294,45 @@ const Todos: React.FC = () => {
         {todos.settings?.map(
           (done, index) =>
             done.status === "Done" && (
-              <div key={index}>
-                <p className="todos-title">
-                  {" "}
-                  <span
-                    className={
-                      done.priority === "High"
-                        ? "todos-dot high-priority"
-                        : done.priority === "Medium"
-                        ? "todos-dot medium-priority"
-                        : done.priority === "Low"
-                        ? "todos-dot low-priority"
-                        : "todos-dot"
-                    }
-                  ></span>
-                  {done.title}
-                </p>
-                <p>{done.description}</p>
-                <button type="button" className="btn btn-danger" onClick={() => deleteItem(index)}>
-                  Delete
-                </button>
+              <div key={index} className="todos-item">
+                <div className="todos-title-buttons">
+                  <div className="todos-title">
+                    <span
+                      className={
+                        done.priority === "High"
+                          ? "todos-dot high-priority"
+                          : done.priority === "Medium"
+                          ? "todos-dot medium-priority"
+                          : done.priority === "Low"
+                          ? "todos-dot low-priority"
+                          : "todos-dot"
+                      }
+                    ></span>
+                    {done.title}
+                  </div>
+                  <div className="appointment-buttons-container">
+                    <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
+                      <div className="appointment-timelineIcons">
+                        <svg
+                          width="8px"
+                          height="6px"
+                          viewBox="0 0 15 15"
+                          fill="none"
+                          xmlns="http://www.w3.org/2000/svg"
+                        >
+                          <path
+                            d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
+                            fill="#ffffff"
+                          />
+                        </svg>
+                      </div>
+                    </button>
+                    <button className="appointmentButtons deleteButton" onClick={() => deleteItem(index)}>
+                      <div className="appointment-timelineIcons">-</div>
+                    </button>
+                  </div>
+                </div>
+                <div className="todos-description">{done.description}</div>
               </div>
             )
         )}
