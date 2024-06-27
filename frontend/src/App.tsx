@@ -1,32 +1,22 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Schedule from "./components/widgets/Schedule";
-import "./App.css";
-import Login from "./components/pages/Login";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { LOGIN } from "./redux/actions";
-import { RootState } from "./redux/store"; // Import the RootState type
+import { RootState } from "./redux/store";
 import MyNav from "./components/MyNav";
 import Dashboard from "./components/pages/Dashboard";
+import Login from "./components/pages/Login";
 import Register from "./components/pages/Register";
-import ScheduleEdit from "./components/widgets/ScheduleEdit";
-import Media from "./components/widgets/Media";
-import MediaEdit from "./components/widgets/MediaEdit";
-import ScheduleCreate from "./components/widgets/ScheduleCreate";
-import Weather from "./components/widgets/Weather";
-import Homepage from "./components/Homepage";
-import ScheduleTimeline from "./components/widgets/ScheduleTimeline";
 import SchedulePage from "./components/pages/SchedulePage";
+import Homepage from "./components/Homepage";
 import NewAppointmentCopy from "./components/widgets/NewAppointmentCopy";
+import FinalGridCopy from "./components/layout/FinalGridCopy";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
 
 const App: React.FC = () => {
-  // Use RootState to type the state parameter
-  const user = useSelector((state: RootState) => state._persist);
-  console.log("user", user);
   const dispatch = useDispatch();
   const [loaded, setLoaded] = useState<boolean>(false);
 
@@ -48,22 +38,13 @@ const App: React.FC = () => {
   return (
     loaded && (
       <Router>
-        {/* <MyNav /> */}
+        {<Homepage />}
         <Routes>
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/schedule" element={<Schedule />} />
-          <Route path="/schedule/add" element={<ScheduleCreate />} />
-          <Route path="/schedule/edit/:settingIndex" element={<ScheduleEdit />} />
-          <Route path="/media" element={<Media />} />
-          <Route path="/media/edit/:settingIndex" element={<MediaEdit />} />
-          <Route path="/weather" element={<Weather />} />
-          <Route path="/Timeline" element={<ScheduleTimeline />} />
-          <Route path="/" element={<Homepage />} />
-          <Route path="/schedule-page" element={<SchedulePage />} />
-          <Route path="/navbar" element={<MyNav />} />
-          <Route path="/newappointment" element={<NewAppointmentCopy />} />
+          {/* <Route path="/schedule-page" element={<SchedulePage />} /> */}
+          {/* <Route path="/navbar" element={<MyNav />} /> */}
         </Routes>
       </Router>
     )

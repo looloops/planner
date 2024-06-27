@@ -1,9 +1,9 @@
 .homepage-template-grid {
   display: grid;
   grid-template-areas:
-    "sidebar topbar topbar"
-    "sidebar main rightbar";
-  grid-template-columns: 10% 70% 20%;
+    "sidebar topbar "
+    "sidebar main ";
+  grid-template-columns: 10% 90%;
   grid-template-rows: 150px auto;
   // height: 100vh; // Adjust the height as needed
 }
@@ -18,10 +18,6 @@
 
 .homepage-template-grid > div:nth-child(3) {
   grid-area: main;
-}
-
-.homepage-template-grid > div:nth-child(4) {
-  grid-area: rightbar;
 }
 
 .min-div-widgets {
