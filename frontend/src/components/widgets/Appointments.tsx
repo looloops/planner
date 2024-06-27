@@ -41,7 +41,7 @@ const Appointments: React.FC = () => {
         console.error("Error fetching data:", err);
         navigate("/");
       });
-  }, [dispatch, navigate]);
+  }, []);
 
   const deleteItem = (appointmentId: number) => {
     if (!schedule || !schedule.settings) return;
@@ -61,6 +61,10 @@ const Appointments: React.FC = () => {
       })
       .then((response) => {
         console.log("Item deleted successfully:", response.data);
+        dispatch({
+          type: SCHEDULE_DETAILS,
+          payload: body,
+        });
       })
       .catch((error) => {
         console.error("Error deleting item:", error);
