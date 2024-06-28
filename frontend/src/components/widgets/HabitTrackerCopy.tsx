@@ -13,7 +13,7 @@ const HabitTracker: React.FC = () => {
     title: string;
     description: string;
     type: string;
-    status: boolean[];
+    status: boolean;
   }
 
   // SETTING INTERFACE FOR INITIAL STATE
@@ -21,7 +21,7 @@ const HabitTracker: React.FC = () => {
     title: "",
     description: "",
     type: "Gain",
-    status: [false, false, false, false, false, false, false],
+    status: false,
   };
 
   // SETTING LOCAL STATE FOR FORM DATA
@@ -65,7 +65,7 @@ const HabitTracker: React.FC = () => {
     const { name, value } = ev.target;
     setFormData((prevFormData) => ({
       ...prevFormData,
-      [name]: value,
+      [name]: name === "status" ? (ev.target as HTMLInputElement).checked : value,
     }));
   };
 
@@ -78,7 +78,7 @@ const HabitTracker: React.FC = () => {
 
     if (editMode && currentEditIndex !== null) {
       updatedSettingsArray = habits.settings.map((setting: object, index: number) =>
-        index === currentEditIndex ? { ...formData, status: setting.status } : setting
+        index === currentEditIndex ? { ...formData } : setting
       );
     } else {
       updatedSettingsArray = [...habits.settings, { ...formData }];
@@ -155,40 +155,6 @@ const HabitTracker: React.FC = () => {
       });
   };
 
-  const toggleStatus = (habitIndex: number, dayIndex: number) => {
-    const updatedSettingsArray = habits.settings.map((habit: any, index: number) => {
-      if (index === habitIndex) {
-        const updatedDailyStatus = habit.status.map((checked: boolean, i: number) =>
-          i === dayIndex ? !checked : checked
-        );
-        return { ...habit, status: updatedDailyStatus };
-      }
-      return habit;
-    });
-
-    const body = {
-      ...habits,
-      settings: updatedSettingsArray,
-    };
-
-    axios
-      .put(`http://localhost:8000/api/user/widgets/edit/${habits.widget_id}`, body, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log("Daily check updated successfully:", response.data);
-        dispatch({
-          type: HABITS_DETAILS,
-          payload: body,
-        });
-      })
-      .catch((error) => {
-        console.error("Error updating daily check:", error);
-      });
-  };
-
   return (
     <div className="habits-glass-background">
       <p className="habits-big-title">Add New habits</p>
@@ -214,10 +180,10 @@ const HabitTracker: React.FC = () => {
           value={formData.description || ""}
         />
 
-        {/*  <label>
+        <label>
           <input type="checkbox" id="status" name="status" checked={formData.status} onChange={createInputValue} />
           Check me!
-        </label> */}
+        </label>
 
         <select value={formData.type || ""} onChange={createInputValue} id="type" name="type" className="">
           <option value="Gain">Gain</option>
@@ -230,7 +196,7 @@ const HabitTracker: React.FC = () => {
           </button>
         </div>
       </form>
-      {/* 
+
       <div className="todos-container">
         <p className="todos-section-title">Habits to gain</p>
         {habits.settings?.map(
@@ -299,94 +265,6 @@ const HabitTracker: React.FC = () => {
                   </div>
                 </div>
                 <div className="todos-description">{habit.description}</div>
-              </div>
-            )
-        )}
-      </div> */}
-
-      <div className="todos-container">
-        <p className="todos-section-title">Habits to Gain</p>
-        {habits.settings?.map(
-          (habit: Habits, index: number) =>
-            habit.type === "Gain" && (
-              <div key={index} className="todos-item">
-                <div className="todos-title-buttons">
-                  <div className="todos-title">{habit.title}</div>
-                  <div className="appointment-buttons-container">
-                    <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
-                      <div className="appointment-timelineIcons">
-                        <svg
-                          width="8px"
-                          height="6px"
-                          viewBox="0 0 15 15"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
-                            fill="#ffffff"
-                          />
-                        </svg>
-                      </div>
-                    </button>
-                    <button className="appointmentButtons deleteButton" onClick={() => deleteItem(index)}>
-                      <div className="appointment-timelineIcons">-</div>
-                    </button>
-                  </div>
-                </div>
-                <div className="todos-description">{habit.description}</div>
-                <div className="daily-checks">
-                  {habit.status.map((checked, dayIndex) => (
-                    <label key={dayIndex}>
-                      <input type="checkbox" checked={checked} onChange={() => toggleStatus(index, dayIndex)} />
-                      Day {dayIndex + 1}
-                    </label>
-                  ))}
-                </div>
-              </div>
-            )
-        )}
-      </div>
-
-      <div className="todos-container">
-        <p className="todos-section-title">Habits to Gain</p>
-        {habits.settings?.map(
-          (habit: Habits, index: number) =>
-            habit.type === "Lose" && (
-              <div key={index} className="todos-item">
-                <div className="todos-title-buttons">
-                  <div className="todos-title">{habit.title}</div>
-                  <div className="appointment-buttons-container">
-                    <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
-                      <div className="appointment-timelineIcons">
-                        <svg
-                          width="8px"
-                          height="6px"
-                          viewBox="0 0 15 15"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
-                            fill="#ffffff"
-                          />
-                        </svg>
-                      </div>
-                    </button>
-                    <button className="appointmentButtons deleteButton" onClick={() => deleteItem(index)}>
-                      <div className="appointment-timelineIcons">-</div>
-                    </button>
-                  </div>
-                </div>
-                <div className="todos-description">{habit.description}</div>
-                <div className="daily-checks">
-                  {habit.status.map((checked, dayIndex) => (
-                    <label key={dayIndex}>
-                      <input type="checkbox" checked={checked} onChange={() => toggleStatus(index, dayIndex)} />
-                      Day {dayIndex + 1}
-                    </label>
-                  ))}
-                </div>
               </div>
             )
         )}
