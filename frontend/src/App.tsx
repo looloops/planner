@@ -38,20 +38,7 @@ const App: React.FC = () => {
       });
   }, [dispatch]);
 
-  return (
-    loaded && (
-      <Router>
-        {<Homepage />}
-        <Routes>
-          <Route path="/login" element={<Login />} />
-          <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/register" element={<Register />} />
-          {/* <Route path="/schedule-page" element={<SchedulePage />} /> */}
-          {/* <Route path="/navbar" element={<MyNav />} /> */}
-        </Routes>
-      </Router>
-    )
-  );
+  return loaded && <Router>{<Homepage />}</Router>;
 };
 
 export default App;
