@@ -3,7 +3,7 @@ import React, { useEffect } from "react";
 const SideBar: React.FC = () => {
   useEffect(() => {
     const tabs = document.querySelectorAll<HTMLElement>(".tab");
-    const indicator = document.querySelector<HTMLElement>(".indicator");
+    const indicator = document.querySelector<HTMLElement>(".indicator-div");
 
     tabs.forEach((tab) => {
       const radio = tab.querySelector<HTMLInputElement>("input[type='radio']");
@@ -93,7 +93,11 @@ const SideBar: React.FC = () => {
             </svg>
           </label>
         </div>
-        <div className="indicator"></div>
+        <div className="indicator-div">
+          {/* <div className="before"></div> */}
+          <div className="indicator"></div>
+          {/* <div className="after"></div> */}
+        </div>
       </div>
     </div>
   );

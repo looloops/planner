@@ -16,6 +16,10 @@ import NewAppointmentCopy from "./widgets/NewAppointmentCopy";
 import SchedulePage from "./pages/SchedulePage";
 import { Routes, Route } from "react-router-dom";
 import DailySchedule from "./widgets/DailySchedule";
+import { LOGIN } from "./redux/actions";
+import Dashboard from "./pages/Dashboard";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
 import HabitTracker from "./widgets/HabitTracker";
 
 const Homepage: React.FC = () => {
@@ -44,7 +48,7 @@ const Homepage: React.FC = () => {
       </div>
       <div>
         <Routes>
-          <Route path="/homepage" element={<FinalGridCopy />} />
+          <Route path="/" element={<FinalGridCopy />} />
           <Route path="/schedule" element={<SchedulePage />} />
           <Route path="/schedule/add" element={<ScheduleCreate />} />
           <Route path="/schedule/edit/:settingIndex" element={<ScheduleEdit />} />
@@ -54,6 +58,9 @@ const Homepage: React.FC = () => {
           <Route path="/timeline" element={<ScheduleTimeline />} />
           <Route path="/newappointment" element={<NewAppointmentCopy />} />
           <Route path="/daily-schedule" element={<DailySchedule />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/register" element={<Register />} />
           <Route path="/habit-tracker" element={<HabitTracker />} />
         </Routes>
       </div>

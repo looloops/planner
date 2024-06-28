@@ -48,7 +48,7 @@ const MyNav: React.FC = () => {
   };
 
   return (
-    <>
+    <div className="topbar">
       <nav className={`navbar navbar-expand-lg bg-nav ${isScrolled ? "scrolled" : ""}`}>
         <div className="container">
           <Link className="navbar-brand text-secondary" to="/">
@@ -159,7 +159,7 @@ const MyNav: React.FC = () => {
         </div>
       </nav>
       <div>{userUser ? <p>Welcome, {userUser.name}!</p> : <p>You are not logged in.</p>}</div>;
-    </>
+    </div>
   );
 };
 
