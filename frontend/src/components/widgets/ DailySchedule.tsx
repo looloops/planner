@@ -6,10 +6,10 @@ import { useNavigate } from "react-router-dom";
 import { ApiResponse } from "../../typescript/interfaces";
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { SCHEDULE_DETAILS } from "../../redux/actions/index";
+import { DAILY_SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/WidgetsReducer";
 
-const Appointments: React.FC = () => {
+const DailySchedule: React.FC = () => {
   interface Appointment {
     id: number;
     title: string;
@@ -18,9 +18,11 @@ const Appointments: React.FC = () => {
     finish: string;
     priority: string;
   }
+
   // Getting schedule and selected date from calendar from redux
-  const schedule = useSelector((state: State) => state.widgets.schedule);
+  const dailySchedule = useSelector((state: State) => state.widgets.daily_schedule);
   const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
+  console.log("dailySchedule", dailySchedule);
   console.log("dateFromCalendar", dateFromCalendar);
 
   const dispatch = useDispatch();
@@ -40,7 +42,7 @@ const Appointments: React.FC = () => {
         };
 
         dispatch({
-          type: SCHEDULE_DETAILS,
+          type: DAILY_SCHEDULE_DETAILS,
           payload: parsedDetails,
         });
       })
@@ -48,20 +50,22 @@ const Appointments: React.FC = () => {
         console.error("Error fetching data:", err);
         navigate("/");
       });
-  }, []);
+  }, [dispatch, navigate]);
 
   const deleteItem = (appointmentId: number) => {
-    if (!schedule || !schedule.settings) return;
+    if (!dailySchedule || !dailySchedule.settings) return;
 
-    const updatedSettingsArray = schedule.settings.filter((setting: GeneralSettings) => setting.id !== appointmentId);
+    const updatedSettingsArray = dailySchedule.settings.filter(
+      (setting: GeneralSettings) => setting.id !== appointmentId
+    );
 
     const body = {
-      ...schedule,
+      ...dailySchedule,
       settings: updatedSettingsArray,
     };
 
     axios
-      .put(`http://localhost:8000/api/user/widgets/edit/${schedule.widget_id}`, body, {
+      .put(`http://localhost:8000/api/user/widgets/edit/${dailySchedule.widget_id}`, body, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -69,7 +73,7 @@ const Appointments: React.FC = () => {
       .then((response) => {
         console.log("Item deleted successfully:", response.data);
         dispatch({
-          type: SCHEDULE_DETAILS,
+          type: DAILY_SCHEDULE_DETAILS,
           payload: body,
         });
       })
@@ -78,16 +82,9 @@ const Appointments: React.FC = () => {
       });
   };
 
-  const todaysDate = new Date();
-  const year = todaysDate.getFullYear();
-  const month = String(todaysDate.getMonth() + 1).padStart(2, "0");
-  const day = String(todaysDate.getDate()).padStart(2, "0");
-  const formattedTodaysDate = `${year}-${month}-${day}`;
-
-  // console.log("datefrom calendar", dateFromCalendar)
-  //  console.log("fromatted", formattedTodaysDate)
-
-  const todaysSchedule = schedule.settings?.filter((setting: GeneralSettings) => setting.date === dateFromCalendar);
+  const todaysSchedule = dailySchedule.settings?.filter(
+    (setting: GeneralSettings) => setting.date === dateFromCalendar
+  );
   console.log("todaysSchedule", todaysSchedule);
 
   const renderScheduleForHour = (hour: number) => {
@@ -104,13 +101,16 @@ const Appointments: React.FC = () => {
       )
       .sort((a: Appointment, b: Appointment) => a.start.localeCompare(b.start));
 
+    console.log("sortedAppointments", sortedAppointments);
+
     return (
       <div key={hour}>
         <div className="appointment-single-row">
           <div className="appointment-hour">
             {displayHour}:00 {meridian}
           </div>
-          <div className="appointment-container">
+          <input></input>
+          {/*<div className="appointment-container">
             {sortedAppointments?.map((appointment: Appointment) => (
               <React.Fragment key={appointment.id}>
                 <div
@@ -152,22 +152,20 @@ const Appointments: React.FC = () => {
                 </div>
               </React.Fragment>
             ))}
-          </div>
+          </div>*/}
         </div>
       </div>
     );
   };
 
   return (
-    <>
-      <div className="appointment-glass-background">
-        <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
-          {dateFromCalendar as string} <span style={{ color: "#8D8D8D" }}>Scheduled Appointments</span>
-        </h6>
-        {Array.from({ length: 24 }, (_, index) => renderScheduleForHour(index))}
-      </div>
-    </>
+    <div className="appointment-glass-background">
+      <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
+        {dateFromCalendar as string} <span style={{ color: "#8D8D8D" }}>Scheduled Appointments</span>
+      </h6>
+      {Array.from({ length: 14 }, (_, index) => renderScheduleForHour(index))}
+    </div>
   );
 };
 
-export default Appointments;
+export default DailySchedule;

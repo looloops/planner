@@ -82,5 +82,39 @@ class WidgetSeeder extends Seeder
                 "status",
             ])
         ]);
+
+
+        Widget::factory()->create([
+            'name' => "daily_schedule",
+            'description' => "your schedule for the day",
+            'field_list' => json_encode([
+                "title",
+                "description",
+                "priority",
+                "status",
+            ])
+        ]);
+
+        Widget::factory()->create([
+            'name' => "habit_tracker",
+            'description' => "keeping track of your habits",
+            'field_list' => json_encode([
+                "title",
+                "description",
+                "type",
+                "status",
+            ])
+        ]);
+
+        Widget::factory()->create([
+            'name' => "mood_tracker",
+            'description' => "keeping track of your feelings",
+            'field_list' => json_encode([
+                "title",
+                "description",
+                "type",
+                "status",
+            ])
+        ]);
     }
 }
