@@ -9,18 +9,19 @@ import { ApiResponse } from "../../typescript/interfaces";
 
 const HabitTracker: React.FC = () => {
   //SETTING VARIABLES FOR ACTIVE CHECKBOX
-  const today = new Date().getDate();
-  console.log("today", today);
-  const [currentDate, setCurrentDate] = useState(today);
-  const strike: number = 7;
-  let activeCheckbox: number = 1;
+  // const today = new Date().getDate();
+  // console.log("today", today);
+  // const [currentDate, setCurrentDate] = useState(today);
+  // const strike: number = 7;
+  // let activeCheckbox: number = 1;
 
-  useEffect(() => {
-    if (currentDate !== today && activeCheckbox < strike) {
-      setCurrentDate(today);
-      activeCheckbox = +1;
-    }
-  }, [today]);
+  // useEffect(() => {
+  //   if (currentDate !== today && activeCheckbox < strike) {
+  //     setCurrentDate(today);
+  //     activeCheckbox = +1;
+  //     console.log("active check", activeCheckbox)
+  //   }
+  // }, [today]);
 
   // SETTING INTERFACE FOR HABITS OBJECT
   interface Habits {
@@ -28,6 +29,7 @@ const HabitTracker: React.FC = () => {
     description: string;
     type: string;
     status: boolean[];
+    startDate: string;
   }
 
   // SETTING INTERFACE FOR INITIAL STATE
@@ -36,6 +38,7 @@ const HabitTracker: React.FC = () => {
     description: "",
     type: "Gain",
     status: [false, false, false, false, false, false, false],
+    startDate: new Date().toISOString().split("T")[0], // Set startDate to today's date
   };
 
   // SETTING LOCAL STATE FOR FORM DATA
@@ -72,7 +75,7 @@ const HabitTracker: React.FC = () => {
       .catch((err) => {
         console.error("Error fetching data:", err);
       });
-  }, []);
+  }, [dispatch]);
 
   // FUNCTION TO UPDATE THE LOCAL FORMDATA STATE WITH NEW VALUES
   const createInputValue = (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
@@ -203,6 +206,14 @@ const HabitTracker: React.FC = () => {
       });
   };
 
+  // Calculate active checkbox based on startDate
+  const calculateActiveCheckbox = (startDate: string) => {
+    const start = new Date(startDate).getTime();
+    const today = new Date().getTime();
+    const differenceInDays = Math.floor((today - start) / (1000 * 60 * 60 * 24));
+    return Math.min(differenceInDays + 1, 7); // Ensure it doesn't exceed 7
+  };
+
   return (
     <div className="habits-glass-background">
       <p className="habits-big-title">Add New habits</p>
@@ -283,7 +294,8 @@ const HabitTracker: React.FC = () => {
                         type="checkbox"
                         name="checkbox"
                         checked={checked}
-                        disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
+                        // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
+                        disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
                         onChange={() => toggleStatus(index, dayIndex)}
                       />
                       Day {dayIndex + 1}
@@ -333,7 +345,8 @@ const HabitTracker: React.FC = () => {
                         type="checkbox"
                         name="checkbox"
                         checked={checked}
-                        disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
+                        // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
+                        disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
                         onChange={() => toggleStatus(index, dayIndex)}
                       />
                       Day {dayIndex + 1}
