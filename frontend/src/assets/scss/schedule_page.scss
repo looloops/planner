@@ -3,9 +3,14 @@
   grid-template-areas:
     "calendar appointments todos"
     "schedule_form appointments todos";
-  grid-template-columns: 33% 33% 33%;
+  grid-template-columns: 34% 33% 33%;
+  padding: 15px;
   //   grid-template-rows: 150px auto;
   // height: 100vh; // Adjust the height as needed
+}
+
+.schedule-template-grid > div {
+  padding: 10px;
 }
 
 .schedule-template-grid > div:nth-child(1) {
