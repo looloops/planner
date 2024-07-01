@@ -1,24 +1,19 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Schedule from "./components/widgets/Schedule";
-import "./App.css";
-import Login from "./components/pages/Login";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import axios from "axios";
+import { BrowserRouter as Router } from "react-router-dom";
 import { LOGIN } from "./redux/actions";
-import { RootState } from "./redux/store"; // Import the RootState type
-import MyNav from "./components/MyNav";
-import Dashboard from "./components/pages/Dashboard";
-import Register from "./components/pages/Register";
-import ScheduleEdit from "./components/widgets/ScheduleEdit";
-import Media from "./components/widgets/Media";
-import MediaEdit from "./components/widgets/MediaEdit";
-import ScheduleCreate from "./components/widgets/ScheduleCreate";
-import Weather from "./components/widgets/Weather";
+
 import Homepage from "./components/Homepage";
-import ScheduleTimeline from "./components/widgets/ScheduleTimeline";
-import SchedulePage from "./components/pages/SchedulePage";
-import NewAppointmentCopy from "./components/widgets/NewAppointmentCopy";
+import "./assets/scss/appointmens.scss";
+import "./assets/scss/calendar.scss";
+import "./assets/scss/newappointment.scss";
+import "./assets/scss/rightbar.scss";
+import "./assets/scss/schedule_page.scss";
+import "./assets/scss/sidebar.scss";
+import "./assets/scss/style.scss";
+import "./assets/scss/todos.scss";
+import "./assets/scss/weather.scss";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;

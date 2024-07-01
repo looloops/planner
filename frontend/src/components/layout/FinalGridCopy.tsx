@@ -10,6 +10,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Todos from "../widgets/Todos";
 import Calendar from "../widgets/Calendar";
+import WeatherProva from "../widgets/WeatherProva";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -195,7 +196,7 @@ const FinalGridCopy = () => {
       case 7:
         return <Calendar />; // to be decided
       case 8:
-        return <Weather />; // to be decided
+        return <WeatherProva />; // to be decided
 
       default:
         return null;

@@ -5,6 +5,16 @@
     "sidebar main rightbar";
   grid-template-columns: 10% 70% 20%;
   grid-template-rows: 150px auto;
+  background-image: linear-gradient(
+    95deg,
+    hsl(223deg 71% 85%) 0%,
+    hsl(225deg 71% 91%) 28%,
+    hsl(226deg 72% 97%) 60%,
+    hsl(271deg 65% 97%) 80%,
+    hsl(271deg 64% 91%) 93%,
+    hsl(270deg 63% 85%) 100%
+  );
+  height: 100vh;
   // height: 100vh; // Adjust the height as needed
 }
 
