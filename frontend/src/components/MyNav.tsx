@@ -125,13 +125,13 @@ const MyNav: React.FC = () => {
                   )}
                 </div>
               )}
-              {showMore && (
+              {user.user && showMore && (
                 <div className="link-container">
                   <Link to="/dashboard">Profile</Link>
                   <Link to="/">Settings</Link>
-                  <a href="" onClick={logout}>
+                  <Link to="/" onClick={logout}>
                     Log-out
-                  </a>
+                  </Link>
                 </div>
               )}
               {user.user && (
@@ -149,7 +149,9 @@ const MyNav: React.FC = () => {
 
               {user.user === null && (
                 <>
+                 <Link to="/register">Register</Link>
                   <Link to="/login">Log-in</Link>
+                 
                   <img
                     src="https://preview.redd.it/nhim8ly085251.jpg?auto=webp&s=fc1e542dd41306ba139ffd590cf2aafabed73d6a"
                     alt="profile_img"

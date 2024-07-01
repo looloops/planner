@@ -22,26 +22,29 @@
     "sidebar main ";
   grid-template-columns: 10% 90%;
   grid-template-rows: auto;
-  // height: 100vh; // Adjust the height as needed
+  column-gap: 10px;
+  padding: 1.5%;
+  height: 100vh; // Adjust the height as needed
 }
 
 .homepage-template-grid > div:nth-child(1) {
   grid-area: sidebar;
-  height: 100vh;
-  display: flex;
-  align-items: center;
+  // display: flex;
+  // align-items: center;
 }
 
 .homepage-template-grid > div:nth-child(2) {
   grid-area: topbar;
   display: flex;
-  align-items: center;
-  justify-content: center;
+ //  align-items: flex-start;
+  // justify-content: center;
+  
 }
 
 .homepage-template-grid > div:nth-child(3) {
   grid-area: main;
   overflow-y: scroll;
+  margin-top: 10px;
 }
 
 .min-div-widgets {
