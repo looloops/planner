@@ -6,8 +6,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { State } from "../../redux/reducers/userReducer";
 import { HABITS_DETAILS } from "../../redux/actions/index";
 import { ApiResponse } from "../../typescript/interfaces";
+import { useNavigate } from "react-router-dom";
 
 const HabitTrackerTopBar: React.FC = () => {
+  const navigate = useNavigate();
   // SETTING INTERFACE FOR HABITS OBJECT
   interface Habits {
     title: string;
@@ -101,7 +103,7 @@ const HabitTrackerTopBar: React.FC = () => {
     <div className="habits-container-topbar">
       <div className="habits-title-btn-container">
         <p className="habits-section-title-topbar">Your habit-tracker</p>
-        <button className="todos-submit-btn">
+        <button className="todos-submit-btn" onClick={() => navigate("/self-care")}>
           <p className="todos-submit-btn-content">+</p>
         </button>
       </div>

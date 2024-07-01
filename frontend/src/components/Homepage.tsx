@@ -21,6 +21,7 @@ import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
 import HabitTracker from "./widgets/HabitTracker";
+import SelfCarePage from "./pages/SelfCarePage";
 
 const Homepage: React.FC = () => {
   const dispatch = useDispatch();
@@ -62,6 +63,7 @@ const Homepage: React.FC = () => {
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
           <Route path="/habit-tracker" element={<HabitTracker />} />
+          <Route path="/self-care" element={<SelfCarePage />} />
         </Routes>
       </div>
     </div>

@@ -215,12 +215,17 @@ const HabitTracker: React.FC = () => {
   };
 
   return (
-    <div className="habits-glass-background">
-      <p className="habits-big-title">Add New habits</p>
+    <div className="todos-glass-background">
+      <p className="todos-section-title">Add New habits</p>
       <form onSubmit={submitNewData} noValidate>
+        <select value={formData.type || ""} onChange={createInputValue} id="type" name="type" className="selectHabits">
+          <option value="Gain">To gain</option>
+          <option value="Lose">To lose</option>
+        </select>
+
         <input
           type="text"
-          className="form-control habits-input"
+          className="form-control todos-input"
           placeholder="Title"
           id="title"
           name="title"
@@ -231,23 +236,13 @@ const HabitTracker: React.FC = () => {
 
         <input
           type="text"
-          className="form-control habits-input"
+          className="form-control todos-input"
           placeholder="Notes"
           id="description"
           name="description"
           onChange={createInputValue}
           value={formData.description || ""}
         />
-
-        {/*  <label>
-          <input type="checkbox" id="status" name="status" checked={formData.status} onChange={createInputValue} />
-          Check me!
-        </label> */}
-
-        <select value={formData.type || ""} onChange={createInputValue} id="type" name="type" className="">
-          <option value="Gain">Gain</option>
-          <option value="Lose">Lose</option>
-        </select>
 
         <div className="todos-submit-btn-container">
           <button type="submit" className={editMode ? "todos-submit-btn update-btn" : "todos-submit-btn"}>
@@ -257,7 +252,7 @@ const HabitTracker: React.FC = () => {
       </form>
 
       <div className="habits-container">
-        <p className="todos-section-title">Habits to Lose</p>
+        <p className="todos-section-title">Habits to Gain</p>
         <div className="days-counter">DAY 01 | DAY 02 | DAY 03 | DAY 04 | DAY 05 | DAY 06 | DAY 07</div>
         {habits.settings?.map(
           (habit: Habits, index: number) =>
@@ -280,7 +275,6 @@ const HabitTracker: React.FC = () => {
                           disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
                           onChange={() => toggleStatus(index, dayIndex)}
                         />
-                      
                       </label>
                     ))}
                   </div>
@@ -336,7 +330,6 @@ const HabitTracker: React.FC = () => {
                           disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
                           onChange={() => toggleStatus(index, dayIndex)}
                         />
-                      
                       </label>
                     ))}
                   </div>
