@@ -1,0 +1,37 @@
+.selfcare-template-grid {
+    display: grid;
+    grid-template-areas:
+      "journal journal"
+      "mood habits";
+    grid-template-columns: 50% 50%;
+    padding: 15px;
+    //   grid-template-rows: 150px auto;
+    // height: 100vh; // Adjust the height as needed
+  }
+  
+  .selfcare-template-grid > div {
+    padding: 10px;
+  }
+  
+  .selfcare-template-grid > div:nth-child(1) {
+    grid-area: journal;
+  }
+  
+  .selfcare-template-grid > div:nth-child(2) {
+    grid-area: mood;
+  }
+  
+  .selfcare-template-grid > div:nth-child(3) {
+    grid-area: habits;
+  }
+  
+  
+  .min-div-widgets {
+    width: 380px;
+    height: 200px;
+    overflow: hidden;
+  }
+  .media-img-div {
+    overflow: hidden;
+  }
+  

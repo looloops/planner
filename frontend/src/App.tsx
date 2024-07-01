@@ -12,6 +12,7 @@ import "./assets/scss/calendar.scss";
 import "./assets/scss/newappointment.scss";
 import "./assets/scss/rightbar.scss";
 import "./assets/scss/schedule_page.scss";
+import "./assets/scss/selfcare_page.scss";
 import "./assets/scss/sidebar.scss";
 import "./assets/scss/style.scss";
 import "./assets/scss/todos.scss";

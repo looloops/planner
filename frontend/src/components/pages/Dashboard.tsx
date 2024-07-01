@@ -75,7 +75,7 @@ function Dashboard() {
               <hr />
               <div className="col-6">
                 <p className="fw-bold">
-                  Created at: <span className="text-dark">{user.created_at.slice(0, 10)}</span>
+                  Created at: <span className="text-dark">{user?.user?.created_at.slice(0, 10)}</span>
                 </p>
               </div>
               <hr />

@@ -81,7 +81,7 @@ export interface GeneralSettings {
   priority: string;
   type: string;
   img: string;
-  status: string;
+  status: string | boolean[];
   content: string;
   genre: string;
   day: string; // as in day of the week
@@ -93,6 +93,7 @@ export interface GeneralSettings {
   price: string | null;
   feeling: string;
   amount: number;
+  startDate: string;
 }
 
 export interface SettingsSchedule {

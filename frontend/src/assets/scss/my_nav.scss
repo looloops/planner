@@ -1,0 +1,111 @@
+.user-navigation {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+}
+
+.user-container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  & svg {
+    cursor: pointer;
+  }
+}
+
+.user-container a {
+  font-size: 14px;
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: bold;
+  padding: 8px;
+  position: relative; /* Needed for the pseudo-element positioning */
+  &:hover {
+    color: #ffffff;
+  }
+  &::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 0;
+    height: 2px; /* Adjust the height of the underline */
+    background-color: #9a8cea;
+    transition: width 0.3s; /* Adjust the transition duration */
+  }
+
+  &:hover::after {
+    width: 100%;
+  }
+}
+
+.navButtons {
+  height: 20px;
+  width: 20px;
+  &.hideButton {
+    border-radius: 50%;
+    background-color: rgba(28, 68, 170, 0.29);
+    &:hover {
+      width: 100px;
+      border-radius: 50px;
+      transition-duration: 0.5s;
+      background-color: rgba(56, 28, 170, 0.533);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Show less";
+      color: white;
+      font-size: 0px;
+    }
+  }
+
+  &.showButton {
+    border-radius: 50%;
+    background-color: rgba(48, 2, 215, 0.381);
+    &:hover {
+      width: 100px;
+      border-radius: 50px;
+      transition-duration: 0.5s;
+      background-color: rgba(56, 28, 170, 0.674);
+      align-items: center;
+    }
+    &::before {
+      position: absolute;
+      bottom: -20px;
+      content: "Show more";
+      color: white;
+      font-size: 0px;
+    }
+  }
+
+  border: none;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0px 0px 0px 1px rgba(180, 160, 255, 0.253);
+  cursor: pointer;
+  transition-duration: 0.3s;
+  overflow: hidden;
+  position: relative;
+
+  &:hover::before {
+    font-size: 10px;
+    opacity: 1;
+    bottom: unset;
+    transition-duration: 0.3s;
+  }
+}
+
+.nav-timelineIcons {
+  transition-duration: 0.3s;
+  color: white;
+  font-size: 10px;
+}
+
+.navButtons:hover .nav-timelineIcons {
+  transition-duration: 0.3s;
+  transform: translateY(-200%);
+}

@@ -15,11 +15,13 @@ import ScheduleTimeline from "./widgets/ScheduleTimeline";
 import NewAppointmentCopy from "./widgets/NewAppointmentCopy";
 import SchedulePage from "./pages/SchedulePage";
 import { Routes, Route } from "react-router-dom";
-import DailySchedule from "./widgets/ DailySchedule";
+import DailySchedule from "./widgets/DailySchedule";
 import { LOGIN } from "./redux/actions";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import HabitTracker from "./widgets/HabitTracker";
+import SelfCarePage from "./pages/SelfCarePage";
 
 const Homepage: React.FC = () => {
   const dispatch = useDispatch();
@@ -60,6 +62,8 @@ const Homepage: React.FC = () => {
           <Route path="/login" element={<Login />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/habit-tracker" element={<HabitTracker />} />
+          <Route path="/self-care" element={<SelfCarePage />} />
         </Routes>
       </div>
     </div>
