@@ -1,22 +1,150 @@
 .habits-container {
-    display: flex;
-    flex-direction: column;
-justify-content: center;
-    background-color: white;
-    border-radius: 10px;
-    padding: 15px;
-    margin-block: 10px;
-    background: rgba(255, 255, 255, 0.75);
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-    backdrop-filter: blur(5px);
-    -webkit-backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    text-align: left;
-    font-size: 12px;
-    color: #686868;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-block: 10px;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: left;
+  font-size: 12px;
+  color: #686868;
+}
+
+.habits-item {
+  margin-block: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.days-counter {
+  text-align: center;
+  color: #ffffff;
+}
+
+.habits-buttons-container {
+  width: 33%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+}
+
+.habits-title-desc-container {
+  width: 33%;
+}
+
+.daily-checks {
+  text-align: center;
+  width: 33%;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+}
+
+.daily-checks input[type="checkbox"] {
+  appearance: none;
+  border: 2px solid rgb(255, 255, 255);
+  border-radius: 2px;
+  padding: 10px;
+  cursor: pointer;
+  background-color: rgb(211, 191, 251);
+  &:hover {
+    background-color: rgb(164, 125, 243);
   }
-/* 
-  .habits-item {
-    display: flex;
-    justify-content: space-between;
-  } */
+  &:checked {
+    background-color: rgb(164, 125, 243);
+    &:disabled {
+      background-color: rgb(211, 191, 251);
+      cursor: default;
+    }
+  }
+  &:disabled {
+    background-color: rgb(231, 228, 236);
+    cursor: default;
+  }
+}
+
+.habits-container-topbar {
+  background-color: white;
+  border-radius: 10px;
+  padding: 15px;
+  margin-inline: 10px;
+  margin-block: 10px;
+  background: rgba(232, 235, 255, 0.739);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  text-align: left;
+  font-size: 12px;
+  color: #686868;
+}
+
+.habits-content-container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.habits-item-topbar {
+  margin-block: 0px 10px;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.habits-section-title-topbar {
+  font-size: 16px;
+  color: #9a8cea;
+  text-align: left;
+  font-weight: bold;
+}
+
+.habits-title-topbar {
+  font-size: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ffffff;
+  border-radius: 10px;
+  border: 1px solid #9a8cea5e;
+  color: #9a8ceab1;
+  margin: 2px;
+}
+
+.habits-title-btn-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.daily-checks-topbar input[type="checkbox"] {
+  appearance: none;
+  margin: 2px;
+  border: 1.5px solid rgb(255, 255, 255);
+  border-radius: 2px;
+  padding: 5px;
+  cursor: pointer;
+  background-color: rgb(211, 191, 251);
+  &:hover {
+    background-color: rgb(164, 125, 243);
+  }
+  &:checked {
+    background-color: rgb(164, 125, 243);
+    &:disabled {
+      background-color: rgb(211, 191, 251);
+      cursor: default;
+    }
+  }
+  &:disabled {
+    background-color: rgb(231, 228, 236);
+    cursor: default;
+  }
+}

@@ -257,14 +257,35 @@ const HabitTracker: React.FC = () => {
       </form>
 
       <div className="habits-container">
-        <p className="todos-section-title">Habits to Gain</p>
+        <p className="todos-section-title">Habits to Lose</p>
+        <div className="days-counter">DAY 01 | DAY 02 | DAY 03 | DAY 04 | DAY 05 | DAY 06 | DAY 07</div>
         {habits.settings?.map(
           (habit: Habits, index: number) =>
             habit.type === "Gain" && (
-              <div key={index} className="habits-item">
-                <div className="todos-title-buttons">
-                  <div className="todos-title">{habit.title}</div>
-                  <div className="appointment-buttons-container">
+              <>
+                <div key={index} className="habits-item">
+                  <div className="habits-title-desc-container">
+                    <div className="todos-title">{habit.title}</div>
+                    <div className="todos-description">{habit.description}</div>
+                  </div>
+
+                  <div className="daily-checks">
+                    {habit.status.map((checked, dayIndex) => (
+                      <label key={dayIndex}>
+                        <input
+                          type="checkbox"
+                          name="checkbox"
+                          checked={checked}
+                          // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
+                          disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
+                          onChange={() => toggleStatus(index, dayIndex)}
+                        />
+                      
+                      </label>
+                    ))}
+                  </div>
+
+                  <div className="habits-buttons-container">
                     <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
                       <div className="appointment-timelineIcons">
                         <svg
@@ -286,36 +307,41 @@ const HabitTracker: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <div className="todos-description">{habit.description}</div>
-                <div className="daily-checks">
-                  {habit.status.map((checked, dayIndex) => (
-                    <label key={dayIndex}>
-                      <input
-                        type="checkbox"
-                        name="checkbox"
-                        checked={checked}
-                        // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
-                        disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
-                        onChange={() => toggleStatus(index, dayIndex)}
-                      />
-                      Day {dayIndex + 1}
-                    </label>
-                  ))}
-                </div>
-              </div>
+              </>
             )
         )}
       </div>
 
       <div className="habits-container">
         <p className="todos-section-title">Habits to Lose</p>
+        <div className="days-counter">DAY 01 | DAY 02 | DAY 03 | DAY 04 | DAY 05 | DAY 06 | DAY 07</div>
         {habits.settings?.map(
           (habit: Habits, index: number) =>
             habit.type === "Lose" && (
-              <div key={index} className="habits-item">
-                <div className="todos-title-buttons">
-                  <div className="todos-title">{habit.title}</div>
-                  <div className="appointment-buttons-container">
+              <>
+                <div key={index} className="habits-item">
+                  <div className="habits-title-desc-container">
+                    <div className="todos-title">{habit.title}</div>
+                    <div className="todos-description">{habit.description}</div>
+                  </div>
+
+                  <div className="daily-checks">
+                    {habit.status.map((checked, dayIndex) => (
+                      <label key={dayIndex}>
+                        <input
+                          type="checkbox"
+                          name="checkbox"
+                          checked={checked}
+                          // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
+                          disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
+                          onChange={() => toggleStatus(index, dayIndex)}
+                        />
+                      
+                      </label>
+                    ))}
+                  </div>
+
+                  <div className="habits-buttons-container">
                     <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
                       <div className="appointment-timelineIcons">
                         <svg
@@ -337,23 +363,7 @@ const HabitTracker: React.FC = () => {
                     </button>
                   </div>
                 </div>
-                <div className="todos-description">{habit.description}</div>
-                <div className="daily-checks">
-                  {habit.status.map((checked, dayIndex) => (
-                    <label key={dayIndex}>
-                      <input
-                        type="checkbox"
-                        name="checkbox"
-                        checked={checked}
-                        // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
-                        disabled={editMode ? false : calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
-                        onChange={() => toggleStatus(index, dayIndex)}
-                      />
-                      Day {dayIndex + 1}
-                    </label>
-                  ))}
-                </div>
-              </div>
+              </>
             )
         )}
       </div>
