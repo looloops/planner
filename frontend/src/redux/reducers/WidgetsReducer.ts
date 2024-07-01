@@ -10,6 +10,7 @@ import {
   SCHEDULE_DETAILS,
   THEME_DETAILS,
   TODOS_DETAILS,
+  DAILY_SCHEDULE_DETAILS,
   WISHLIST_DETAILS,
   SAVE_ACTIVE_DATE,
 } from "../actions";
@@ -74,7 +75,10 @@ interface WishlistAction {
   type: typeof WISHLIST_DETAILS;
   payload: Partial<WidgetDetails>;
 }
-
+interface DailyScheduleAction {
+  type: typeof DAILY_SCHEDULE_DETAILS;
+  payload: Partial<WidgetDetails>;
+}
 interface SaveActiveDateAction {
   type: typeof SAVE_ACTIVE_DATE;
   payload: Partial<WidgetDetails>;
@@ -93,6 +97,7 @@ type ActionTypes =
   | ThemeAction
   | ToDosAction
   | WishlistAction
+  | DailyScheduleAction
   | SaveActiveDateAction;
 
 export interface WidgetsState {
@@ -108,6 +113,7 @@ export interface WidgetsState {
   habits: Partial<WidgetDetails>;
   theme: Partial<WidgetDetails>;
   journal: Partial<WidgetDetails>;
+  daily_schedule: Partial<WidgetDetails>;
   active_date: Partial<WidgetDetails>;
 }
 
@@ -124,16 +130,16 @@ const initialState: WidgetsState = {
   habits: {},
   theme: {},
   journal: {},
+  daily_schedule: {},
   active_date: {},
 };
 
 const widgetsReducer = (state = initialState, action: ActionTypes): WidgetsState => {
   switch (action.type) {
-
     case SAVE_ACTIVE_DATE:
       return {
         ...state,
-          active_date: action.payload,
+        active_date: action.payload,
       };
 
     case SCHEDULE_DETAILS:
@@ -207,6 +213,12 @@ const widgetsReducer = (state = initialState, action: ActionTypes): WidgetsState
       return {
         ...state,
         journal: action.payload,
+      };
+
+    case DAILY_SCHEDULE_DETAILS:
+      return {
+        ...state,
+        daily_schedule: action.payload,
       };
 
     default:

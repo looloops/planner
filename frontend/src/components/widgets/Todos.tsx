@@ -8,6 +8,13 @@ import { TODOS_DETAILS } from "../../redux/actions/index";
 import { ApiResponse } from "../../typescript/interfaces";
 
 const Todos: React.FC = () => {
+  interface Todo {
+    title: string;
+    description: string;
+    status: string;
+    priority: string;
+  }
+
   const [editMode, setEditMode] = useState(false);
   const [currentEditIndex, setCurrentEditIndex] = useState<number | null>(null);
 
@@ -61,7 +68,7 @@ const Todos: React.FC = () => {
     let updatedSettingsArray: Partial<GeneralSettings>[];
 
     if (editMode && currentEditIndex !== null) {
-      updatedSettingsArray = todos.settings.map((setting, index) =>
+      updatedSettingsArray = todos.settings.map((setting: object, index: number) =>
         index === currentEditIndex ? { ...formData } : setting
       );
     } else {
@@ -193,7 +200,7 @@ const Todos: React.FC = () => {
       <div className="todos-container">
         <p className="todos-section-title">To-do list</p>
         {todos.settings?.map(
-          (todo, index) =>
+          (todo: Todo, index: number) =>
             todo.status === "To-do" && (
               <div key={index} className="todos-item">
                 <div className="todos-title-buttons">
@@ -243,7 +250,7 @@ const Todos: React.FC = () => {
       <div className="todos-container">
         <p className="todos-section-title">Doing list</p>
         {todos.settings?.map(
-          (doing, index) =>
+          (doing: Todo, index: number) =>
             doing.status === "On-going" && (
               <div key={index} className="todos-item">
                 <div className="todos-title-buttons">
@@ -292,7 +299,7 @@ const Todos: React.FC = () => {
       <div className="todos-container">
         <p className="todos-section-title">Done list</p>
         {todos.settings?.map(
-          (done, index) =>
+          (done: Todo, index: number) =>
             done.status === "Done" && (
               <div key={index} className="todos-item">
                 <div className="todos-title-buttons">

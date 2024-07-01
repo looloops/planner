@@ -213,12 +213,7 @@ const FinalGridCopy = () => {
         onLayoutChange={handleLayoutChange}
       >
         {active_widgets.map((widget: number | string) => (
-          <div
-            key={widget}
-            style={{
-              backgroundColor: "#dddddd",
-            }}
-          >
+          <div key={widget}>
             <div style={{ height: "95%", overflowY: "scroll" }}>{renderComponent(parseInt(widget as string))}</div>
           </div>
         ))}

@@ -1,3 +1,6 @@
+import React, { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { SAVE_ACTIVE_DATE } from "../redux/actions";
 import MyNav from "./MyNav";
 import FinalGridCopy from "./layout/FinalGridCopy";
 import RightBar from "./layout/RightBar";
@@ -17,8 +20,6 @@ import { LOGIN } from "./redux/actions";
 import Dashboard from "./pages/Dashboard";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
-import WeatherProva from "./widgets/WeatherProva";
-import WeatherForecast from "./widgets/WeatherProva";
 
 const Homepage: React.FC = () => {
   const dispatch = useDispatch();
@@ -53,7 +54,6 @@ const Homepage: React.FC = () => {
           <Route path="/media" element={<Media />} />
           <Route path="/media/edit/:settingIndex" element={<MediaEdit />} />
           <Route path="/weather" element={<Weather />} />
-          <Route path="/weather2" element={<WeatherProva />} />
           <Route path="/timeline" element={<ScheduleTimeline />} />
           <Route path="/newappointment" element={<NewAppointmentCopy />} />
           <Route path="/daily-schedule" element={<DailySchedule />} />

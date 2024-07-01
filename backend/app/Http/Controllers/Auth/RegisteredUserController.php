@@ -85,7 +85,7 @@ class RegisteredUserController extends Controller
 
         $user = Auth::user();
         $user_id = $user->id;
-        $available_widgets = [1, 2, 3, 4, 5, 6]; // Array di widget disponibili
+        $available_widgets = [1, 2, 3, 4, 5, 6, 7, 8, 9]; // Array di widget disponibili
 
 
         //METODO CON ELOQUENT
@@ -97,6 +97,7 @@ class RegisteredUserController extends Controller
             $widgetDetail->save();
         }
 
+        
 
         //METODO CON DB::RAW
         // foreach ($active_widgets as $widget_id) {

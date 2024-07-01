@@ -23,7 +23,7 @@ const ScheduleCreate: React.FC = () => {
 
   // GETTING HIGHEST ID IN THE SCHEDULE SETTINGS ARRAY
   const arrId: number[] = schedule.settings?.map((element) => element.id) || [];
-  const maxId = Math.max(...arrId);
+  const maxId = arrId.length > 0 ? Math.max(...arrId) : 0;
 
   // Initial state with defined default values
   const initialState: Partial<GeneralSettings> = {

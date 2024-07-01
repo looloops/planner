@@ -11,6 +11,13 @@ import { SCHEDULE_DETAILS } from "../../redux/actions";
 
 const NewAppointmentCopy: React.FC = () => {
   const schedule = useSelector((state: State) => state.widgets.schedule);
+
+  const today = new Date();
+  const startingDay = String(today.getDate()).padStart(2, "0");
+  const startingMonth = String(today.getMonth() + 1).padStart(2, "0"); // Adding 1 because getMonth() returns 0-11
+  const startingYear = today.getFullYear();
+  const startingDate = `${startingYear}-${startingMonth}-${startingDay}`;
+
   const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
   console.log("datefromcalendar", dateFromCalendar);
 
@@ -46,7 +53,7 @@ const NewAppointmentCopy: React.FC = () => {
   };
 
   const handleHourClick = (hour: string) => {
-    selectedHour ? setSelectedHour(null) : setSelectedHour(hour);
+    selectedHour === hour ? setSelectedHour(null) : setSelectedHour(hour);
     setFormData((prevFormData) => ({ ...prevFormData, start: hour }));
   };
 
@@ -120,46 +127,47 @@ const NewAppointmentCopy: React.FC = () => {
   console.log("selectedHour", selectedHour);
 
   return (
-    <div>
-      {/* CONTAINER HOURS PILLS */}
-      <div className="hours-pills-container">
-        {hours.map((hour) => (
-          <div
-            key={hour}
-            className={`hour-pill ${selectedHour === hour ? "selected" : ""}`}
-            onClick={() => handleHourClick(hour)}
-          >
-            {hour}
-          </div>
-        ))}
-      </div>
+    dateFromCalendar && (
+      <div>
+        {/* CONTAINER HOURS PILLS */}
+        <div className="hours-pills-container">
+          {hours.map((hour) => (
+            <div
+              key={hour}
+              className={`hour-pill  ${selectedHour === hour ? "selected" : ""}`}
+              onClick={() => handleHourClick(hour)}
+            >
+              {hour}
+            </div>
+          ))}
+        </div>
 
-      {/* SELECTED DATE */}
-      <div className="appointment-glass-background">
-        <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
-          {dateFromCalendar} <span style={{ color: "#8D8D8D" }}>Scheduled Appointments</span>
-        </h6>
-        {/* SELECTED HOUR */}
+        {/* SELECTED DATE */}
+        <div className="appointment-glass-background">
+          <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
+            <span style={{ color: "#8D8D8D" }}>Schedule a new appointment: </span> {dateFromCalendar}
+          </h6>
+          {/* SELECTED HOUR */}
 
-        {selectedHour && (
-          <div>
-            <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
-            <h6>Appointments for {selectedHour}:</h6>
-            {appointmentsForDay
+          {selectedHour && (
+            <div>
+              <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+              <h6>Appointments for {selectedHour}:</h6>
+              {appointmentsForDay
 
-              ?.filter((appointment) => appointment.start.startsWith(selectedHour.substring(0, 2)))
-              .map((appointment) => (
-                <div key={appointment.id} className="appointment-summary">
-                  <span>
-                    {appointment.title} - {appointment.start}
-                  </span>
-                </div>
-              ))}
-          </div>
-        )}
-        {!selectedHour && (
-          <div className="appointments-list">
-            {/* <h6>All Appointments for the Day:</h6>
+                ?.filter((appointment) => appointment.start.startsWith(selectedHour.substring(0, 2)))
+                .map((appointment) => (
+                  <div key={appointment.id} className="appointment-summary">
+                    <span>
+                      {appointment.title} - {appointment.start}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          )}
+          {!selectedHour && (
+            <div className="appointments-list">
+              {/* <h6>All Appointments for the Day:</h6>
             {appointmentsForDay?.map((appointment) => (
               <div key={appointment.id} className="appointment-summary">
                 <span>
@@ -168,11 +176,12 @@ const NewAppointmentCopy: React.FC = () => {
               </div>
             ))} */}
 
-            <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
-          </div>
-        )}
+              <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    )
   );
 };
 

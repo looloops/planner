@@ -15,7 +15,7 @@ const SchedulePage: React.FC = () => {
       <div>
         <Todos />
       </div>
-      <div>timeline</div>
+
       <div>
         <NewAppointmentCopy />
       </div>
