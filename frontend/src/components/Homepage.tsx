@@ -49,9 +49,9 @@ const Homepage: React.FC = () => {
       <div>
         <MyNav />
       </div>
-      <div>
+      {/*  <div>
         <Editbar sharedStatic={sharedStatic} setSharedStatic={setSharedStatic} />
-      </div>
+      </div> */}
       <div>
         <Routes>
           <Route path="/" element={<FinalGridCopy setSharedStatic={setSharedStatic} />} />
