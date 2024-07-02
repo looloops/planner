@@ -244,6 +244,8 @@ const FinalGridCopy = (setSharedStatic) => {
 
   return (
     <>
+ 
+
       <ResponsiveGridLayout
         className="layout"
         layouts={layoutState}
@@ -260,30 +262,36 @@ const FinalGridCopy = (setSharedStatic) => {
           </div>
         ))}
       </ResponsiveGridLayout>
-
-      {staticOn ? (
-        <button onClick={handleStatic} className="btn btn-success m-4">
-          Edit Layout
-        </button>
-      ) : (
-        <>
-          <button onClick={handleLayoutSave} className="btn btn-success m-4">
-            Save Layout
+      <div className="editmode-container">
+        {" "}
+        {staticOn ? (
+          <button onClick={handleStatic} className="editmode-btn">
+            <span className="editmode-btn-content">Edit Layout</span>
           </button>
+        ) : (
+          <>
+            <select
+              value={selectedWidget}
+              onChange={(e) => setSelectedWidget(e.target.value)}
+              className="selectWidgets"
+            >
+              <option value="">Select a widget</option>
+              {availableWidgets.map((key) => (
+                <option key={key} value={key}>
+                  {allWidgets[parseInt(key)]}
+                </option>
+              ))}
+            </select>
+            <button onClick={addWidget} className="editmode-btn">
+              <span className="editmode-btn-content">Add Widget</span>
+            </button>
 
-          <select value={selectedWidget} onChange={(e) => setSelectedWidget(e.target.value)} className="m-4">
-            <option value="">Select a widget</option>
-            {availableWidgets.map((key) => (
-              <option key={key} value={key}>
-                {allWidgets[parseInt(key)]}
-              </option>
-            ))}
-          </select>
-          <button onClick={addWidget} className="btn btn-primary m-4">
-            Add Widget
-          </button>
-        </>
-      )}
+            <button onClick={handleLayoutSave} className="editmode-btn">
+              <span className="editmode-btn-content">Save Layout</span>
+            </button>
+          </>
+        )}
+      </div>
     </>
   );
 };
