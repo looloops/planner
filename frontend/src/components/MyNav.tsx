@@ -149,9 +149,9 @@ const MyNav: React.FC = () => {
 
               {user.user === null && (
                 <>
-                 <Link to="/register">Register</Link>
+                  <Link to="/register">Register</Link>
                   <Link to="/login">Log-in</Link>
-                 
+
                   <img
                     src="https://preview.redd.it/nhim8ly085251.jpg?auto=webp&s=fc1e542dd41306ba139ffd590cf2aafabed73d6a"
                     alt="profile_img"
@@ -165,7 +165,7 @@ const MyNav: React.FC = () => {
         )}
       </div>
 
-      {showMoreHabits && <HabitTrackerTopBar />}
+      {user.user && showMoreHabits && <HabitTrackerTopBar showMoreHabits={showMoreHabits} setShowMoreHabits={setShowMoreHabits} />}
     </div>
   );
 };

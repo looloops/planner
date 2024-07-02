@@ -1,5 +1,5 @@
 import "../../assets/scss/habit_tracker.scss";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useSelector, useDispatch } from "react-redux";
@@ -8,8 +8,15 @@ import { HABITS_DETAILS } from "../../redux/actions/index";
 import { ApiResponse } from "../../typescript/interfaces";
 import { useNavigate } from "react-router-dom";
 
-const HabitTrackerTopBar: React.FC = () => {
+// SETTING INTERFACE FOR PROPS
+interface HabitTrackerTopBarProps {
+  showMoreHabits: boolean;
+  setShowMoreHabits: (value: boolean) => void;
+}
+
+const HabitTrackerTopBar: React.FC<HabitTrackerTopBarProps> = ({ showMoreHabits, setShowMoreHabits }) => {
   const navigate = useNavigate();
+
   // SETTING INTERFACE FOR HABITS OBJECT
   interface Habits {
     title: string;
@@ -100,38 +107,48 @@ const HabitTrackerTopBar: React.FC = () => {
   };
 
   return (
-    <div className="habits-container-topbar">
-      <div className="habits-title-btn-container">
-        <p className="habits-section-title-topbar">Your habit-tracker</p>
-        <button className="todos-submit-btn" onClick={() => navigate("/self-care")}>
-          <p className="todos-submit-btn-content">+</p>
-        </button>
-      </div>
-      <div className="habits-content-container">
-        {habits.settings?.map((habit: Habits, index: number) => (
-          <>
-            <div key={index} className="habits-item-topbar">
-              <div className="habits-title-topbar">{habit.title}</div>
+    <>
+      {showMoreHabits && (
+        <div className="habits-container-topbar">
+          <div className="habits-title-btn-container">
+            <p className="habits-section-title-topbar">Your habit-tracker</p>
+            <button
+              className="todos-submit-btn"
+              onClick={() => {
+                navigate("/self-care");
+                setShowMoreHabits(false);
+              }}
+            >
+              <p className="todos-submit-btn-content">+</p>
+            </button>
+          </div>
+          <div className="habits-content-container">
+            {habits.settings?.map((habit: Habits, index: number) => (
+              <>
+                <div key={index} className="habits-item-topbar">
+                  <div className="habits-title-topbar">{habit.title}</div>
 
-              <div className="daily-checks-topbar">
-                {habit.status.map((checked, dayIndex) => (
-                  <label key={dayIndex}>
-                    <input
-                      type="checkbox"
-                      name="checkbox"
-                      checked={checked}
-                      // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
-                      disabled={calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
-                      onChange={() => toggleStatus(index, dayIndex)}
-                    />
-                  </label>
-                ))}
-              </div>
-            </div>
-          </>
-        ))}
-      </div>
-    </div>
+                  <div className="daily-checks-topbar">
+                    {habit.status.map((checked, dayIndex) => (
+                      <label key={dayIndex}>
+                        <input
+                          type="checkbox"
+                          name="checkbox"
+                          checked={checked}
+                          // disabled={currentEditIndex !== index && activeCheckbox !== dayIndex + 1}
+                          disabled={calculateActiveCheckbox(habit.startDate) !== dayIndex + 1}
+                          onChange={() => toggleStatus(index, dayIndex)}
+                        />
+                      </label>
+                    ))}
+                  </div>
+                </div>
+              </>
+            ))}
+          </div>
+        </div>
+      )}
+    </>
   );
 };
 
