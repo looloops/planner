@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SAVE_ACTIVE_DATE } from "../redux/actions";
 import MyNav from "./MyNav";
@@ -22,8 +22,10 @@ import Login from "./pages/Login";
 import Register from "./pages/Register";
 import HabitTracker from "./widgets/HabitTracker";
 import SelfCarePage from "./pages/SelfCarePage";
+import Editbar from "./Editbar";
 
 const Homepage: React.FC = () => {
+  const [sharedStatic, setSharedStatic] = useState(true);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -48,8 +50,11 @@ const Homepage: React.FC = () => {
         <MyNav />
       </div>
       <div>
+        <Editbar sharedStatic={sharedStatic} setSharedStatic={setSharedStatic} />
+      </div>
+      <div>
         <Routes>
-          <Route path="/" element={<FinalGridCopy />} />
+          <Route path="/" element={<FinalGridCopy setSharedStatic={setSharedStatic} />} />
           <Route path="/schedule" element={<SchedulePage />} />
           <Route path="/schedule/add" element={<ScheduleCreate />} />
           <Route path="/schedule/edit/:settingIndex" element={<ScheduleEdit />} />

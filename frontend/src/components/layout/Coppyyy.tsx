@@ -10,6 +10,8 @@ import Media from "../widgets/Media";
 import Todos from "../widgets/Todos";
 import Calendar from "../widgets/Calendar";
 import Weather from "../widgets/Weather";
+import Appointments from "../widgets/Appointments";
+import Journal from "../widgets/Journal";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -26,8 +28,8 @@ const FinalGridCopy = (setSharedStatic) => {
 
   const allWidgets = {
     1: "Schedule",
-    2: "Goals",
-    3: "Media",
+    2: "Calendar",
+    3: "Weather",
     4: "Recipes",
     5: "Journal",
     6: "Todos",
@@ -67,6 +69,9 @@ const FinalGridCopy = (setSharedStatic) => {
       y: 0,
       w: width,
       h: height,
+      // w: 4,
+      // h: 2,
+      // minW: 4,
       static: staticOn,
     };
 
@@ -143,6 +148,7 @@ const FinalGridCopy = (setSharedStatic) => {
     }, {} as Layouts);
 
     setStaticOn(!staticOn);
+    setSharedStatic(!staticOn);
     setLayoutState(updatedLayoutState);
 
     console.log("updatedLayoutState:", updatedLayoutState);
@@ -222,15 +228,15 @@ const FinalGridCopy = (setSharedStatic) => {
   const renderComponent = (key: number) => {
     switch (key) {
       case 1:
-        return <Schedule />;
+        return <Appointments />;
       case 2:
-        return <Weather />;
+        return <Calendar />;
       case 3:
-        return <Media />;
+        return <Weather />;
       case 4:
-        return <Schedule />;
+        return <Calendar />;
       case 5:
-        return <Schedule />;
+        return <Journal />;
       case 6:
         return <Todos />;
       case 7:
@@ -244,23 +250,6 @@ const FinalGridCopy = (setSharedStatic) => {
 
   return (
     <>
-      <ResponsiveGridLayout
-        className="layout"
-        layouts={layoutState}
-        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
-        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
-        onLayoutChange={handleLayoutChange}
-      >
-        {active_widgets.map((widget: number | string) => (
-          <div key={widget} data-grid-id={widget} className="widget-wrapper">
-            <button className="remove-widget-button btn btn-danger" onClick={() => removeWidget(widget as string)}>
-              Remove Widget
-            </button>
-            <div style={{ height: "100%", overflow: "hidden" }}>{renderComponent(parseInt(widget as string))}</div>
-          </div>
-        ))}
-      </ResponsiveGridLayout>
-
       {staticOn ? (
         <button onClick={handleStatic} className="btn btn-success m-4">
           Edit Layout
@@ -271,19 +260,37 @@ const FinalGridCopy = (setSharedStatic) => {
             Save Layout
           </button>
 
-          <select value={selectedWidget} onChange={(e) => setSelectedWidget(e.target.value)} className="m-4">
-            <option value="">Select a widget</option>
+          <select value={selectedWidget} onChange={(e) => setSelectedWidget(e.target.value)}>
+            <option value="">Select</option>
             {availableWidgets.map((key) => (
               <option key={key} value={key}>
-                {allWidgets[parseInt(key)]}
+                {allWidgets[key]}
               </option>
             ))}
           </select>
+
           <button onClick={addWidget} className="btn btn-primary m-4">
             Add Widget
           </button>
         </>
       )}
+      <ResponsiveGridLayout
+        className="layout"
+        layouts={layoutState}
+        breakpoints={{ lg: 1200, md: 996, sm: 768, xs: 480, xxs: 0 }}
+        cols={{ lg: 12, md: 10, sm: 6, xs: 4, xxs: 2 }}
+        onLayoutChange={handleLayoutChange}
+      >
+        {active_widgets.map((widget: number | string) => (
+          <div key={widget}>
+            <div style={{ height: "100%", overflow: "scroll" }}>
+              {!staticOn && <button onClick={() => removeWidget(widget as string)}>Remove Widget</button>}
+
+              {renderComponent(parseInt(widget as string))}
+            </div>
+          </div>
+        ))}
+      </ResponsiveGridLayout>
     </>
   );
 };
