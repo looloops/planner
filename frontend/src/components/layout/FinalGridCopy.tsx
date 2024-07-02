@@ -88,6 +88,40 @@ const FinalGridCopy = () => {
     });
   };
 
+  const removeWidget = (widgetId: string) => {
+    const updatedLayoutState = Object.entries(layoutState).reduce((acc, [breakpoint, layout]) => {
+      acc[breakpoint] = (layout as Array<T>).filter((item) => item.i !== widgetId);
+      return acc;
+    }, {} as Layouts);
+
+    setLayoutState(updatedLayoutState);
+
+    const updatedActiveWidgets = active_widgets.filter((id: number) => id !== parseInt(widgetId));
+    dispatch({
+      type: SAVE_ACTIVE_WIDGETS,
+      payload: JSON.stringify(updatedActiveWidgets),
+    });
+
+    // Update the backend
+    const body = {
+      widgets_layout: updatedLayoutState,
+      active_widgets: updatedActiveWidgets,
+    };
+
+    axios
+      .put(`http://localhost:8000/api/user/layout/edit`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      .then((response) => {
+        console.log("Data updated successfully:", response.data);
+      })
+      .catch((error) => {
+        console.error("Error updating data:", error);
+      });
+  };
+
   const layoutsFromRedux = useSelector((state: State) => state.user.user?.widgets_layout);
   const layoutsParsed = layoutsFromRedux ? JSON.parse(layoutsFromRedux) : {};
   console.log("layoutsParsed:", layoutsParsed);
@@ -222,7 +256,10 @@ const FinalGridCopy = () => {
       >
         {active_widgets.map((widget: number | string) => (
           <div key={widget}>
-            <div style={{ height: "100%", overflow: "hidden" }}>{renderComponent(parseInt(widget as string))}</div>
+            <div style={{ height: "100%", overflow: "hidden" }}>
+              {renderComponent(parseInt(widget as string))}
+              <button onClick={() => removeWidget(widget as string)}>Remove Widget</button>
+            </div>
           </div>
         ))}
       </ResponsiveGridLayout>
