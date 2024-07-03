@@ -13,6 +13,7 @@ import "./assets/scss/selfcare_page.scss";
 import "./assets/scss/sidebar.scss";
 import "./assets/scss/style.scss";
 import "./assets/scss/todos.scss";
+import "./assets/scss/weather.scss";
 
 axios.defaults.withCredentials = true;
 axios.defaults.withXSRFToken = true;
