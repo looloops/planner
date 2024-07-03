@@ -36,9 +36,8 @@
 .homepage-template-grid > div:nth-child(2) {
   grid-area: topbar;
   display: flex;
- //  align-items: flex-start;
+  //  align-items: flex-start;
   // justify-content: center;
-  
 }
 
 .homepage-template-grid > div:nth-child(3) {
@@ -60,4 +59,32 @@
   width: 95%;
   background-color: #ffffff5b;
   border-radius: 20px;
+}
+
+//OVERLAY DIV
+#main {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+#div-static {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay semi-trasparente */
+  z-index: 1000; /* Assicurati che sia in cima a tutto */
+  display: none; /* Nascondi per impostazione predefinita */
+}
+
+#div-static.active {
+  display: block; /* Mostra quando attivo */
+}
+
+.overlay-item {
+  position: absolute;
+  background-color: rgba(255, 255, 255, 0.8); /* Background semi-trasparente */
+  border: 1px solid #000; /* Bordo visibile */
 }

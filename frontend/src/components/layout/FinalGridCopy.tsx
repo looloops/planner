@@ -242,13 +242,6 @@ const FinalGridCopy = () => {
     }
   };
 
-  const removeWidget = () => {
-    active_widgets.map((widget: number | string) => (
-      <button className="remove-widget-button btn btn-danger" onClick={() => removeWidget(widget as string)}>
-        Remove Widget
-      </button>
-    ));
-  };
   {
     active_widgets.map((widget: number | string) => (
       <button className="remove-widget-button btn btn-danger" onClick={() => removeWidget(widget as string)}>

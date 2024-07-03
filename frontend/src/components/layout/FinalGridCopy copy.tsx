@@ -270,6 +270,7 @@ const FinalGridCopy = () => {
         </button>
       ) : (
         <>
+          <div id="div-static"></div>
           <button onClick={handleLayoutSave} className="btn btn-success m-4">
             Save Layout
           </button>
