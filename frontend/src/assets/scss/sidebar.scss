@@ -73,35 +73,53 @@
 }
 
 ::-webkit-scrollbar {
-  width: 4px;
+  width: 8px;
   height: 4px;
 }
+
 ::-webkit-scrollbar-button {
   width: 0px;
   height: 0px;
 }
+/* ::-webkit-scrollbar-thumb {
+  background: #ff0a23;
+  border: 0px none #ffffff;
+  border-radius: 50px;
+} */
+
 ::-webkit-scrollbar-thumb {
-  background: #7a448d;
-  border: 0px none #ffffff;
-  border-radius: 50px;
+  background: #ffffff;
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: padding-box; // <== make the border work
+  cursor: grab;
 }
+
 ::-webkit-scrollbar-thumb:hover {
-  background: #6f4790;
+  border: 1px solid white;
 }
-::-webkit-scrollbar-thumb:active {
-  background: #6a3ed0;
-}
+
 ::-webkit-scrollbar-track {
-  background: #876486;
+  background: transparent;
+}
+
+/* ::-webkit-scrollbar-thumb:hover {
+  background: #6f4790;
+} */
+::-webkit-scrollbar-thumb:active {
+  background: #ffffff;
+}
+/* ::-webkit-scrollbar-track {
+  // background: #876486;
   border: 0px none #ffffff;
   border-radius: 50px;
-}
+} */
 ::-webkit-scrollbar-track:hover {
-  background: #666666;
+  background: #ffffff22;
 }
-::-webkit-scrollbar-track:active {
+/* ::-webkit-scrollbar-track:active {
   background: #a1639f;
-}
+} */
 ::-webkit-scrollbar-corner {
   background: transparent;
 }
