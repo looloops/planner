@@ -1,40 +1,62 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect } from "react";
+import { div } from "react-router-dom";
 
 const SideBar: React.FC = () => {
-  const location = useLocation();
-  const [indicatorStyle, setIndicatorStyle] = useState({});
-
   useEffect(() => {
     const updateIndicator = () => {
-      const activeTab = document.querySelector(".tab.active");
-      const indicator = document.querySelector(".indicator-div");
+      const tabs = document.querySelectorAll<HTMLElement>(".sidebar-container .tab");
+      const indicator = document.querySelector<HTMLElement>(".indicator-div");
 
-      const sidebarContainer = document.querySelector(".sidebar-container");
+      tabs.forEach((tab) => {
+        const radio = tab.querySelector<HTMLInputElement>("input[type='radio']");
 
-      const containerRect = sidebarContainer?.getBoundingClientRect();
-      if (activeTab && indicator && containerRect) {
-        const rect = activeTab.getBoundingClientRect();
+        if (radio?.checked) {
+          const rect = tab.getBoundingClientRect();
+          const sidebarContainer = document.querySelector(".sidebar-container");
+          const containerRect = sidebarContainer?.getBoundingClientRect();
 
-        setIndicatorStyle({
-          top: `${rect.top - 15}px`,
-          left: `${rect.left - containerRect.left}px`,
-          height: `${rect.height}px`,
-          width: `${rect.width}px`,
-        });
-      }
+          if (indicator && containerRect) {
+            indicator.style.top = `${rect.top - containerRect.top}px`;
+            indicator.style.left = `${rect.left - containerRect.left}px`;
+            indicator.style.width = `${rect.width}px`;
+            indicator.style.height = `${rect.height}px`;
+          }
+        }
+      });
     };
 
-    updateIndicator();
+    const tabs = document.querySelectorAll<HTMLElement>(".sidebar-container .tab");
+
+    tabs.forEach((tab) => {
+      const radio = tab.querySelector<HTMLInputElement>("input[type='radio']");
+
+      radio?.addEventListener("change", () => {
+        updateIndicator(); // Chiamata a updateIndicator quando cambia il tab selezionato
+      });
+
+      if (radio?.checked) {
+        updateIndicator(); // Chiamata iniziale a updateIndicator per impostare l'indicatore sul tab iniziale
+      }
+    });
+
+    // Aggiungi il listener per l'evento di ridimensionamento della finestra
     window.addEventListener("resize", updateIndicator);
-  }, [location.pathname]);
+
+    // Chiamata iniziale per aggiornare l'indicatore quando la pagina viene caricata
+    updateIndicator();
+
+    // Cleanup del listener nell'effetto di cleanup di useEffect
+    return () => {
+      window.removeEventListener("resize", updateIndicator);
+    };
+  }, []);
 
   return (
     <div className="sidebar">
       <div className="sidebar-container">
-        <Link to="/" className={`tab ${location.pathname === "/" ? "active" : ""}`}>
-          {/* Aggiungi un wrapper per mantenere lo stile */}
-          <div className="tab">
+        <div className="tab">
+          <input type="radio" name="group" id="home" defaultChecked />
+          <label htmlFor="home">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -45,10 +67,11 @@ const SideBar: React.FC = () => {
             >
               <path d="M0 1a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v14a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1zm9 0a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1zm0 9a1 1 0 0 1 1-1h5a1 1 0 0 1 1 1v5a1 1 0 0 1-1 1h-5a1 1 0 0 1-1-1z" />
             </svg>
-          </div>
-        </Link>
-        <Link to="/schedule" className={`tab ${location.pathname === "/schedule" ? "active" : ""}`}>
-          <div className="tab">
+          </label>
+        </div>
+        <div className="tab">
+          <input type="radio" name="group" id="schedule" />
+          <label htmlFor="schedule">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -61,10 +84,11 @@ const SideBar: React.FC = () => {
               <path d="M3 0h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2v-1h1v1a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H3a1 1 0 0 0-1 1v1H1V2a2 2 0 0 1 2-2" />
               <path d="M1 5v-.5a.5.5 0 0 1 1 0V5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0V8h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1zm0 3v-.5a.5.5 0 0 1 1 0v.5h.5a.5.5 0 0 1 0 1h-2a.5.5 0 0 1 0-1z" />
             </svg>
-          </div>
-        </Link>
-        <Link to="/weather" className={`tab ${location.pathname === "/weather" ? "active" : ""}`}>
-          <div className="tab">
+          </label>
+        </div>
+        <div className="tab">
+          <input type="radio" name="group" id="weather" />
+          <label htmlFor="weather">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -75,10 +99,11 @@ const SideBar: React.FC = () => {
             >
               <path d="M12 8a4 4 0 1 1-8 0 4 4 0 0 1 8 0M8 0a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 0m0 13a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-1 0v-2A.5.5 0 0 1 8 13m8-5a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2a.5.5 0 0 1 .5.5M3 8a.5.5 0 0 1-.5.5h-2a.5.5 0 0 1 0-1h2A.5.5 0 0 1 3 8m10.657-5.657a.5.5 0 0 1 0 .707l-1.414 1.415a.5.5 0 1 1-.707-.708l1.414-1.414a.5.5 0 0 1 .707 0m-9.193 9.193a.5.5 0 0 1 0 .707L3.05 13.657a.5.5 0 0 1-.707-.707l1.414-1.414a.5.5 0 0 1 .707 0m9.193 2.121a.5.5 0 0 1-.707 0l-1.414-1.414a.5.5 0 0 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .707M4.464 4.465a.5.5 0 0 1-.707 0L2.343 3.05a.5.5 0 1 1 .707-.707l1.414 1.414a.5.5 0 0 1 0 .708" />
             </svg>
-          </div>
-        </Link>
-        <Link to="/media" className={`tab ${location.pathname === "/media" ? "active" : ""}`}>
-          <div className="tab">
+          </label>
+        </div>
+        <div className="tab">
+          <input type="radio" name="group" id="media" />
+          <label htmlFor="media">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="30"
@@ -89,21 +114,16 @@ const SideBar: React.FC = () => {
             >
               <path d="M8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.309 8.985.936 8 1.783" />
             </svg>
-          </div>
-        </Link>
+          </label>
+        </div>
+        <div className="indicator-div">
+          {/* <div className="before"></div> */}
+          <div className="indicator"></div>
+          {/* <div className="after"></div> */}
+        </div>
       </div>
-      <div className="indicator-div" style={indicatorStyle}></div>
-      {/* Aggiungi .before e .after qui se necessario */}
     </div>
   );
 };
 
 export default SideBar;
-
-//       </div>
-//       <div className="indicator"></div>
-//     </div>
-//   );
-// };
-
-// export default SideBar;

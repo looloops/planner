@@ -45,9 +45,9 @@
       opacity: 1;
     }
 
-    // input {
-    //   display: none;
-    // }
+    input {
+      display: none;
+    }
 
     input:checked + label {
       opacity: 1;
@@ -62,46 +62,36 @@
 
   .indicator-div {
     position: absolute;
+    width: auto;
+    height: 150px;
     background-color: #9a82e5;
     z-index: 1;
     border-top-left-radius: 20px;
     border-bottom-left-radius: 20px;
-    transition: top 0.3s ease, width 0.3s ease;
+    transition: top 0.3s ease, width 0.3s ease; /* Aggiungi transizione per la larghezza */
     box-shadow: inset 20px 5px 14px -16px #646aaa;
-    right: -1px;
+    right: -1px; /* Spostato qui per posizionamento */
   }
-}
 
-::-webkit-scrollbar {
-  width: 4px;
-  height: 4px;
-}
-::-webkit-scrollbar-button {
-  width: 0px;
-  height: 0px;
-}
-::-webkit-scrollbar-thumb {
-  background: #7a448d;
-  border: 0px none #ffffff;
-  border-radius: 50px;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: #6f4790;
-}
-::-webkit-scrollbar-thumb:active {
-  background: #6a3ed0;
-}
-::-webkit-scrollbar-track {
-  background: #876486;
-  border: 0px none #ffffff;
-  border-radius: 50px;
-}
-::-webkit-scrollbar-track:hover {
-  background: #666666;
-}
-::-webkit-scrollbar-track:active {
-  background: #a1639f;
-}
-::-webkit-scrollbar-corner {
-  background: transparent;
+  .before,
+  .after {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: #bfccec; /* Colorato come l'indicatore */
+  }
+
+  .before {
+    top: -20px;
+    right: -1px;
+    border-bottom-right-radius: 20px;
+    box-shadow: 8px 8px 0 8px #bfccec;
+  }
+
+  .after {
+    bottom: -20px;
+    right: -1px;
+    border-top-right-radius: 20px;
+    box-shadow: 8px -8px 0 8px #bfccec;
+  }
 }

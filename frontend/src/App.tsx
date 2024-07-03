@@ -1,11 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import axios from "axios";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { LOGIN } from "./redux/actions";
-import Dashboard from "./components/pages/Dashboard";
-import Login from "./components/pages/Login";
-import Register from "./components/pages/Register";
 import Homepage from "./components/Homepage";
 import "./assets/scss/appointmens.scss";
 import "./assets/scss/calendar.scss";
