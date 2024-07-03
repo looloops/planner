@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 import { ApiResponse } from "../../typescript/interfaces";
 import { GeneralSettings } from "../../typescript/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { DAILY_SCHEDULE_DETAILS } from "../../redux/actions/index";
+import { DAILY_SCHEDULE_DETAILS, SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/WidgetsReducer";
 
 const DailySchedule: React.FC = () => {
@@ -20,36 +20,46 @@ const DailySchedule: React.FC = () => {
   }
 
   // Getting schedule and selected date from calendar from redux
-  const dailySchedule = useSelector((state: State) => state.widgets.daily_schedule);
+  const schedule = useSelector((state: State) => state.widgets.schedule.settings);
   const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
-  console.log("dailySchedule", dailySchedule);
   console.log("dateFromCalendar", dateFromCalendar);
+
+  // Getting the dailySchedule from Redux to interate with it
+  const dailySchedule = useSelector((state: State) => state.widgets.daily_schedule);
+  console.log("dailySchedule", dailySchedule);
+
+  // Getting the schedule for the specific day (maybe removing this)
+  const todaysSchedule = schedule.filter((setting: GeneralSettings) => setting.date === dateFromCalendar);
+  console.log("todaysSchedule", todaysSchedule);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get<ApiResponse>("/api/user/widgets/1")
-      .then((res) => {
-        const parsedDetails = {
-          ...res.data.data[0],
-          settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[],
-          widget: {
-            ...res.data.data[0].widget,
-            field_list: JSON.parse(res.data.data[0].widget.field_list),
-          },
-        };
-
-        dispatch({
-          type: DAILY_SCHEDULE_DETAILS,
-          payload: parsedDetails,
-        });
-      })
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-        navigate("/");
+  // Function to fetch and parse data
+  const fetchData = async (url: string, actionType: string) => {
+    try {
+      const res = await axios.get(url);
+      const parsedDetails = {
+        ...res.data.data[0],
+        settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[],
+        widget: {
+          ...res.data.data[0].widget,
+          field_list: JSON.parse(res.data.data[0].widget.field_list),
+        },
+      };
+      dispatch({
+        type: actionType,
+        payload: parsedDetails,
       });
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    fetchData("/api/user/widgets/7", DAILY_SCHEDULE_DETAILS);
+    fetchData("/api/user/widgets/1", SCHEDULE_DETAILS);
   }, [dispatch, navigate]);
 
   const deleteItem = (appointmentId: number) => {
@@ -82,11 +92,6 @@ const DailySchedule: React.FC = () => {
       });
   };
 
-  const todaysSchedule = dailySchedule.settings?.filter(
-    (setting: GeneralSettings) => setting.date === dateFromCalendar
-  );
-  console.log("todaysSchedule", todaysSchedule);
-
   const renderScheduleForHour = (hour: number) => {
     const startHour = String(hour).padStart(2, "0");
     const endHour = String(hour + 1).padStart(2, "0");
@@ -106,11 +111,11 @@ const DailySchedule: React.FC = () => {
     return (
       <div key={hour}>
         <div className="appointment-single-row">
-          <div className="appointment-hour">
+          <div className="appointment-hour" style={{ color: "black" }}>
             {displayHour}:00 {meridian}
           </div>
           <input></input>
-          {/*<div className="appointment-container">
+          <div className="appointment-container">
             {sortedAppointments?.map((appointment: Appointment) => (
               <React.Fragment key={appointment.id}>
                 <div
@@ -152,7 +157,7 @@ const DailySchedule: React.FC = () => {
                 </div>
               </React.Fragment>
             ))}
-          </div>*/}
+          </div>
         </div>
       </div>
     );
@@ -163,7 +168,7 @@ const DailySchedule: React.FC = () => {
       <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
         {dateFromCalendar as string} <span style={{ color: "#8D8D8D" }}>Scheduled Appointments</span>
       </h6>
-      {Array.from({ length: 14 }, (_, index) => renderScheduleForHour(index))}
+      {Array.from({ length: 17 }, (_, index) => renderScheduleForHour(index + 6))}
     </div>
   );
 };

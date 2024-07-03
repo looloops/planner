@@ -260,7 +260,9 @@ const FinalGridCopy = (setSharedStatic) => {
           <div key={widget} data-grid-id={widget} className="widget-wrapper">
             {!staticOn && (
               <button className="remove-widget-button" onClick={() => removeWidget(widget as string)}>
-                Remove
+                <p className="arrow1" aria-hidden="true">
+                  Swipe to remove →
+                </p>
               </button>
             )}
             <div style={{ height: "100%", overflow: "hidden" }}>{renderComponent(parseInt(widget as string))}</div>
