@@ -4,7 +4,7 @@ import axios from "axios";
 import { BrowserRouter as Router } from "react-router-dom";
 import { LOGIN } from "./redux/actions";
 import Homepage from "./components/Homepage";
-import "./assets/scss/appointmens.scss";
+import "./assets/scss/appointments.scss";
 import "./assets/scss/calendar.scss";
 import "./assets/scss/newappointment.scss";
 import "./assets/scss/rightbar.scss";

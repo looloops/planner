@@ -4,7 +4,7 @@ import React from "react";
 
 interface Props {
   formData: {
-    id: number | null;
+    id: number;
     title: string;
     start: string;
     end: string;
@@ -18,6 +18,17 @@ const NewForm: React.FC<Props> = ({ formData, handleInputChange, handleSubmit })
   return (
     <form className="form-appointment" onSubmit={handleSubmit}>
       <div className="input-field">
+
+      <input
+            type="hidden"
+            className="form-control"
+            id="id"
+            name="id"
+            onChange={handleInputChange}
+            value={formData.id}
+            disabled // Disable editing of ID
+          />
+
         <label htmlFor="title">Title:</label>
         <input
           placeholder="title"

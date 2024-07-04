@@ -1,6 +1,6 @@
 // NewAppointment.tsx
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, FormEvent } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../redux/reducers/userReducer";
 import { useNavigate } from "react-router-dom";
@@ -9,8 +9,10 @@ import "../../assets/scss/newappointment.scss";
 import NewForm from "./NewAppointmentForm"; // Importa il nuovo componente NewForm
 import { SCHEDULE_DETAILS } from "../../redux/actions";
 
-const NewAppointmentCopy: React.FC = () => {
+const NewAppointmentCopy: React.FC = ({editMode, setEditMode, currentEditIndex, setCurrentEditIndex}) => {
   const schedule = useSelector((state: State) => state.widgets.schedule);
+  console.log("EDIT FROM NEW APPOINTMENT COPY", editMode)
+  console.log("EDIT INDEX FROM NEW APPOINTMENT COPY", currentEditIndex)
 
   const today = new Date();
   const startingDay = String(today.getDate()).padStart(2, "0");
@@ -24,9 +26,13 @@ const NewAppointmentCopy: React.FC = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // GETTING HIGHEST ID IN THE SCHEDULE SETTINGS ARRAY
+  const arrId: number[] = schedule.settings?.map((element) => element.id) || [];
+  const maxId = arrId.length > 0 ? Math.max(...arrId) : 0;
+
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [formData, setFormData] = useState({
-    id: null,
+    id: maxId + 1,
     title: "",
     start: "",
     end: "",
@@ -36,7 +42,7 @@ const NewAppointmentCopy: React.FC = () => {
 
   useEffect(() => {
     setFormData({
-      id: null,
+      id: maxId + 1,
       title: "",
       start: "",
       end: "",
@@ -57,20 +63,19 @@ const NewAppointmentCopy: React.FC = () => {
     setFormData((prevFormData) => ({ ...prevFormData, start: hour }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
+
+  const submitNewData = async (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
     if (!schedule || !schedule.settings) return;
 
-    const newAppointment = { ...formData };
-    let updatedSettingsArray;
+    let updatedSettingsArray: Partial<GeneralSettings>[];
 
-    if (formData.id) {
-      updatedSettingsArray = schedule.settings.map((setting) =>
-        setting.id === formData.id ? newAppointment : setting
+    if (editMode && currentEditIndex !== null) {
+      updatedSettingsArray = schedule.settings.map((setting: object, index: number) =>
+        index === currentEditIndex ? { ...formData } : setting
       );
     } else {
-      newAppointment.id = Math.max(schedule.settings.map((s) => s.id)) + 1;
-      updatedSettingsArray = [...schedule.settings, newAppointment];
+      updatedSettingsArray = [...schedule.settings, { ...formData }];
     }
 
     const body = {
@@ -79,26 +84,72 @@ const NewAppointmentCopy: React.FC = () => {
     };
 
     try {
-      await axios.put(`http://localhost:8000/api/user/widgets/edit/${schedule.widget_id}`, body, {
+      const response = await axios.put(`http://localhost:8000/api/user/widgets/edit/${schedule.widget_id}`, body, {
         headers: {
           "Content-Type": "application/json",
         },
       });
+      console.log("Data added successfully:", response.data);
+      // setFormData(initialState);
+      setEditMode(false);
+      setCurrentEditIndex(null);
       dispatch({
         type: SCHEDULE_DETAILS,
         payload: body,
       });
-      console.log("Appointment saved successfully");
     } catch (error) {
-      console.error("Error saving appointment:", error);
+      console.error("Error adding data:", error);
     }
   };
 
-  const handleEdit = (appointment: any) => {
+
+//   const handleSubmit = async (e: React.FormEvent) => {
+//     e.preventDefault();
+//     if (!schedule || !schedule.settings) return;
+
+//     const newAppointment = { ...formData };
+
+//     let updatedSettingsArray = [...schedule.settings, newAppointment];
+
+
+
+//   /*   if (formData.id) {
+//       // Update the existing appointment
+//       updatedSettingsArray = schedule.settings.map((setting) =>
+//         setting.id === formData.id ? newAppointment : setting
+//       );
+//     } else {
+//       newAppointment.id = formData.id;
+//       updatedSettingsArray = [...schedule.settings, newAppointment];
+//     }
+//  */
+
+//     const body = {
+//       ...schedule,
+//       settings: updatedSettingsArray,
+//     };
+
+//     try {
+//       await axios.put(`http://localhost:8000/api/user/widgets/edit/${schedule.widget_id}`, body, {
+//         headers: {
+//           "Content-Type": "application/json",
+//         },
+//       });
+//       dispatch({
+//         type: SCHEDULE_DETAILS,
+//         payload: body,
+//       });
+//       console.log("Appointment saved successfully");
+//     } catch (error) {
+//       console.error("Error saving appointment:", error);
+//     }
+//   };
+
+/*   const handleEdit = (appointment: any) => {
     setSelectedHour(appointment.start);
     setFormData(appointment);
   };
-
+ */
   const deleteItem = (appointmentId: number) => {
     if (!schedule || !schedule.settings) return;
 
@@ -151,7 +202,7 @@ const NewAppointmentCopy: React.FC = () => {
 
           {selectedHour && (
             <div>
-              <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+              <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={submitNewData} />
               <h6>Appointments for {selectedHour}:</h6>
               {appointmentsForDay
 
@@ -176,7 +227,7 @@ const NewAppointmentCopy: React.FC = () => {
               </div>
             ))} */}
 
-              <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={handleSubmit} />
+              <NewForm formData={formData} handleInputChange={handleInputChange} handleSubmit={submitNewData} />
             </div>
           )}
         </div>

@@ -1,13 +1,12 @@
-import "../../assets/scss/appointmens.scss";
+import "../../assets/scss/appointments.scss";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState, FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ApiResponse } from "../../typescript/interfaces";
-import { GeneralSettings } from "../../typescript/interfaces";
 import { useDispatch, useSelector } from "react-redux";
 import { DAILY_SCHEDULE_DETAILS, SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/WidgetsReducer";
+import { GeneralSettings } from "../../typescript/interfaces";
 
 const DailySchedule: React.FC = () => {
   interface Appointment {
@@ -19,21 +18,30 @@ const DailySchedule: React.FC = () => {
     priority: string;
   }
 
+  const initialState: Partial<GeneralSettings> = {
+    title: "",
+  };
+
+  const [formData, setFormData] = useState(initialState);
+
   // Getting schedule and selected date from calendar from redux
   const schedule = useSelector((state: State) => state.widgets.schedule.settings);
   const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
   console.log("dateFromCalendar", dateFromCalendar);
 
-  // Getting the dailySchedule from Redux to interate with it
+  // Getting the dailySchedule from Redux to iterate it
   const dailySchedule = useSelector((state: State) => state.widgets.daily_schedule);
   console.log("dailySchedule", dailySchedule);
 
-  // Getting the schedule for the specific day (maybe removing this)
+  // Getting the schedule for the specific day
   const todaysSchedule = schedule.filter((setting: GeneralSettings) => setting.date === dateFromCalendar);
   console.log("todaysSchedule", todaysSchedule);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const [editMode, setEditMode] = useState(false);
+  const [currentEditIndex, setCurrentEditIndex] = useState<number | null>(null);
 
   // Function to fetch and parse data
   const fetchData = async (url: string, actionType: string) => {
@@ -62,6 +70,61 @@ const DailySchedule: React.FC = () => {
     fetchData("/api/user/widgets/1", SCHEDULE_DETAILS);
   }, [dispatch, navigate]);
 
+  // Function to update the local state
+  const createInputValue = (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = ev.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const submitNewData = async (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+    if (!dailySchedule || !dailySchedule.settings) return;
+
+    let updatedSettingsArray: Partial<GeneralSettings>[];
+
+    if (editMode && currentEditIndex !== null) {
+      updatedSettingsArray = dailySchedule.settings.map((setting: GeneralSettings, index: number) =>
+        index === currentEditIndex ? { ...setting, ...formData } : setting
+      );
+    } else {
+      updatedSettingsArray = [...dailySchedule.settings, { ...formData }];
+    }
+
+    const body = {
+      ...dailySchedule,
+      settings: updatedSettingsArray,
+    };
+
+    try {
+      const response = await axios.put(`/api/user/widgets/edit/${dailySchedule.widget_id}`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Data added successfully:", response.data);
+      setFormData(initialState);
+      setEditMode(false);
+      setCurrentEditIndex(null);
+      dispatch({
+        type: DAILY_SCHEDULE_DETAILS,
+        payload: body,
+      });
+    } catch (error) {
+      console.error("Error adding data:", error);
+    }
+  };
+
+  const handleEditClick = (index: number) => {
+    setEditMode(true);
+    setCurrentEditIndex(index);
+    if (dailySchedule.settings) {
+      setFormData(dailySchedule.settings[index]);
+    }
+  };
+
   const deleteItem = (appointmentId: number) => {
     if (!dailySchedule || !dailySchedule.settings) return;
 
@@ -75,7 +138,7 @@ const DailySchedule: React.FC = () => {
     };
 
     axios
-      .put(`http://localhost:8000/api/user/widgets/edit/${dailySchedule.widget_id}`, body, {
+      .put(`/api/user/widgets/edit/${dailySchedule.widget_id}`, body, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -114,7 +177,23 @@ const DailySchedule: React.FC = () => {
           <div className="appointment-hour" style={{ color: "black" }}>
             {displayHour}:00 {meridian}
           </div>
-          <input></input>
+          <form onSubmit={submitNewData} noValidate>
+            <input
+              type="text"
+              className="form-control todos-input"
+              placeholder="Title"
+              id="title"
+              name="title"
+              onChange={createInputValue}
+              value={formData.title || ""}
+              required
+            />
+            <div className="todos-submit-btn-container">
+              <button type="submit" className={editMode ? "todos-submit-btn update-btn" : "todos-submit-btn"}>
+                <p className="todos-submit-btn-content">{editMode ? "Update" : "Add"}</p>
+              </button>
+            </div>
+          </form>
           <div className="appointment-container">
             {sortedAppointments?.map((appointment: Appointment) => (
               <React.Fragment key={appointment.id}>
@@ -133,7 +212,7 @@ const DailySchedule: React.FC = () => {
                   <div className="appointment-buttons-container">
                     <button
                       className="appointmentButtons editButton"
-                      onClick={() => navigate(`/schedule/edit/${appointment.id}`)}
+                      onClick={() => handleEditClick(appointment.id)}
                     >
                       <div className="appointment-timelineIcons">
                         <svg
