@@ -181,13 +181,14 @@ const Calendar: React.FC = () => {
             <h2>
               {months[currentMonth]} {currentYear}
             </h2>
-            <div className="btn today" onClick={handleToday} style={{ display: hideTodayBtn() }}>
-              <i className="fas fa-calendar-day"></i>
-            </div>
+
             <a className="btn-prev fontawesome-angle-left" onClick={handlePrevMonth} href="#"></a>
             <a className="btn-next fontawesome-angle-right" onClick={handleNextMonth} href="#"></a>
           </header>
-
+          <div className="btn today" onClick={handleToday} style={{ display: hideTodayBtn() }}>
+            {/* <i className="fas fa-calendar-day"> </i> */}
+            Go back to today
+          </div>
           <table>
             <thead>
               <tr>

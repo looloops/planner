@@ -23,7 +23,7 @@ a {
 }
 
 h2 {
-  font-size: 2em;
+  font-size: 1.6em;
   line-height: 1.25em;
   margin: 0.25em 0;
 }
@@ -47,6 +47,7 @@ table {
   text-align: center;
   width: 100%;
   margin-block: 18px;
+  font-size: 1em;
 }
 
 .calendar header {
@@ -84,7 +85,7 @@ table {
   border-radius: 50%;
   display: inline-block;
   height: 2em;
-  line-height: 2em;
+  // line-height: 2em;
   text-align: center;
   width: 2em;
 }
@@ -147,11 +148,11 @@ table {
 }
 
 .btn-prev {
-  left: 6em;
+  left: 0.5em;
 }
 
 .btn-next {
-  right: 6em;
+  right: 0.5em;
 }
 
 /* Specific styles for different days */

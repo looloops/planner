@@ -50,12 +50,12 @@ const FinalGridCopy = () => {
     let height = widgetHeight;
     switch (selectedWidget) {
       case "6": //Todos
-        width = 6;
-        height = 6;
+        width = 4;
+        height = 3;
         break;
       case "7": //Calendar
-        width = 1;
-        height = 1;
+        width = 3;
+        height = 2;
         break;
       default:
         break;
