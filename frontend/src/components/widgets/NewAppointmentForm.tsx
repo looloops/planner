@@ -63,15 +63,7 @@ const NewForm: React.FC<FormProps> = ({ currentEditIndex, formData, setFormData,
         />
 
         <label htmlFor="title">Title:</label>
-        <input
-          placeholder="title"
-          type="text"
-          id="title"
-          name="title"
-          value={formData.title}
-          onChange={handleInputChange}
-          required
-        />
+        <input type="text" id="title" name="title" value={formData.title} onChange={handleInputChange} required />
       </div>
       <div className="input-field">
         <label htmlFor="start">Start Time:</label>

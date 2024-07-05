@@ -33,9 +33,9 @@ const NewAppointmentCopy: React.FC<NewAppointmentsProps> = ({
   const startingDate = `${startingYear}-${startingMonth}-${startingDay}`;
 
   // GETTING HIGHEST ID IN THE SCHEDULE SETTINGS ARRAY
-  const arrId: number[] = schedule.settings?.map((element) => element.id) || [];
-  const maxId = arrId.length > 0 ? Math.max(...arrId) : 0;
 
+  const arrId: number[] = schedule.settings?.map((element: Partial<GeneralSettings>) => element.id) || [];
+  const maxId = arrId.length > 0 ? Math.max(...arrId) : 0;
   const [selectedHour, setSelectedHour] = useState<string | null>(null);
   const [formData, setFormData] = useState({
     id: maxId + 1,
@@ -55,7 +55,7 @@ const NewAppointmentCopy: React.FC<NewAppointmentsProps> = ({
       priority: "",
       date: dateFromCalendar,
     });
-  }, [dateFromCalendar]);
+  }, [dateFromCalendar, schedule]);
 
   const hours = Array.from({ length: 24 }, (_, i) => `${i.toString().padStart(2, "0")}:00`);
 
@@ -69,6 +69,18 @@ const NewAppointmentCopy: React.FC<NewAppointmentsProps> = ({
     setFormData((prevFormData) => ({ ...prevFormData, start: hour }));
   };
 
+  const resetForm = () => {
+    setFormData({
+      id: maxId + 1,
+      title: "",
+      start: "",
+      finish: "",
+      priority: "",
+      date: dateFromCalendar,
+    });
+    setSelectedHour(null);
+  };
+
   const submitNewData = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!schedule || !schedule.settings) return;
@@ -77,7 +89,7 @@ const NewAppointmentCopy: React.FC<NewAppointmentsProps> = ({
 
     if (editMode && currentEditIndex !== null) {
       updatedSettingsArray = schedule.settings.map((setting: Partial<GeneralSettings>, index: number) =>
-        index === currentEditIndex ? { ...formData } : setting
+        setting.id === currentEditIndex ? { ...formData } : setting
       );
     } else {
       updatedSettingsArray = [...schedule.settings, { ...formData }];
@@ -101,12 +113,15 @@ const NewAppointmentCopy: React.FC<NewAppointmentsProps> = ({
         type: SCHEDULE_DETAILS,
         payload: body,
       });
+      resetForm();
     } catch (error) {
       console.error("Error adding data:", error);
     }
   };
 
-  const appointmentsForDay = schedule.settings?.filter((appointment) => appointment.date === dateFromCalendar);
+  const appointmentsForDay: Partial<GeneralSettings>[] = schedule.settings?.filter(
+    (appointment: Partial<GeneralSettings>) => appointment.date === dateFromCalendar
+  );
 
   return (
     dateFromCalendar && (
@@ -142,11 +157,14 @@ const NewAppointmentCopy: React.FC<NewAppointmentsProps> = ({
                 currentEditIndex={currentEditIndex}
                 handleInputChange={handleInputChange}
                 handleSubmit={submitNewData}
+                setFormData={setFormData}
               />
               <h6>Appointments for {selectedHour}:</h6>
               {appointmentsForDay
-                ?.filter((appointment) => appointment.start.startsWith(selectedHour.substring(0, 2)))
-                .map((appointment) => (
+                ?.filter((appointment: Partial<GeneralSettings>) =>
+                  appointment?.start?.startsWith(selectedHour.substring(0, 2))
+                )
+                .map((appointment: Partial<GeneralSettings>) => (
                   <div key={appointment.id} className="appointment-summary">
                     <span>
                       {appointment.title} - {appointment.start}
