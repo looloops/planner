@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import axios from "axios";
 import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { LOGIN } from "./redux/actions";
 import Homepage from "./components/Homepage";
 import "./assets/scss/appointments.scss";

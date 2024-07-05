@@ -75,13 +75,13 @@ form body {
   display: none;
 }
 
-input:checked + label {
+.container > input:checked + label {
   width: 600px;
   min-width: 50px;
   flex-shrink: 2;
 }
 
-input:checked + label .description {
+.container > input:checked + label .description {
   opacity: 1 !important;
   transform: translateY(0) !important;
 }
