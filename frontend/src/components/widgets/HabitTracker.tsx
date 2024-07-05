@@ -94,7 +94,7 @@ const HabitTracker: React.FC = () => {
     let updatedSettingsArray: Partial<GeneralSettings>[];
 
     if (editMode && currentEditIndex !== null) {
-      updatedSettingsArray = habits.settings.map((setting: object, index: number) =>
+      updatedSettingsArray = habits.settings.map((setting: Partial<GeneralSettings>, index: number) =>
         index === currentEditIndex ? { ...formData, status: setting.status } : setting
       );
     } else {

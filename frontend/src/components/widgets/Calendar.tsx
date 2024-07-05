@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SAVE_ACTIVE_DATE } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/userReducer";
+import { GeneralSettings } from "../../typescript/interfaces";
 
 const Calendar: React.FC = () => {
   const schedule = useSelector((state: State) => state.widgets.schedule);
-  const appointments = schedule.settings || [];
+  const appointments = schedule.settings<GeneralSettings> ? schedule.settings : [];
 
   const months = [
     "January",
@@ -60,7 +61,7 @@ const Calendar: React.FC = () => {
 
     const today = new Date();
     const daysArray: JSX.Element[] = [];
-    let rowsArray: JSX.Element[] = [];
+    const rowsArray: JSX.Element[] = [];
     let cellsArray: JSX.Element[] = [];
 
     for (let x = firstDay.getDay(); x > 0; x--) {
@@ -70,17 +71,17 @@ const Calendar: React.FC = () => {
         </td>
       );
     }
-
+    let tdClassNames: Array<string> = [];
     for (let i = 1; i <= lastDayDate; i++) {
       const isToday = i === today.getDate() && currentMonth === today.getMonth() && currentYear === today.getFullYear();
       const eventKey = `${currentYear}-${String(currentMonth + 1).padStart(2, "0")}-${String(i).padStart(2, "0")}`;
       const isEvent = appointments.some((appointment) => appointment.date === eventKey);
-      const classNames = ["day", "current"];
-      if (isToday) classNames.push("today");
-      if (isEvent) classNames.push("event");
+      tdClassNames = ["day", "current"];
+      if (isToday) tdClassNames.push("today");
+      if (isEvent) tdClassNames.push("event");
 
       cellsArray.push(
-        <td className={classNames.join(" ")} key={`current-${i}`} onClick={() => handleDateClick(eventKey)}>
+        <td className={tdClassNames.join(" ")} key={`current-${i}`} onClick={() => handleDateClick(eventKey)}>
           {i}
         </td>
       );
@@ -154,6 +155,8 @@ const Calendar: React.FC = () => {
 
     if (selectedDate === fullDate) {
       setSelectedDate(startingDate);
+      // tdClassNames.push("event");
+
       dispatch({
         type: SAVE_ACTIVE_DATE,
         payload: startingDate,

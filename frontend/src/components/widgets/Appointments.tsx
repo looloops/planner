@@ -9,7 +9,13 @@ import { useDispatch, useSelector } from "react-redux";
 import { SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/WidgetsReducer";
 
-const Appointments: React.FC = ({ setEditMode, setCurrentEditIndex }) => {
+interface AppointmentsProps {
+  setEditMode: (editMode: boolean) => void;
+  setCurrentEditIndex: (index: number | null) => void;
+  editMode: boolean;
+  currentEditIndex: number | null;
+}
+const Appointments: React.FC<AppointmentsProps> = ({ setEditMode, setCurrentEditIndex }) => {
   interface Appointment {
     id: number;
     title: string;

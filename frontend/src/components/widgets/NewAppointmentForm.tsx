@@ -1,33 +1,66 @@
-// NewForm.tsx
+import { State } from "../../redux/reducers/WidgetsReducer";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { GeneralSettings } from "../../typescript/interfaces";
 
-import React from "react";
-
-interface Props {
+interface FormProps {
   formData: {
     id: number;
     title: string;
     start: string;
-    end: string;
+    finish: string;
     priority: string;
+    date: string;
   };
+  setFormData: React.Dispatch<
+    React.SetStateAction<{
+      id: number;
+      title: string;
+      start: string;
+      finish: string;
+      priority: string;
+      date: string;
+    }>
+  >;
+  currentEditIndex: number | null;
   handleInputChange: (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => void;
-  handleSubmit: (e: React.FormEvent) => Promise<void>;
+  handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 }
 
-const NewForm: React.FC<Props> = ({ formData, handleInputChange, handleSubmit }) => {
+const NewForm: React.FC<FormProps> = ({ currentEditIndex, formData, setFormData, handleInputChange, handleSubmit }) => {
+  const schedule = useSelector((state: State) => state.widgets.schedule);
+
+  let appointmentToEdit: Partial<GeneralSettings> | undefined;
+  if (currentEditIndex !== null) {
+    appointmentToEdit = schedule.settings.find((setting: Partial<GeneralSettings>) => setting.id === currentEditIndex);
+    console.log("appointmentToEdit", appointmentToEdit);
+  }
+
+  useEffect(() => {
+    if (appointmentToEdit) {
+      setFormData({
+        id: appointmentToEdit.id || formData.id,
+        title: appointmentToEdit.title || formData.title,
+        start: appointmentToEdit.start || formData.start,
+        finish: appointmentToEdit.finish || formData.finish,
+        priority: appointmentToEdit.priority || formData.priority,
+        date: appointmentToEdit.date || formData.date,
+      });
+    }
+  }, [appointmentToEdit, setFormData]);
+
   return (
     <form className="form-appointment" onSubmit={handleSubmit}>
       <div className="input-field">
-
-      <input
-            type="hidden"
-            className="form-control"
-            id="id"
-            name="id"
-            onChange={handleInputChange}
-            value={formData.id}
-            disabled // Disable editing of ID
-          />
+        <input
+          type="hidden"
+          className="form-control"
+          id="id"
+          name="id"
+          onChange={handleInputChange}
+          value={formData.id}
+          disabled // Disable editing of ID
+        />
 
         <label htmlFor="title">Title:</label>
         <input
@@ -45,8 +78,8 @@ const NewForm: React.FC<Props> = ({ formData, handleInputChange, handleSubmit })
         <input type="text" id="start" name="start" value={formData.start} onChange={handleInputChange} required />
       </div>
       <div className="input-field">
-        <label htmlFor="end">End Time:</label>
-        <input type="text" id="end" name="end" value={formData.end} onChange={handleInputChange} required />
+        <label htmlFor="finish">End Time:</label>
+        <input type="text" id="finish" name="finish" value={formData.finish} onChange={handleInputChange} required />
       </div>
       <div className="select-field">
         <select
@@ -64,7 +97,7 @@ const NewForm: React.FC<Props> = ({ formData, handleInputChange, handleSubmit })
         </select>
       </div>
       <button className="select-newappointment" type="submit">
-        {formData.id ? "Update" : "Add"} Appointment
+        {currentEditIndex ? "Update" : "Add"} Appointment
       </button>
     </form>
   );
