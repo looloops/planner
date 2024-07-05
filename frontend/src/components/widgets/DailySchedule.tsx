@@ -1,13 +1,12 @@
-import "../../assets/scss/appointmens.scss";
+import "../../assets/scss/appointments.scss";
 
-import React, { useEffect } from "react";
+import React, { useEffect, useState, FormEvent, ChangeEvent } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { ApiResponse } from "../../typescript/interfaces";
-import { GeneralSettings } from "../../typescript/interfaces";
 import { useDispatch, useSelector } from "react-redux";
-import { DAILY_SCHEDULE_DETAILS } from "../../redux/actions/index";
+import { DAILY_SCHEDULE_DETAILS, SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/WidgetsReducer";
+import { GeneralSettings } from "../../typescript/interfaces";
 
 const DailySchedule: React.FC = () => {
   interface Appointment {
@@ -19,38 +18,112 @@ const DailySchedule: React.FC = () => {
     priority: string;
   }
 
+  const initialState: Partial<GeneralSettings> = {
+    title: "",
+  };
+
+  const [formData, setFormData] = useState(initialState);
+
   // Getting schedule and selected date from calendar from redux
-  const dailySchedule = useSelector((state: State) => state.widgets.daily_schedule);
+  const schedule = useSelector((state: State) => state.widgets.schedule.settings);
   const dateFromCalendar = useSelector((state: State) => state.widgets.active_date);
-  console.log("dailySchedule", dailySchedule);
   console.log("dateFromCalendar", dateFromCalendar);
+
+  // Getting the dailySchedule from Redux to iterate it
+  const dailySchedule = useSelector((state: State) => state.widgets.daily_schedule);
+  console.log("dailySchedule", dailySchedule);
+
+  // Getting the schedule for the specific day
+  const todaysSchedule = schedule.filter((setting: GeneralSettings) => setting.date === dateFromCalendar);
+  console.log("todaysSchedule", todaysSchedule);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  useEffect(() => {
-    axios
-      .get<ApiResponse>("/api/user/widgets/1")
-      .then((res) => {
-        const parsedDetails = {
-          ...res.data.data[0],
-          settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[],
-          widget: {
-            ...res.data.data[0].widget,
-            field_list: JSON.parse(res.data.data[0].widget.field_list),
-          },
-        };
+  const [editMode, setEditMode] = useState(false);
+  const [currentEditIndex, setCurrentEditIndex] = useState<number | null>(null);
 
-        dispatch({
-          type: DAILY_SCHEDULE_DETAILS,
-          payload: parsedDetails,
-        });
-      })
-      .catch((err) => {
-        console.error("Error fetching data:", err);
-        navigate("/");
+  // Function to fetch and parse data
+  const fetchData = async (url: string, actionType: string) => {
+    try {
+      const res = await axios.get(url);
+      const parsedDetails = {
+        ...res.data.data[0],
+        settings: JSON.parse(res.data.data[0].settings) as Partial<GeneralSettings>[],
+        widget: {
+          ...res.data.data[0].widget,
+          field_list: JSON.parse(res.data.data[0].widget.field_list),
+        },
+      };
+      dispatch({
+        type: actionType,
+        payload: parsedDetails,
       });
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      navigate("/");
+    }
+  };
+
+  useEffect(() => {
+    fetchData("/api/user/widgets/7", DAILY_SCHEDULE_DETAILS);
+    fetchData("/api/user/widgets/1", SCHEDULE_DETAILS);
   }, [dispatch, navigate]);
+
+  // Function to update the local state
+  const createInputValue = (ev: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    const { name, value } = ev.target;
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
+  };
+
+  const submitNewData = async (ev: FormEvent<HTMLFormElement>) => {
+    ev.preventDefault();
+    if (!dailySchedule || !dailySchedule.settings) return;
+
+    let updatedSettingsArray: Partial<GeneralSettings>[];
+
+    if (editMode && currentEditIndex !== null) {
+      updatedSettingsArray = dailySchedule.settings.map((setting: GeneralSettings, index: number) =>
+        index === currentEditIndex ? { ...setting, ...formData } : setting
+      );
+    } else {
+      updatedSettingsArray = [...dailySchedule.settings, { ...formData }];
+    }
+
+    const body = {
+      ...dailySchedule,
+      settings: updatedSettingsArray,
+    };
+
+    try {
+      const response = await axios.put(`/api/user/widgets/edit/${dailySchedule.widget_id}`, body, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      console.log("Data added successfully:", response.data);
+      setFormData(initialState);
+      setEditMode(false);
+      setCurrentEditIndex(null);
+      dispatch({
+        type: DAILY_SCHEDULE_DETAILS,
+        payload: body,
+      });
+    } catch (error) {
+      console.error("Error adding data:", error);
+    }
+  };
+
+  const handleEditClick = (index: number) => {
+    setEditMode(true);
+    setCurrentEditIndex(index);
+    if (dailySchedule.settings) {
+      setFormData(dailySchedule.settings[index]);
+    }
+  };
 
   const deleteItem = (appointmentId: number) => {
     if (!dailySchedule || !dailySchedule.settings) return;
@@ -65,7 +138,7 @@ const DailySchedule: React.FC = () => {
     };
 
     axios
-      .put(`http://localhost:8000/api/user/widgets/edit/${dailySchedule.widget_id}`, body, {
+      .put(`/api/user/widgets/edit/${dailySchedule.widget_id}`, body, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -81,11 +154,6 @@ const DailySchedule: React.FC = () => {
         console.error("Error deleting item:", error);
       });
   };
-
-  const todaysSchedule = dailySchedule.settings?.filter(
-    (setting: GeneralSettings) => setting.date === dateFromCalendar
-  );
-  console.log("todaysSchedule", todaysSchedule);
 
   const renderScheduleForHour = (hour: number) => {
     const startHour = String(hour).padStart(2, "0");
@@ -106,11 +174,27 @@ const DailySchedule: React.FC = () => {
     return (
       <div key={hour}>
         <div className="appointment-single-row">
-          <div className="appointment-hour">
+          <div className="appointment-hour" style={{ color: "black" }}>
             {displayHour}:00 {meridian}
           </div>
-          <input></input>
-          {/*<div className="appointment-container">
+          <form onSubmit={submitNewData} noValidate>
+            <input
+              type="text"
+              className="form-control todos-input"
+              placeholder="Title"
+              id="title"
+              name="title"
+              onChange={createInputValue}
+              value={formData.title || ""}
+              required
+            />
+            <div className="todos-submit-btn-container">
+              <button type="submit" className={editMode ? "todos-submit-btn update-btn" : "todos-submit-btn"}>
+                <p className="todos-submit-btn-content">{editMode ? "Update" : "Add"}</p>
+              </button>
+            </div>
+          </form>
+          <div className="appointment-container">
             {sortedAppointments?.map((appointment: Appointment) => (
               <React.Fragment key={appointment.id}>
                 <div
@@ -128,7 +212,7 @@ const DailySchedule: React.FC = () => {
                   <div className="appointment-buttons-container">
                     <button
                       className="appointmentButtons editButton"
-                      onClick={() => navigate(`/schedule/edit/${appointment.id}`)}
+                      onClick={() => handleEditClick(appointment.id)}
                     >
                       <div className="appointment-timelineIcons">
                         <svg
@@ -152,7 +236,7 @@ const DailySchedule: React.FC = () => {
                 </div>
               </React.Fragment>
             ))}
-          </div>*/}
+          </div>
         </div>
       </div>
     );
@@ -163,7 +247,7 @@ const DailySchedule: React.FC = () => {
       <h6 style={{ color: "#7A7A7A", marginBottom: "15px" }}>
         {dateFromCalendar as string} <span style={{ color: "#8D8D8D" }}>Scheduled Appointments</span>
       </h6>
-      {Array.from({ length: 14 }, (_, index) => renderScheduleForHour(index))}
+      {Array.from({ length: 17 }, (_, index) => renderScheduleForHour(index + 6))}
     </div>
   );
 };

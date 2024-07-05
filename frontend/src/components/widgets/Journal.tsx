@@ -13,14 +13,15 @@ const Journal: React.FC = () => {
     title: string;
     content: string;
     category: string;
+    originalIndex?: number;
   }
 
   const [editMode, setEditMode] = useState(false);
   const [currentEditIndex, setCurrentEditIndex] = useState<number | null>(null);
+  const [filteredEntries, setFilteredEntries] = useState<Journal[] | null>(null);
+  const [chosenCategory, setChosenCategory] = useState(null);
 
-  const todos = useSelector((state: State) => state.widgets.todos);
   const journal = useSelector((state: State) => state.widgets.journal);
-  console.log("journal", journal);
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -63,6 +64,15 @@ const Journal: React.FC = () => {
     }));
   };
 
+  const updateLocalState = (updatedSettingsArray: Partial<GeneralSettings>[]) => {
+    if (filteredEntries !== null) {
+      const filteredJournal = updatedSettingsArray
+        .map((setting: Journal, index: number) => ({ ...setting, originalIndex: index }))
+        .filter((setting: Journal) => setting.category === filteredEntries[0].category);
+      setFilteredEntries(filteredJournal);
+    }
+  };
+
   const submitNewData = async (ev: FormEvent<HTMLFormElement>) => {
     ev.preventDefault();
     if (!journal || !journal.settings) return;
@@ -92,6 +102,7 @@ const Journal: React.FC = () => {
       setFormData(initialState);
       setEditMode(false);
       setCurrentEditIndex(null);
+      updateLocalState(updatedSettingsArray);
       dispatch({
         type: JOURNAL_DETAILS,
         payload: body,
@@ -104,10 +115,16 @@ const Journal: React.FC = () => {
   const deleteItem = (index: number) => {
     if (!journal || !journal.settings) return;
 
+    const entry = displayedEntries[index];
+    if (entry.originalIndex === undefined) return;
+
     setFormData(initialState);
     setEditMode(false);
 
-    const updatedSettingsArray = [...journal.settings.slice(0, index), ...journal.settings.slice(index + 1)];
+    const updatedSettingsArray = [
+      ...journal.settings.slice(0, entry.originalIndex),
+      ...journal.settings.slice(entry.originalIndex + 1),
+    ];
 
     const body = {
       ...journal,
@@ -122,6 +139,7 @@ const Journal: React.FC = () => {
       })
       .then((response) => {
         console.log("Item deleted successfully:", response.data);
+        updateLocalState(updatedSettingsArray);
         dispatch({
           type: JOURNAL_DETAILS,
           payload: body,
@@ -133,12 +151,39 @@ const Journal: React.FC = () => {
   };
 
   const handleEditClick = (index: number) => {
+    const entry = displayedEntries[index];
+    if (entry.originalIndex === undefined) return;
+
     setEditMode(true);
-    setCurrentEditIndex(index);
-    {
-      journal.settings && setFormData(journal.settings[index]);
+    setCurrentEditIndex(entry.originalIndex);
+    setFormData(journal.settings[entry.originalIndex]);
+  };
+
+  const filterEntries = (category: string) => {
+    if (!journal || !journal.settings) return;
+
+    // Update formData.category to reflect the selected category
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      category: category === "All" ? "General" : category,
+    }));
+
+    if (category === "All") {
+      setFilteredEntries(null); // Reset filtered entries to show all
+      setChosenCategory(null);
+    } else {
+      const filteredJournal = journal.settings
+        .map((setting: Journal, index: number) => ({ ...setting, originalIndex: index }))
+        .filter((setting: Journal) => setting.category === category);
+      setFilteredEntries(filteredJournal);
+      setChosenCategory(category);
     }
   };
+
+  const displayedEntries = (filteredEntries || journal.settings || []).map((entry: Journal, index: number) => ({
+    ...entry,
+    originalIndex: entry.originalIndex !== undefined ? entry.originalIndex : index,
+  }));
 
   return (
     <div className="todos-glass-background">
@@ -155,7 +200,7 @@ const Journal: React.FC = () => {
             <option value="General">General</option>
             <option value="Notes">Notes</option>
             <option value="Reminders">Reminders</option>
-            <option value="Thoughts">Thougths</option>
+            <option value="Thoughts">Thoughts</option>
           </select>
         </div>
 
@@ -170,12 +215,13 @@ const Journal: React.FC = () => {
           required
         />
 
-        <input
-          type="text"
+        <textarea
           className="form-control todos-input"
+          rows={6}
           placeholder="Content"
           id="content"
           name="content"
+          style={{ height: "auto" }}
           onChange={createInputValue}
           value={formData.content || ""}
         />
@@ -187,43 +233,52 @@ const Journal: React.FC = () => {
         </div>
       </form>
 
-      <div className="todos-container">
-        <p className="todos-section-title">Your past entries</p>
-        {journal.settings?.map((entry: Journal, index: number) => (
-          <div key={index} className="todos-item">
-            <div className="todos-title-buttons">
-              <div className="todos-title">
-                {/*         <span
-                      className={
-                        todo.priority === "High"
-                          ? "todos-dot high-priority"
-                          : todo.priority === "Medium"
-                          ? "todos-dot medium-priority"
-                          : todo.priority === "Low"
-                          ? "todos-dot low-priority"
-                          : "todos-dot"
-                      }
-                    ></span> */}
-                {entry.title}
-              </div>
+      <p className="todos-section-title">Your past entries</p>
 
-              <div className="appointment-buttons-container">
-                <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
-                  <div className="appointment-timelineIcons">
-                    <svg width="8px" height="6px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path
-                        d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
-                        fill="#ffffff"
-                      />
-                    </svg>
-                  </div>
-                </button>
-                <button className="appointmentButtons deleteButton" onClick={() => deleteItem(index)}>
-                  <div className="appointment-timelineIcons">-</div>
+      <select
+        value={chosenCategory || "All"}
+        onChange={(e) => filterEntries(e.target.value)}
+        id="category"
+        name="category"
+        className="selectTodos"
+      >
+        <option value="All">All</option>
+        <option value="General">General</option>
+        <option value="Notes">Notes</option>
+        <option value="Reminders">Reminders</option>
+        <option value="Thoughts">Thoughts</option>
+      </select>
+
+      <div className="journal-all-entries-container">
+        {displayedEntries.map((entry: Journal, index: number) => (
+          <div className="journal-entries-container" key={index}>
+            <div className="todos-item">
+              <div className="todos-title-buttons">
+                <div className="todos-title">{entry.title}</div>
+
+                <div className="appointment-buttons-container">
+                  <button className="appointmentButtons editButton" onClick={() => handleEditClick(index)}>
+                    <div className="appointment-timelineIcons">
+                      <svg width="8px" height="6px" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path
+                          d="M10.8536 0.146447C10.6583 -0.0488155 10.3417 -0.0488155 10.1464 0.146447L0 10.2929V14.5C0 14.7761 0.223858 15 0.5 15H4.70711L14.8536 4.85355C15.0488 4.65829 15.0488 4.34171 14.8536 4.14645L10.8536 0.146447Z"
+                          fill="#ffffff"
+                        />
+                      </svg>
+                    </div>
+                  </button>
+                  <button className="appointmentButtons deleteButton" onClick={() => deleteItem(index)}>
+                    <div className="appointment-timelineIcons">-</div>
+                  </button>
+                </div>
+              </div>
+              <div className="todos-description">{entry.content}</div>
+              <div className="journal-category-container">
+                <button className="journal-category" onClick={() => filterEntries(entry.category)}>
+                  {entry.category}
                 </button>
               </div>
             </div>
-            <div className="todos-description">{entry.content}</div>
           </div>
         ))}
       </div>

@@ -1,4 +1,4 @@
-import "../../assets/scss/appointmens.scss";
+import "../../assets/scss/appointments.scss";
 
 import React, { useEffect } from "react";
 import axios from "axios";
@@ -9,7 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SCHEDULE_DETAILS } from "../../redux/actions/index";
 import { State } from "../../redux/reducers/WidgetsReducer";
 
-const Appointments: React.FC = () => {
+const Appointments: React.FC = ({ setEditMode, setCurrentEditIndex }) => {
   interface Appointment {
     id: number;
     title: string;
@@ -128,7 +128,11 @@ const Appointments: React.FC = () => {
                   <div className="appointment-buttons-container">
                     <button
                       className="appointmentButtons editButton"
-                      onClick={() => navigate(`/schedule/edit/${appointment.id}`)}
+                      //onClick={() => navigate(`/schedule/edit/${appointment.id}`)}
+                      onClick={() => {
+                        setEditMode(true);
+                        setCurrentEditIndex(appointment.id);
+                      }}
                     >
                       <div className="appointment-timelineIcons">
                         <svg

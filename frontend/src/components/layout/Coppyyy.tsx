@@ -11,6 +11,7 @@ import Todos from "../widgets/Todos";
 import Calendar from "../widgets/Calendar";
 import Weather from "../widgets/Weather";
 import Appointments from "../widgets/Appointments";
+import Journal from "../widgets/Journal";
 
 const ResponsiveGridLayout = WidthProvider(Responsive);
 
@@ -27,8 +28,8 @@ const FinalGridCopy = (setSharedStatic) => {
 
   const allWidgets = {
     1: "Schedule",
-    2: "Goals",
-    3: "Media",
+    2: "Calendar",
+    3: "Weather",
     4: "Recipes",
     5: "Journal",
     6: "Todos",
@@ -51,16 +52,14 @@ const FinalGridCopy = (setSharedStatic) => {
     let height = widgetHeight;
     switch (selectedWidget) {
       case "6": //Todos
-        width = 4;
-        height = 3;
+        width = 6;
+        height = 6;
         break;
       case "7": //Calendar
-        width = 3;
-        height = 2;
+        width = 1;
+        height = 1;
         break;
       default:
-        width = 2;
-        height = 2;
         break;
     }
 
@@ -70,7 +69,9 @@ const FinalGridCopy = (setSharedStatic) => {
       y: 0,
       w: width,
       h: height,
-      resizeHandles: ["s", "w", "e", "n", "sw", "nw", "se", "ne"],
+      // w: 4,
+      // h: 2,
+      // minW: 4,
       static: staticOn,
     };
 
@@ -147,6 +148,7 @@ const FinalGridCopy = (setSharedStatic) => {
     }, {} as Layouts);
 
     setStaticOn(!staticOn);
+    setSharedStatic(!staticOn);
     setLayoutState(updatedLayoutState);
 
     console.log("updatedLayoutState:", updatedLayoutState);
@@ -220,7 +222,6 @@ const FinalGridCopy = (setSharedStatic) => {
     y: number;
     w: number;
     h: number;
-    resizeHandles: ["s", "w", "e", "n", "sw", "nw", "se", "ne"];
     static: boolean;
   }
 
@@ -229,13 +230,13 @@ const FinalGridCopy = (setSharedStatic) => {
       case 1:
         return <Appointments />;
       case 2:
-        return <Weather />;
+        return <Calendar />;
       case 3:
-        return <Media />;
+        return <Weather />;
       case 4:
-        return <Schedule />;
+        return <Calendar />;
       case 5:
-        return <Schedule />;
+        return <Journal />;
       case 6:
         return <Todos />;
       case 7:
@@ -247,16 +248,32 @@ const FinalGridCopy = (setSharedStatic) => {
     }
   };
 
-  {
-    active_widgets.map((widget: number | string) => (
-      <button className="remove-widget-button btn btn-danger" onClick={() => removeWidget(widget as string)}>
-        Remove Widget
-      </button>
-    ));
-  }
-
   return (
     <>
+      {staticOn ? (
+        <button onClick={handleStatic} className="btn btn-success m-4">
+          Edit Layout
+        </button>
+      ) : (
+        <>
+          <button onClick={handleLayoutSave} className="btn btn-success m-4">
+            Save Layout
+          </button>
+
+          <select value={selectedWidget} onChange={(e) => setSelectedWidget(e.target.value)}>
+            <option value="">Select</option>
+            {availableWidgets.map((key) => (
+              <option key={key} value={key}>
+                {allWidgets[key]}
+              </option>
+            ))}
+          </select>
+
+          <button onClick={addWidget} className="btn btn-primary m-4">
+            Add Widget
+          </button>
+        </>
+      )}
       <ResponsiveGridLayout
         className="layout"
         layouts={layoutState}
@@ -265,48 +282,15 @@ const FinalGridCopy = (setSharedStatic) => {
         onLayoutChange={handleLayoutChange}
       >
         {active_widgets.map((widget: number | string) => (
-          <div key={widget} data-grid-id={widget} className="widget-wrapper">
-            {!staticOn && (
-              <button className="remove-widget-button" onClick={() => removeWidget(widget as string)}>
-                <p className="arrow1" aria-hidden="true">
-                  Swipe to remove →
-                </p>
-              </button>
-            )}
-            <div style={{ height: "100%", overflow: "hidden" }}>{renderComponent(parseInt(widget as string))}</div>
+          <div key={widget}>
+            <div style={{ height: "100%", overflow: "scroll" }}>
+              {!staticOn && <button onClick={() => removeWidget(widget as string)}>Remove Widget</button>}
+
+              {renderComponent(parseInt(widget as string))}
+            </div>
           </div>
         ))}
       </ResponsiveGridLayout>
-      <div className="editmode-container">
-        {" "}
-        {staticOn ? (
-          <button onClick={handleStatic} className="editmode-btn">
-            <span className="editmode-btn-content">Edit Layout</span>
-          </button>
-        ) : (
-          <>
-            <select
-              value={selectedWidget}
-              onChange={(e) => setSelectedWidget(e.target.value)}
-              className="selectWidgets"
-            >
-              <option value="">Select a widget</option>
-              {availableWidgets.map((key) => (
-                <option key={key} value={key}>
-                  {allWidgets[parseInt(key)]}
-                </option>
-              ))}
-            </select>
-            <button onClick={addWidget} className="editmode-btn">
-              <span className="editmode-btn-content">Add Widget</span>
-            </button>
-
-            <button onClick={handleLayoutSave} className="editmode-btn">
-              <span className="editmode-btn-content">Save Layout</span>
-            </button>
-          </>
-        )}
-      </div>
     </>
   );
 };

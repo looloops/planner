@@ -253,7 +253,6 @@ const HabitTracker: React.FC = () => {
 
       <div className="habits-container">
         <p className="todos-section-title">Habits to Gain</p>
-        <div className="days-counter">DAY 01 | DAY 02 | DAY 03 | DAY 04 | DAY 05 | DAY 06 | DAY 07</div>
         {habits.settings?.map(
           (habit: Habits, index: number) =>
             habit.type === "Gain" && (
@@ -308,7 +307,6 @@ const HabitTracker: React.FC = () => {
 
       <div className="habits-container">
         <p className="todos-section-title">Habits to Lose</p>
-        <div className="days-counter">DAY 01 | DAY 02 | DAY 03 | DAY 04 | DAY 05 | DAY 06 | DAY 07</div>
         {habits.settings?.map(
           (habit: Habits, index: number) =>
             habit.type === "Lose" && (
